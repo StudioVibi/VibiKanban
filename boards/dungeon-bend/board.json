@@ -45,24 +45,48 @@
     ]
   ],
   "tags": {
-    "ui": "accent",
-    "bend": "success",
-    "bug": "danger",
-    "infra": "warning"
-  },
-  "tag_areas": {
-    "ui": {
-      "criativa": 0.5,
-      "dev": 0.5
-    },
-    "bend": {
-      "dev": 1
-    },
-    "bug": {
-      "dev": 1
-    },
-    "infra": {
-      "dev": 1
-    }
+    "ui": [
+      "creative"
+    ],
+    "bend": [
+      "development"
+    ],
+    "bug": [
+      "development"
+    ],
+    "infra": [
+      "development"
+    ],
+    "Art": [
+      "creative"
+    ],
+    "Narrative": [
+      "creative"
+    ],
+    "Audio": [
+      "creative"
+    ],
+    "Game design": [
+      "creative",
+      "development"
+    ],
+    "Testing": [
+      "management"
+    ],
+    "Production": [
+      "management"
+    ],
+    "Publisher": [
+      "business"
+    ],
+    "Pitch": [
+      "business"
+    ],
+    "Marketing": [
+      "business"
+    ],
+    "Discord": [
+      "community"
+    ]
   }
 }

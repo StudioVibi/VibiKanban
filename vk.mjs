@@ -14,9 +14,9 @@ const HELP = `vk: os quadros no terminal
                                      (sem quadro: o mesmo que vk boards)
   vk who <login>                     tudo de uma pessoa, em todos os quadros
   vk show <ID>                       um cartão inteiro (o prefixo do ID diz o quadro)
-  vk add "<título>" --board Q [--lane L] [--tag T] [--who W]
+  vk add "<título>" --board Q [--lane L] [--tags A,B] [--who W]
   vk move <ID> <coluna> [--before ID]
-  vk edit <ID> [--title T] [--tag T] [--who W] [--lane L]
+  vk edit <ID> [--title T] [--tags A,B] [--who W] [--lane L]
   vk done <ID>                       marca como concluído (fica na coluna)
   vk reopen <ID>                     desmarca
   vk rm <ID>
@@ -77,7 +77,7 @@ try {
     case "add": {
       const b = pickBoard(flags.board);
       const who = flags.who || whoami(root) || die("não sei quem é você: use --who, VK_USER ou gh auth login");
-      const r = K.add(b.board, b.cards, { title: args.join(" "), lane: flags.lane, tag: flags.tag, who });
+      const r = K.add(b.board, b.cards, { title: args.join(" "), lane: flags.lane, tags: flags.tags ?? flags.tag, who });
       console.log(`${r.card.id} em ${b.board.name} · ${K.laneName(b.board, r.card.lane)}`);
       done(save(root, state, b.slug, { changed: [r.card], message: r.message, who, push: !!flags.push }));
       break;
@@ -92,7 +92,7 @@ try {
     }
     case "edit": {
       const { b, c } = find(args[0]);
-      const r = K.update(b.board, b.cards, c.id, { title: flags.title, tag: flags.tag, who: flags.who, lane: flags.lane });
+      const r = K.update(b.board, b.cards, c.id, { title: flags.title, tags: flags.tags ?? flags.tag, who: flags.who, lane: flags.lane });
       if (!r.changed.length) { console.log("nada mudou"); break; }
       console.log(r.message.replace(/^board: /, ""));
       done(save(root, state, b.slug, { changed: [r.card], message: r.message, who: whoami(root), push: !!flags.push }));

@@ -130,7 +130,7 @@ def is_near(+gap: F32) -> Bool:
 # Positions are fractions of the wheel's box: (0, 0) top left, (1, 1) bottom right.
 def wheel_radius_x() -> F32: 0.44  # undecided
 def wheel_radius_y() -> F32: 0.42  # undecided
-def wheel_pull() -> F32: 0.74  # undecided
+def wheel_pull() -> F32: 0.6  # undecided
 def skill_spread() -> F32: 0.11  # undecided
 
 # Area i of n, as a turn from the top, clockwise; the first one sits up and to the left.

@@ -4,7 +4,7 @@
 //   GET  /api/auth/callback  o GitHub volta aqui; a sessão fica num cookie cifrado
 //   POST /api/logout
 //   GET  /api/board          todos os quadros (só com login)
-//   POST /api/move | add | update | remove
+//   POST /api/move | add | update | remove | tags
 // Variáveis: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, SESSION_SECRET, VK_REPO (dono/nome), VK_BRANCH (main).
 import crypto from "crypto";
 import * as K from "../lib/board.mjs";
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     if (!s) return send(res, route === "board" ? 200 : 401, { auth: "github", user: null, error: "Entre com GitHub." });
 
     if (route === "board" && req.method === "GET") return send(res, 200, snapshot(await G.load(s.token, repo, branch), s.login));
-    if (req.method === "POST" && ["move", "add", "update", "remove"].includes(route)) {
+    if (req.method === "POST" && ["move", "add", "update", "remove", "tags"].includes(route)) {
       const input = await body(req);
       const state = await G.change(s.token, repo, ({ boards }) => {
         const out = K.apply(boards, route, input, s.login);

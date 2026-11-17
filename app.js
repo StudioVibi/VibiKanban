@@ -2,7 +2,7 @@
 // Os dados são os quadros em boards/<quadro>/ no repositório. Com `vk serve`, cada mudança vira um commit (e um push, com --push).
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
 import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
-import "./bend-ui/workspace.js";   // o .dialog da lib
+import { createDialog } from "./bend-ui/workspace.js";   // o .dialog da lib
 import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard, cardDialog } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
@@ -77,7 +77,8 @@ app.innerHTML = `
   <div class="workload" id="workload" hidden><div class="workload__side" id="wl-side"></div><div id="wl-wheel"></div></div>
   <div class="toolbar toolbar--float toolbar--dock" role="toolbar" aria-label="Quadro" id="dock"></div>
 </div>
-<dialog class="dialog" id="card-dialog"></dialog>`;
+<dialog class="dialog" id="card-dialog"></dialog>
+<dialog id="tags-dialog"><header class="dialog__header"><h2 class="section-title" id="tags-title"></h2><button type="button" class="btn btn--ghost btn--sm btn--icon" id="tags-close" aria-label="Fechar"><svg class="icon"><use href="#i-x"/></svg></button></header><div class="dialog__body" id="tags-body"></div></dialog>`;
 
 const board = $("#board");
 const dialogEl = $("#card-dialog"), dialog = cardDialog(dialogEl);   // o cartão aberto (a ficha) da lib
@@ -86,6 +87,7 @@ function renderHead() {
   // O cabeçalho do quadro (.board__head da lib): o nome do quadro à esquerda; à direita a foto do GitHub de quem
   // está conectado, que abre o menu com o @ e Sair. A linha embaixo é o .separator.
   $("#bar").innerHTML = `<div class="board__head"><h1 class="section-title">${esc(BOARD.name)}</h1><div class="toolbar__spacer"></div>
+    <button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" data-tags-open aria-label="Tags do quadro" title="Tags do quadro"><svg class="icon icon--sm"><use href="#i-settings"/></svg></button>
     <div class="dropdown"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon btn--round" aria-haspopup="menu" aria-expanded="false" aria-label="@${esc(user)}">${avatar(photo(user))}</button>
       <div class="menu menu--end" role="menu" hidden><div class="menu__head"><span class="detail">@${esc(user)}</span></div><hr class="separator"><button type="button" class="menu__item" role="menuitem" data-logout><span>Sair</span></button></div></div>
   </div><hr class="separator">`;
@@ -102,7 +104,10 @@ app.addEventListener("click", async (e) => {
 
 // ---------- Board ----------
 const CHECK = { mark: "Marcar como concluído", unmark: "Desmarcar" };
-const tagHtml = (c) => `<span class="tag tag--${BOARD.tags[c.tag]}">${esc(c.tag)}</span>`;
+// As tags de um cartão, na cor das áreas delas (a mesma da roda do Workload).
+const tagColor = (t) => { const as = K.tagAreas(BOARD, t).filter((a) => AREA[a]); return as.length ? skillColor(as.map((a) => [areaColor(AREA[a].color), 1])) : NONE(); };
+const tagPill = (t) => `<span class="tag-pill" style="--skill:${tagColor(t)}">${esc(t)}</span>`;
+const tagHtml = (c) => (c.tags || []).map(tagPill).join("");
 function cardHtml(c) {
   const S = CARD.shows;
   const tagTop = S.tag && CARD.tagOnTop ? tagHtml(c) : "", tagFoot = S.tag && !CARD.tagOnTop ? tagHtml(c) : "";
@@ -175,12 +180,12 @@ const SPRINT_FROM = "2026-01-05";   // a segunda-feira em que a sprint 1 começo
 const AREA = Object.fromEntries(AREAS.map((a) => [a.id, a]));
 const STATE_ORDER = ["doing", "review", "backlog", "done"];
 let wlPeriod = "now", wlOn = null, wheel = null;
-// A skill de um cartão é a tag dele. As áreas de cada tag vêm do quadro (board.json: tag_areas).
+// A skill de um cartão é a tag dele (um cartão pode ter várias). As áreas de cada tag vêm do quadro (board.json: tags).
 // A roda mostra só as tags que os cartões do quadro usam, e só as áreas dessas tags.
+const firstTag = (c) => (c.tags || [])[0];
 function wlSkills() {
-  const used = [...new Set(cards.map((c) => c.tag).filter(Boolean))];
-  const mixOf = (t) => Object.entries(BOARD.tag_areas?.[t] || {}).filter(([a, w]) => AREA[a] && w > 0).sort((x, y) => y[1] - x[1]);
-  return used.map((name) => { const ws = mixOf(name); return { name, mix: Object.fromEntries(ws), main: ws[0]?.[0], color: skillColor(ws.map(([a, w]) => [areaColor(AREA[a].color), w])) }; }).filter((s) => s.main);
+  const used = [...new Set(cards.flatMap((c) => c.tags || []))];
+  return used.map((name) => { const as = K.tagAreas(BOARD, name).filter((a) => AREA[a]); return { name, mix: Object.fromEntries(as.map((a) => [a, 1])), main: as[0], color: tagColor(name) }; }).filter((s) => s.main);
 }
 function wlAreas() {
   const used = new Set(wlSkills().flatMap((s) => Object.keys(s.mix)));
@@ -207,15 +212,15 @@ const NONE = () => { const v = getComputedStyle(document.documentElement).getPro
 function groupsOf(tasks) {
   const skills = wlSkills(), info = Object.fromEntries(skills.map((s) => [s.name, s]));
   const pieces = (ts, color) => STATE_ORDER.map((st) => ({ n: ts.filter((c) => stateOf(c) === st).length, state: st, color })).filter((p) => p.n);
-  const groups = wlAreas().map((a) => skills.filter((s) => s.main === a.id).flatMap((s) => pieces(tasks.filter((c) => c.tag === s.name), s.color))).filter((g) => g.length);
-  const loose = tasks.filter((c) => !info[c.tag]);
+  const groups = wlAreas().map((a) => skills.filter((s) => s.main === a.id).flatMap((s) => pieces(tasks.filter((c) => firstTag(c) === s.name), s.color))).filter((g) => g.length);
+  const loose = tasks.filter((c) => !info[firstTag(c)]);
   if (loose.length) groups.push(pieces(loose, NONE()));
   return groups;
 }
 function subOf(tasks) {
   const states = wlPeriod === "now" ? ["doing", "review", "backlog"] : STATE_ORDER;
   const info = Object.fromEntries(wlSkills().map((s) => [s.name, s]));
-  const areas = new Set(tasks.map((c) => info[c.tag]?.main).filter(Boolean)).size, loose = tasks.filter((c) => !info[c.tag]).length;
+  const areas = new Set(tasks.flatMap((c) => (c.tags || []).map((t) => info[t]?.main)).filter(Boolean)).size, loose = tasks.filter((c) => !info[firstTag(c)]).length;
   return [...states.map((st) => `${tasks.filter((c) => stateOf(c) === st).length} ${stateName(st)}`), `${areas} ${areas === 1 ? "área" : "áreas"}`, ...(loose ? [`${loose} sem área`] : [])].join(" · ");
 }
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
@@ -236,7 +241,7 @@ function renderWorkload() {
     side.innerHTML = `${head}<div class="load-person">
       <div class="load-person__head"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" data-wl-back aria-label="Voltar"><svg class="icon icon--sm"><use href="#i-arrow-left"/></svg></button>${avatar(photo(wlOn))}<span class="section-title">${esc(wlOn)}</span><span class="section-title load-person__count">${ts.length}</span></div>
       ${bar(groupsOf(ts), ts.length)}<span class="detail">${subOf(ts)}</span>
-      <div class="load-tasks"><span class="group-title">${plural(ts.length, "tarefa", "tarefas")}</span>${ts.map((c) => `<button type="button" class="load-task" data-wl-card="${c.id}">${key(stateOf(c), info[c.tag]?.color ?? NONE())}<span>${esc(c.title)} <span class="detail">· ${esc(c.tag)} · ${esc(stateName(stateOf(c)))}</span></span><span class="tag tag--mono">${c.id}</span></button>`).join("")}</div></div>`;
+      <div class="load-tasks"><span class="group-title">${plural(ts.length, "tarefa", "tarefas")}</span>${ts.map((c) => `<button type="button" class="load-task" data-wl-card="${c.id}">${key(stateOf(c), info[firstTag(c)]?.color ?? NONE())}<span>${esc(c.title)} <span class="detail">· ${esc((c.tags || []).join(", ") || "sem tag")} · ${esc(stateName(stateOf(c)))}</span></span><span class="tag tag--mono">${c.id}</span></button>`).join("")}</div></div>`;
   } else {
     const rows = people.map((l) => [l, tasksOf(l)]).sort((a, b) => b[1].length - a[1].length);
     const max = Math.max(1, ...rows.map(([, ts]) => ts.length));
@@ -247,7 +252,7 @@ function renderWorkload() {
   for (const el of side.querySelectorAll("[data-bar]")) { const b = bars.get(el.dataset.bar); if (b.key) loadKey(el, b.key, b.color); else loadBar(el, b.groups, { total: b.total }); }
   // A roda: só o aberto (onde cada um está agora).
   const skills = wlSkills();
-  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who === l && c.tag === s.name && !K.isDone(c)).length])) })) };
+  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who === l && (c.tags || []).includes(s.name) && !K.isDone(c)).length])) })) };
   if (!wheel) wheel = mountWheel($("#wl-wheel"), data, { tip: (p, s, n) => `${plural(n, "tarefa", "tarefas")} de ${s}`, onPick: (id) => { wlOn = id; renderWorkload(); } });
   else wheel.update(data);
   wheel.focus(wlOn);
@@ -324,17 +329,17 @@ function addCard(box) {
 // são botões que abrem o .menu da lib. Salvar grava; Cancelar, Esc ou um clique fora fecham sem gravar.
 let editing = null;   // { id, pick: { lane, tag, who } }
 const ICON = (name) => `<svg class="icon icon--sm" aria-hidden="true"><use href="#i-${name}"/></svg>`;
-const tagChip = (t) => `<span class="tag tag--${BOARD.tags[t]}">${esc(t)}</span>`;
+const tagChip = tagPill;
 const SHOW = {
   lane: (v) => `${ICON("columns-2")}<span>${esc(laneName(v))}</span>`,
-  tag: (v) => (v ? tagChip(v) : "<span>Sem tag</span>"),
+  tags: (v) => (v.length ? `<span class="tag-pills">${v.map(tagChip).join("")}</span>` : "<span>Sem tag</span>"),
   who: (v) => (v ? `${avatar(photo(v))}<span>@${esc(v)}</span>` : `${ICON("user")}<span>Ninguém</span>`),
 };
-const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="menuitemradio" aria-checked="${editing.pick[kind] === v}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
+const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="${kind === "tags" ? "menuitemcheckbox" : "menuitemradio"}" aria-checked="${kind === "tags" ? editing.pick.tags.includes(v) : editing.pick[kind] === v}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
 const choiceMenu = (kind, label, items) => `<div class="dropdown" data-kind="${kind}"><button type="button" class="btn btn--ghost btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="${label}" data-show>${SHOW[kind](editing.pick[kind])}</button><div class="menu" role="menu" hidden>${items}</div></div>`;
 function openCard(id) {
   const c = cards.find((x) => x.id === id); if (!c) return;
-  editing = { id, pick: { lane: c.lane, tag: c.tag || "", who: c.who || "" } };
+  editing = { id, pick: { lane: c.lane, tags: [...(c.tags || [])], who: c.who || "" } };
   const people = [...new Set([user, c.who, ...BOARDS.flatMap((b) => K.people(b.cards).map(([l]) => l))].filter(Boolean))];
   dialogEl.setAttribute("aria-label", `${c.id}: ${c.title}`);
   dialogEl.innerHTML = `
@@ -346,7 +351,7 @@ function openCard(id) {
       <textarea class="card-dialog__field card-dialog__title" rows="1" aria-label="Título">${esc(c.title)}</textarea>
       <div class="card-dialog__data">
         ${choiceMenu("lane", "Coluna", BOARD.lanes.map((l) => choiceItem("lane", l.id, `<span>${esc(l.name)}</span>`)).join(""))}
-        ${choiceMenu("tag", "Tag", Object.keys(BOARD.tags).map((t) => choiceItem("tag", t, tagChip(t))).join(""))}
+        ${choiceMenu("tags", "Tags", Object.keys(BOARD.tags).map((t) => choiceItem("tags", t, tagChip(t))).join(""))}
         ${choiceMenu("who", "Pessoa", choiceItem("who", "", "<span>Ninguém</span>") + people.map((p) => choiceItem("who", p, `${avatar(photo(p))}<span>@${esc(p)}</span>`)).join(""))}
       </div>
       <textarea class="card-dialog__field card-dialog__notes" rows="1" aria-label="Notas" placeholder="Adicionar notas…">${esc(c.notes || "")}</textarea>
@@ -358,7 +363,9 @@ dialogEl.addEventListener("pick", (e) => {
   if (!editing) return;
   if ("remove" in e.detail.dataset) { const id = editing.id; editing = null; dialog.close(); return act("remove", { id }, `${id} removido`); }
   const dd = e.target.closest(".dropdown[data-kind]"); if (!dd) return;
-  const k = dd.dataset.kind; editing.pick[k] = e.detail.dataset.v;
+  const k = dd.dataset.kind, v = e.detail.dataset.v;
+  if (k === "tags") { const ts = editing.pick.tags; editing.pick.tags = ts.includes(v) ? ts.filter((x) => x !== v) : [...ts, v]; for (const it of dd.querySelectorAll(".menu__item")) it.setAttribute("aria-checked", String(editing.pick.tags.includes(it.dataset.v))); }
+  else editing.pick[k] = v;
   $("[data-show]", dd).innerHTML = SHOW[k](editing.pick[k]);
 });
 dialogEl.addEventListener("click", (e) => {
@@ -369,6 +376,46 @@ dialogEl.addEventListener("click", (e) => {
   const title = $(".card-dialog__title", dialogEl).value.trim() || c.title, notes = $(".card-dialog__notes", dialogEl).value;
   editing = null; dialog.close();
   act("update", { id, title, notes, ...pick }, `${id} salvo`);
+});
+
+// ---------- Tags do quadro (a engrenagem no cabeçalho) ----------
+// Cada tag e as áreas dela. Salvar grava o board.json do quadro; uma tag que sai também sai dos cartões.
+const tagsDialog = createDialog($("#tags-dialog"), { title: $("#tags-title"), body: $("#tags-body"), close: $("#tags-close") });
+let tagEdit = null;   // { tags: { tag: [áreas] }, open: tag | null }
+const areaLabel = (id) => `<span class="tag-area"><i class="tag-area__dot" style="--area:${areaColor(AREA[id].color)}"></i>${esc(AREA[id].name)}</span>`;
+const editColor = (t) => { const as = (tagEdit.tags[t] || []).filter((a) => AREA[a]); return as.length ? skillColor(as.map((a) => [areaColor(AREA[a].color), 1])) : NONE(); };
+function drawTags() {
+  const body = $("#tags-body");
+  body.innerHTML = `<div class="tag-list">${Object.entries(tagEdit.tags).map(([t, as]) => `<div class="tag-row" data-tag="${esc(t)}">
+      <div class="tag-row__main"><span class="tag-pill" style="--skill:${editColor(t)}">${esc(t)}</span><span class="tag-row__areas">${as.filter((a) => AREA[a]).map(areaLabel).join("") || `<span class="detail">sem área</span>`}</span>
+        <button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" data-tag-edit aria-label="Áreas de ${esc(t)}" aria-pressed="${tagEdit.open === t}"><svg class="icon icon--sm"><use href="#i-pencil"/></svg></button>
+        <button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" data-tag-remove aria-label="Tirar ${esc(t)}"><svg class="icon icon--sm"><use href="#i-x"/></svg></button></div>
+      ${tagEdit.open === t ? `<div class="tag-row__pick">${AREAS.map((a) => `<button type="button" class="btn btn--sm btn--bordered btn--neutral area-toggle" style="--area:${areaColor(a.color)}" data-tag-area="${a.id}" aria-pressed="${as.includes(a.id)}"><i class="tag-area__dot"></i>${esc(a.name)}</button>`).join("")}</div>` : ""}
+    </div>`).join("") || `<span class="detail">Nenhuma tag ainda.</span>`}</div>
+    <form class="tag-add" id="tag-add"><input class="input input--sm" id="tag-new" placeholder="Nova tag" aria-label="Nova tag" autocomplete="off"><button type="submit" class="btn btn--sm btn--bordered"><svg class="icon icon--sm"><use href="#i-plus"/></svg>Adicionar</button></form>
+    <div class="actions"><button type="button" class="btn btn--ghost" data-tags-cancel>Cancelar</button><button type="button" class="btn btn--filled" data-tags-save>Salvar</button></div>`;
+}
+app.addEventListener("click", (e) => {
+  if (!e.target.closest("[data-tags-open]")) return;
+  tagEdit = { tags: Object.fromEntries(Object.keys(BOARD.tags || {}).map((t) => [t, [...K.tagAreas(BOARD, t)]])), open: null };
+  tagsDialog.open(`Tags do ${BOARD.name}`); drawTags();
+});
+$("#tags-dialog").addEventListener("click", (e) => {
+  if (!tagEdit) return;
+  const row = e.target.closest("[data-tag]"), t = row?.dataset.tag;
+  if (e.target.closest("[data-tag-edit]")) { tagEdit.open = tagEdit.open === t ? null : t; return drawTags(); }
+  if (e.target.closest("[data-tag-remove]")) { delete tagEdit.tags[t]; if (tagEdit.open === t) tagEdit.open = null; return drawTags(); }
+  const ar = e.target.closest("[data-tag-area]");
+  if (ar) { const as = tagEdit.tags[t], id = ar.dataset.tagArea; tagEdit.tags[t] = as.includes(id) ? as.filter((x) => x !== id) : [...as, id]; return drawTags(); }
+  if (e.target.closest("[data-tags-cancel]")) { tagEdit = null; return tagsDialog.close(); }
+  if (e.target.closest("[data-tags-save]")) { const tags = tagEdit.tags; tagEdit = null; tagsDialog.close(); act("tags", { board: cur, tags }, "Tags salvas"); }
+});
+$("#tags-dialog").addEventListener("submit", (e) => {
+  e.preventDefault(); if (!tagEdit) return;
+  const name = $("#tag-new").value.trim().replace(/,/g, "");
+  if (!name || name in tagEdit.tags) return;
+  tagEdit.tags[name] = []; tagEdit.open = name; drawTags();
+  $("#tag-new").focus();
 });
 
 // Com `vk serve`: os arquivos de agora (e quem está conectado). Sem servidor, o retrato do build.
