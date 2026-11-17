@@ -1,9 +1,9 @@
 ---
 id: VK-7
-lane: review
+lane: done
 who: isa
 tag: ui
-order: 2
+order: 0
 ---
 
 # Estrutura board/cards/*.md
