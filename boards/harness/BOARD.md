@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 1"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 2"] --> doing["Fazendo · 3"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,9 +13,10 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 1
+## Backlog · 2
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
+- **HN-5** fazer um botão que ao clicar ja lida com toda parte de preparar o projeto para uma nova janela de navegador. — @Ostrowskii
 
 ## Fazendo · 3
 
