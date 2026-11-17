@@ -6,4 +6,4 @@
 |---|---|---|---|
 | [Dungeon Bend](boards/dungeon-bend/BOARD.md) | DB | 0 | — |
 | [Harness](boards/harness/BOARD.md) | HN | 0 | — |
-| [Morrow Days](boards/morrow-days/BOARD.md) | MD | 1 | @isabellaherman |
+| [Morrow Days](boards/morrow-days/BOARD.md) | MD | 2 | @isabellaherman |
