@@ -5,5 +5,5 @@
 | Quadro | Prefixo | Abertos | Quem tem cartão |
 |---|---|---|---|
 | [Dungeon Bend](boards/dungeon-bend/BOARD.md) | DB | 0 | — |
-| [Harness](boards/harness/BOARD.md) | HN | 4 | @isabellaherman |
+| [Harness](boards/harness/BOARD.md) | HN | 3 | @isabellaherman |
 | [Morrow Days](boards/morrow-days/BOARD.md) | MD | 0 | — |
