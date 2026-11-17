@@ -6,8 +6,11 @@ import { createDialog } from "./bend-ui/workspace.js";
 import { card as CARD, initBoard, cardCheck } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
+// A Allo mora aqui no repositório (fonts/allo, licença OFL): não depende de nenhum site de fontes.
+import allo from "./fonts/allo/AlloVariable.woff2";
 
-theme({ mode: "light" });   // sempre claro, independente do computador
+const ALLO = { family: "Allo", src: allo, weight: "100 900" };
+theme({ mode: "light", fontSans: ALLO, fontDisplay: ALLO });   // sempre claro, independente do computador
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
