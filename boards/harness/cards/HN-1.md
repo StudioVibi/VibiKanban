@@ -1,6 +1,6 @@
 ---
 id: HN-1
-lane: backlog
+lane: doing
 who: Ostrowskii
 tag: ui
 order: 1
