@@ -2,8 +2,8 @@
 // Os dados são os quadros em boards/<quadro>/ no repositório. Com `vk serve`, cada mudança vira um commit (e um push, com --push).
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
 import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
-import { createDialog } from "./bend-ui/workspace.js";
-import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard } from "./bend-ui/board.js";
+import "./bend-ui/workspace.js";   // o .dialog da lib
+import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard, cardDialog } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
 // A Allo mora aqui no repositório (fonts/allo, licença OFL): não depende de nenhum site de fontes.
@@ -73,10 +73,10 @@ app.innerHTML = `
   <div class="board" id="board"></div>
   <div class="toolbar toolbar--float toolbar--dock" role="toolbar" aria-label="Quadro" id="dock"></div>
 </div>
-<dialog id="card-dialog"><header class="dialog__header"><h2 class="section-title" id="card-dialog-title"></h2><button class="btn btn--ghost btn--sm btn--icon" id="card-dialog-close" aria-label="Fechar"><svg class="icon"><use href="#i-x"/></svg></button></header><div class="dialog__body" id="card-dialog-body"></div></dialog>`;
+<dialog class="dialog" id="card-dialog"></dialog>`;
 
 const board = $("#board");
-const dialog = createDialog($("#card-dialog"), { title: $("#card-dialog-title"), body: $("#card-dialog-body"), close: $("#card-dialog-close") });
+const dialogEl = $("#card-dialog"), dialog = cardDialog(dialogEl);   // o cartão aberto (a ficha) da lib
 
 function renderHead() {
   // O cabeçalho do quadro (.board__head da lib): o nome do quadro à esquerda; à direita a foto do GitHub de quem
@@ -201,37 +201,57 @@ function addCard(box) {
   input.addEventListener("blur", () => finish(true));
 }
 
-// ---------- Cartão aberto: ler sempre; editar com login ----------
-const choice = (name, label, options, value) => `
-  <div class="field"><span class="field__label">${label}</span>
-    <div class="segmented" role="group" aria-label="${label}" data-name="${name}">${options.map(([v, l]) => `<button type="button" data-value="${esc(v)}" aria-pressed="${v === value}">${esc(l)}</button>`).join("")}</div>
-  </div>`;
+// ---------- Cartão aberto (a ficha da lib: cardDialog) ----------
+// Já abre grande; o título e as notas se editam ali mesmo e a caixa cresce com o texto. Coluna, tag e pessoa
+// são botões que abrem o .menu da lib. Salvar grava; Cancelar, Esc ou um clique fora fecham sem gravar.
+let editing = null;   // { id, pick: { lane, tag, who } }
+const ICON = (name) => `<svg class="icon icon--sm" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const tagChip = (t) => `<span class="tag tag--${BOARD.tags[t]}">${esc(t)}</span>`;
+const SHOW = {
+  lane: (v) => `${ICON("columns-2")}<span>${esc(laneName(v))}</span>`,
+  tag: (v) => (v ? tagChip(v) : "<span>Sem tag</span>"),
+  who: (v) => (v ? `${avatar(photo(v))}<span>@${esc(v)}</span>` : `${ICON("user")}<span>Ninguém</span>`),
+};
+const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="menuitemradio" aria-checked="${editing.pick[kind] === v}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
+const choiceMenu = (kind, label, items) => `<div class="dropdown" data-kind="${kind}"><button type="button" class="btn btn--ghost btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="${label}" data-show>${SHOW[kind](editing.pick[kind])}</button><div class="menu" role="menu" hidden>${items}</div></div>`;
 function openCard(id) {
   const c = cards.find((x) => x.id === id); if (!c) return;
-  const body = dialog.open(`${c.id}`);
-  body.innerHTML = `
-    <form class="form" novalidate>
-      <label class="field" for="card-title"><span class="field__label">Título</span><input id="card-title" name="title" class="input" value="${esc(c.title)}"></label>
-      ${choice("lane", "Coluna", BOARD.lanes.map((l) => [l.id, l.name]), c.lane)}
-      ${choice("tag", "Tag", Object.keys(BOARD.tags).map((t) => [t, t]), c.tag)}
-      <label class="field" for="card-who"><span class="field__label">Pessoa</span><input id="card-who" name="who" class="input" value="${esc(c.who)}"></label>
-      <label class="field" for="card-notes"><span class="field__label">Notas</span><textarea id="card-notes" name="notes" class="input" rows="6">${esc(c.notes || "")}</textarea></label>
-      <div class="actions">
-        <button class="btn btn--plain btn--danger" type="button" data-remove>Remover</button><div class="toolbar__spacer"></div><button class="btn btn--ghost" type="button" data-cancel>Cancelar</button><button class="btn btn--filled" type="submit">Salvar</button>
+  editing = { id, pick: { lane: c.lane, tag: c.tag || "", who: c.who || "" } };
+  const people = [...new Set([user, c.who, ...BOARDS.flatMap((b) => K.people(b.cards).map(([l]) => l))].filter(Boolean))];
+  dialogEl.setAttribute("aria-label", `${c.id}: ${c.title}`);
+  dialogEl.innerHTML = `
+    <header class="dialog__header"><span class="tag tag--mono">${c.id}</span><div class="toolbar__spacer"></div>
+      <div class="dropdown"><button type="button" class="btn btn--ghost btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações de ${c.id}"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
+        <div class="menu menu--end" role="menu" hidden><button type="button" class="menu__item" role="menuitem" data-remove>${ICON("trash-2")}<span>Remover</span></button></div></div>
+      <button type="button" class="btn btn--ghost btn--sm btn--icon" data-close aria-label="Fechar"><svg class="icon"><use href="#i-x"/></svg></button></header>
+    <div class="card-dialog__body">
+      <textarea class="card-dialog__field card-dialog__title" rows="1" aria-label="Título">${esc(c.title)}</textarea>
+      <div class="card-dialog__data">
+        ${choiceMenu("lane", "Coluna", BOARD.lanes.map((l) => choiceItem("lane", l.id, `<span>${esc(l.name)}</span>`)).join(""))}
+        ${choiceMenu("tag", "Tag", Object.keys(BOARD.tags).map((t) => choiceItem("tag", t, tagChip(t))).join(""))}
+        ${choiceMenu("who", "Pessoa", choiceItem("who", "", "<span>Ninguém</span>") + people.map((p) => choiceItem("who", p, `${avatar(photo(p))}<span>@${esc(p)}</span>`)).join(""))}
       </div>
-    </form>`;
-  const form = $("form", body), picked = { lane: c.lane, tag: c.tag };
-  for (const g of body.querySelectorAll(".segmented")) { initSegmented(g); g.addEventListener("change", (e) => (picked[g.dataset.name] = e.detail.dataset.value)); }
-  $("[data-cancel]", body)?.addEventListener("click", () => dialog.close());
-  $("[data-remove]", body)?.addEventListener("click", () => { dialog.close(); act("remove", { id }, `${id} removido`); });
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const d = new FormData(form);
-    dialog.close();
-    act("update", { id, title: d.get("title"), who: d.get("who"), notes: d.get("notes"), ...picked }, `${id} salvo`);
-  });
-  $("#card-title", body).focus();
+      <textarea class="card-dialog__field card-dialog__notes" rows="1" aria-label="Notas" placeholder="Adicionar notas…">${esc(c.notes || "")}</textarea>
+    </div>
+    <div class="actions"><button type="button" class="btn btn--ghost" data-close>Cancelar</button><button type="button" class="btn btn--filled" data-save>Salvar</button></div>`;
+  dialog.open();
 }
+dialogEl.addEventListener("pick", (e) => {
+  if (!editing) return;
+  if ("remove" in e.detail.dataset) { const id = editing.id; editing = null; dialog.close(); return act("remove", { id }, `${id} removido`); }
+  const dd = e.target.closest(".dropdown[data-kind]"); if (!dd) return;
+  const k = dd.dataset.kind; editing.pick[k] = e.detail.dataset.v;
+  $("[data-show]", dd).innerHTML = SHOW[k](editing.pick[k]);
+});
+dialogEl.addEventListener("click", (e) => {
+  if (!editing) return;
+  if (e.target.closest("[data-close]")) return void dialog.close();
+  if (!e.target.closest("[data-save]")) return;
+  const c = cards.find((x) => x.id === editing.id), { id, pick } = editing;
+  const title = $(".card-dialog__title", dialogEl).value.trim() || c.title, notes = $(".card-dialog__notes", dialogEl).value;
+  editing = null; dialog.close();
+  act("update", { id, title, notes, ...pick }, `${id} salvo`);
+});
 
 // Com `vk serve`: os arquivos de agora (e quem está conectado). Sem servidor, o retrato do build.
 api("/api/board").then(apply).catch(() => {}).finally(render);
