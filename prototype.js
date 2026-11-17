@@ -3,7 +3,7 @@
 import { theme, initSegmented, announce } from "./bend-ui/ui.js";
 import { mountDiagram } from "./bend-ui/diagram.js";
 import { codeBlock } from "./bend-ui/syntax.js";
-import G from "/Users/isabellaherman/Documents/HOC/Borzoi Diagrams/borzoi/src/Graph.bend";
+import G from "/Users/isabellaherman/Documents/HOC/Borzoi Diagrams/borzoi/src/diagram/Graph.bend";
 import { BOARD as B, initBoard } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
@@ -121,7 +121,7 @@ $("#user").addEventListener("click", (e) => {
   const login = e.target.closest("[data-login]"), logout = e.target.closest("[data-logout]");
   if (!login && !logout) return;
   if (live) api(login ? "/api/login" : "/api/logout", {}).then((s) => { apply(s); announce(user ? `Conectado como @${user}` : "Desconectado"); render(); }, (err) => announce(err.message));
-  else { user = login ? "isa" : null; announce(user ? "Conectado como @isa" : "Desconectado"); render(); }
+  else announce("Sem servidor não tem login: rode vk serve.");
 });
 
 // ---------- Board do time ----------

@@ -9,10 +9,7 @@ const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; ch
 
 export function serve(root, { port = 4173, push = false, dist }) {
   let user = null;
-  const snapshot = () => {
-    const { board, cards } = load(root);
-    return { auth: "local", board, cards, log: history(root, 10), user, repo: isRepo(root), files: { "BOARD.md": fs.existsSync(path.join(root, "BOARD.md")) ? fs.readFileSync(path.join(root, "BOARD.md"), "utf8") : "" } };
-  };
+  const snapshot = () => ({ auth: "local", ...load(root), log: history(root, 10), user, repo: isRepo(root) });
   const send = (res, code, body) => { res.writeHead(code, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }); res.end(JSON.stringify(body)); };
   const body = (req) => new Promise((ok, bad) => { let s = ""; req.on("data", (d) => (s += d)); req.on("end", () => { try { ok(s ? JSON.parse(s) : {}); } catch (e) { bad(e); } }); });
 
@@ -33,14 +30,10 @@ export function serve(root, { port = 4173, push = false, dist }) {
         if (!user) return send(res, 401, { error: "Entre com GitHub pra mexer no board." });
         const input = await body(req);
         return await act(() => {
-          const state = load(root), { board, cards } = state;
-          let r, opts;
-          if (url.pathname === "/api/move") { r = K.move(board, cards, input.id, input.lane, input.before ?? null); opts = { changed: [r.card] }; }
-          else if (url.pathname === "/api/add") { r = K.add(board, cards, { title: input.title, lane: input.lane, tag: input.tag, who: user }); opts = { changed: [r.card] }; }
-          else if (url.pathname === "/api/update") { r = K.update(board, cards, input.id, input); if (!r.changed.length) return send(res, 200, snapshot()); opts = { changed: [r.card] }; }
-          else if (url.pathname === "/api/remove") { r = K.remove(board, cards, input.id); opts = { removed: [r.card] }; }
-          else return send(res, 404, { error: "não existe" });
-          save(root, state, { ...opts, message: r.message, who: user, push });
+          const state = load(root);
+          const out = K.apply(state.boards, url.pathname.slice(5), input, user);
+          if (out === undefined) return send(res, 404, { error: "não existe" });
+          if (out) save(root, state, out.slug, { ...out, who: user, push });
           send(res, 200, snapshot());
         });
       }

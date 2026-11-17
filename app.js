@@ -1,7 +1,7 @@
 // VibiKanban: o app do time. Todo o visual é da Bend-UI; este arquivo não tem CSS.
-// Os dados são os arquivos de board/ no repositório. Com `vk serve`, cada mudança vira um commit (e um push, com --push).
+// Os dados são os quadros em boards/<quadro>/ no repositório. Com `vk serve`, cada mudança vira um commit (e um push, com --push).
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
-import { theme, initSegmented, announce } from "./bend-ui/ui.js";
+import { theme, initSegmented, announce, avatars } from "./bend-ui/ui.js";
 import { createDialog } from "./bend-ui/workspace.js";
 import { card as CARD, initBoard, cardCheck } from "./bend-ui/board.js";
 import SRC from "./sources.js";
@@ -13,7 +13,17 @@ const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // ---------- Estado ----------
-let BOARD = JSON.parse(SRC.repo.board), cards = SRC.repo.cards.map(K.parseCard), user = null, live = false, auth = null;
+let BOARDS = SRC.repo.boards.map((b) => ({ slug: b.slug, board: JSON.parse(b.board), cards: b.cards.map(K.parseCard) }));
+let user = null, live = false, auth = null;
+// O quadro aberto: o da URL (?quadro=), senão o primeiro por nome. BOARD e cards são os dele.
+// O da URL fica guardado até ele existir: o retrato do build pode não ter um quadro que o servidor tem.
+let want = new URLSearchParams(location.search).get("quadro"), cur = null, BOARD, cards;
+function select(slug) {
+  const b = K.findBoard(BOARDS, slug) ?? K.findBoard(BOARDS, cur) ?? K.byName(BOARDS)[0];
+  cur = b.slug; BOARD = b.board; cards = b.cards;
+  if (cur === want) want = null;
+}
+select(want);
 const inLane = (id) => K.inLane(cards, id);
 const laneName = (id) => K.laneName(BOARD, id);
 
@@ -25,17 +35,14 @@ async function api(path, input) {
   return j;
 }
 // auth: "github" no site (login de verdade, grava no GitHub); "local" com o vk serve no computador.
-function apply(snap) { if (snap.board) { BOARD = snap.board; cards = snap.cards; } user = snap.user; auth = snap.auth; live = true; }
+function apply(snap) { if (snap.boards) { BOARDS = snap.boards; select(want ?? cur); } user = snap.user; auth = snap.auth; live = true; }
 
 // Uma mudança: no app real o servidor grava o arquivo e faz o commit; sem servidor, fica só na página.
 // keep: a mudança já está na tela (concluir), então não redesenha; só se der erro.
 async function act(kind, input, said, keep = false) {
   try {
     if (live) apply(await api("/api/" + kind, input));
-    else if (kind === "move") K.move(BOARD, cards, input.id, input.lane, input.before);
-    else if (kind === "add") K.add(BOARD, cards, { ...input, who: user });
-    else if (kind === "update") K.update(BOARD, cards, input.id, input);
-    else K.remove(BOARD, cards, input.id);
+    else K.apply(BOARDS, kind, input, user);
     announce(said);
     if (keep) return;
   } catch (e) { announce(e.message); }
@@ -50,6 +57,7 @@ app.innerHTML = `
 <div class="doc doc--full" id="main" hidden>
   <div class="toolbar" id="bar"></div>
   <div class="board" id="board"></div>
+  <div class="toolbar toolbar--float toolbar--dock" role="toolbar" aria-label="Quadro" id="dock"></div>
 </div>
 <dialog id="card-dialog"><header class="dialog__header"><h2 class="section-title" id="card-dialog-title"></h2><button class="btn btn--ghost btn--sm btn--icon" id="card-dialog-close" aria-label="Fechar"><svg class="icon"><use href="#i-x"/></svg></button></header><div class="dialog__body" id="card-dialog-body"></div></dialog>`;
 
@@ -65,7 +73,7 @@ app.addEventListener("click", async (e) => {
   if (!login && !logout) return;
   if (login && auth === "github") return void (location.href = "/api/auth/login");   // o GitHub pede o login e volta
   if (live) { try { apply(await api(login ? "/api/login" : "/api/logout", {})); } catch (err) { return announce(err.message); } }
-  else user = login ? "isa" : null;
+  else return announce("Sem servidor não tem login: rode vk serve.");
   announce(user ? `Conectado como @${user}` : "Desconectado");
   render();
 });
@@ -99,9 +107,29 @@ function renderBoard() {
       <div class="lane__add"><button class="btn btn--plain btn--neutral btn--sm" data-add><svg class="icon icon--sm"><use href="#i-plus"/></svg>Adicionar cartão</button></div>
     </section>`).join("");
 }
+// ---------- Menu flutuante: o quadro aberto e "Mudar de quadro" ----------
+// A lista é o .menu da lib; data-open="hover" abre no hover e data-motion="rise" faz as linhas subirem
+// uma depois da outra. Cada quadro mostra as fotos do GitHub de quem tem cartão nele.
+const HEADS_MAX = 3;   // quantas fotos antes do +N: não decidido
+const photo = (login) => ({ name: login, src: `https://github.com/${encodeURIComponent(login)}.png?size=48` });
+function renderDock() {
+  const items = K.byName(BOARDS).map((b) => `<button type="button" class="menu__item" role="menuitemradio" data-slug="${b.slug}" aria-checked="${b.slug === cur}"><span>${esc(b.board.name)}</span>${avatars(K.people(b.cards).map(([l]) => photo(l)), { max: HEADS_MAX })}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`).join("");
+  $("#dock").innerHTML = `
+    <div class="segmented" data-manual role="group" aria-label="Visão"><button type="button" aria-pressed="true"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-columns-2"/></svg><span>${esc(BOARD.name)}</span></button></div>
+    <div class="dropdown" data-open="hover" id="boards"><button type="button" class="btn btn--plain btn--neutral btn--sm" aria-haspopup="menu" aria-expanded="false"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-down"/></svg><span>Mudar de quadro</span></button>
+      <div class="menu menu--up" data-motion="rise" role="menu" aria-label="Quadros" hidden>${items}</div></div>`;
+}
+$("#dock").addEventListener("pick", (e) => {
+  const slug = e.detail.dataset.slug; if (!slug || slug === cur) return;
+  select(slug);
+  const u = new URL(location.href); u.searchParams.set("quadro", cur); history.replaceState(null, "", u);
+  announce(`Quadro ${BOARD.name}`);
+  render();
+});
+
 function render() {
   $("#gate").hidden = !!user; $("#main").hidden = !user;
-  if (user) { renderHead(); renderBoard(); }
+  if (user) { renderHead(); renderBoard(); renderDock(); }
 }
 
 function move(id, lane, before = null) {
@@ -142,7 +170,7 @@ function addCard(box) {
   const finish = (save) => {
     if (closed) return; closed = true;
     const t = input.value.trim();
-    if (save && t) act("add", { title: t, lane: box.closest(".lane").dataset.lane }, "Cartão criado");
+    if (save && t) act("add", { board: cur, title: t, lane: box.closest(".lane").dataset.lane }, "Cartão criado");
     else render();
   };
   input.addEventListener("keydown", (k) => { if (k.key === "Enter") finish(true); if (k.key === "Escape") finish(false); });

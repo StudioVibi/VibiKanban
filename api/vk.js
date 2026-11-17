@@ -3,7 +3,7 @@
 //   GET  /api/auth/login     vai pro GitHub pedir o login
 //   GET  /api/auth/callback  o GitHub volta aqui; a sessão fica num cookie cifrado
 //   POST /api/logout
-//   GET  /api/board          o board (só com login)
+//   GET  /api/board          todos os quadros (só com login)
 //   POST /api/move | add | update | remove
 // Variáveis: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, SESSION_SECRET, VK_REPO (dono/nome), VK_BRANCH (main).
 import crypto from "crypto";
@@ -40,7 +40,7 @@ async function body(req) {
   return s ? JSON.parse(s) : {};
 }
 const origin = (req) => env("VK_ORIGIN") || `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
-const snapshot = ({ board, cards }, user) => ({ auth: "github", user, board, cards });
+const snapshot = ({ boards }, user) => ({ auth: "github", user, boards });
 
 export default async function handler(req, res) {
   const url = new URL(req.url, "http://x");
@@ -72,11 +72,9 @@ export default async function handler(req, res) {
     if (route === "board" && req.method === "GET") return send(res, 200, snapshot(await G.load(s.token, repo, branch), s.login));
     if (req.method === "POST" && ["move", "add", "update", "remove"].includes(route)) {
       const input = await body(req);
-      const state = await G.change(s.token, repo, ({ board, cards }) => {
-        if (route === "move") { const r = K.move(board, cards, input.id, input.lane, input.before ?? null); return { changed: [r.card], message: r.message, who: s.login }; }
-        if (route === "add") { const r = K.add(board, cards, { title: input.title, lane: input.lane, tag: input.tag, who: s.login }); return { changed: [r.card], message: r.message, who: s.login }; }
-        if (route === "update") { const r = K.update(board, cards, input.id, input); return r.changed.length ? { changed: [r.card], message: r.message, who: s.login } : null; }
-        const r = K.remove(board, cards, input.id); return { removed: [r.card], message: r.message, who: s.login };
+      const state = await G.change(s.token, repo, ({ boards }) => {
+        const out = K.apply(boards, route, input, s.login);
+        return out && { ...out, who: s.login };
       }, branch);
       return send(res, 200, snapshot(state, s.login));
     }
