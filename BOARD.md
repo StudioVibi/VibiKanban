@@ -25,7 +25,7 @@ _vazio_
 
 ## Revisão · 3
 
-- **VK-7** Estrutura board/cards/*.md — @isa `infra`
+- **VK-7** Estrutura board/cards/*.md — @isa `ui`
 - **VK-1** Componente .card na Bend-UI — @isa `ui`
 - **VK-2** Arrastar cartões entre colunas — @bia `ui`
 
