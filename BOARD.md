@@ -16,7 +16,7 @@ flowchart TD
 ## Backlog · 3
 
 - **VK-4** CLI `vk status` no terminal — @leo `infra`
-- **VK-5** Diagrama do fluxo em Mermaid — @isa `bend`
+- ✓ **VK-5** Diagrama do fluxo em Mermaid — @isa `bend`
 - **VK-6** Cartão some ao soltar fora da coluna — @bia `bug`
 
 ## Fazendo · 4
