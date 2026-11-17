@@ -3,7 +3,7 @@
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
 import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
 import { createDialog } from "./bend-ui/workspace.js";
-import { card as CARD, initBoard, cardCheck } from "./bend-ui/board.js";
+import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
 // A Allo mora aqui no repositório (fonts/allo, licença OFL): não depende de nenhum site de fontes.
@@ -45,7 +45,8 @@ function apply(snap) { if (snap.boards) { BOARDS = snap.boards; select(want ?? c
 // Se der erro, volta pro que o servidor tem. Sem servidor, fica só na página.
 // keep: a mudança já está na tela (concluir), então não redesenha.
 let queue = Promise.resolve(), waiting = 0;
-const typing = () => !!board.querySelector(".lane__add input");   // não apaga um cartão novo que está sendo escrito
+const files = (bs) => JSON.stringify(bs.map((b) => [b.slug, b.board, b.cards.map(K.cardMd)]));   // os quadros como ficam nos arquivos
+const typing = () => !!board.querySelector(".lane__add .card__field");   // não apaga um cartão novo que está sendo escrito
 function act(kind, input, said, keep = false) {
   const before = structuredClone(BOARDS);
   try { K.apply(BOARDS, kind, input, user); select(cur); }
@@ -54,7 +55,11 @@ function act(kind, input, said, keep = false) {
   if (!live) return announce(said);
   waiting++;
   queue = queue.then(() => api("/api/" + kind, input))
-    .then((snap) => { if (--waiting === 0) { apply(snap); if (!keep && !typing()) render(); } announce(said); },
+    .then((snap) => {
+      // Só redesenha se o servidor trouxe algo diferente do que já está na tela (não corta a animação do cartão novo).
+      if (--waiting === 0) { const same = !!snap.boards && files(snap.boards) === files(BOARDS); apply(snap); if (!keep && !same && !typing()) render(); }
+      announce(said);
+    },
       (e) => { waiting--; BOARDS = before; select(cur); announce(e.message); render(); api("/api/board").then((s) => { apply(s); render(); }).catch(() => {}); });
 }
 
@@ -176,17 +181,23 @@ board.addEventListener("keydown", (e) => {
   if (c && e.target === c && e.key === "Enter") openCard(c.dataset.id);
 });
 
+// Cartão novo: o campo é o próprio cartão da lib (.card__field). No Enter ele aparece na hora e cresce
+// do tamanho do campo até o do cartão (formCard, com o rise do MOTION.bend).
 function addCard(box) {
-  box.innerHTML = `<input class="input input--sm" placeholder="Título do cartão, Enter salva" aria-label="Novo cartão">`;
-  const input = box.firstElementChild; input.focus();
+  box.innerHTML = newCard("Título do cartão", "Novo cartão");
+  const input = $(".card__field", box), lane = box.closest(".lane").dataset.lane;
+  fitField(input); input.focus();
   let closed = false;
   const finish = (save) => {
     if (closed) return; closed = true;
-    const t = input.value.trim();
-    if (save && t) act("add", { board: cur, title: t, lane: box.closest(".lane").dataset.lane }, "Cartão criado");
-    else render();
+    const t = input.value.trim(), from = box.firstElementChild.offsetHeight;
+    if (!(save && t)) return render();
+    const had = new Set(inLane(lane).map((c) => c.id));
+    act("add", { board: cur, title: t, lane }, "Cartão criado");
+    const fresh = inLane(lane).find((c) => !had.has(c.id));
+    if (fresh) formCard(board.querySelector(`.card[data-id="${fresh.id}"]`), from);
   };
-  input.addEventListener("keydown", (k) => { if (k.key === "Enter") finish(true); if (k.key === "Escape") finish(false); });
+  input.addEventListener("keydown", (k) => { if (k.key === "Enter") { k.preventDefault(); finish(true); } if (k.key === "Escape") finish(false); });
   input.addEventListener("blur", () => finish(true));
 }
 
