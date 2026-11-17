@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   backlog["Backlog · 0"] --> doing["Fazendo · 2"]
-  doing --> review["Revisão · 0"]
+  doing --> review["Revisão · 1"]
   review --> done["Feito · 1"]
   review -->|ajustes| doing
   doing:::blue
@@ -22,9 +22,9 @@ _vazio_
 - **HN-1** preciso encontrar pontos de melhoria — @Ostrowskii `ui`
 - **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
 
-## Revisão · 0
+## Revisão · 1
 
-_vazio_
+- **HN-4** ai meu deus né — @isabellaherman
 
 ## Feito · 1
 
