@@ -23,7 +23,7 @@ flowchart TD
 
 - **VK-7** Estrutura board/cards/*.md — @isa `ui`
 - **VK-2** Arrastar cartões entre colunas — @bia `ui`
-- **VK-1** Componente .card na Bend-UI — @isa `ui`
+- ✓ **VK-1** Componente .card na Bend-UI — @isa `ui`
 - **VK-8** Leis do board em BOARD_LAWS.bend — @leo `bend`
 
 ## Revisão · 1
