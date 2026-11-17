@@ -1,9 +1,9 @@
 ---
 id: VK-1
-lane: review
+lane: doing
 who: isa
 tag: ui
-order: 2.5
+order: 2
 ---
 
 # Componente .card na Bend-UI
