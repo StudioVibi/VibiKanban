@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 0"] --> doing["Fazendo · 2"]
+  backlog["Backlog · 0"] --> doing["Fazendo · 3"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -17,10 +17,11 @@ flowchart TD
 
 _vazio_
 
-## Fazendo · 2
+## Fazendo · 3
 
 - **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
 - **HN-1** preciso encontrar pontos de melhoria — @Ostrowskii `ui`
+- **HN-3** Terminal: como implementar um terminal dentro do harness — @isabellaherman
 
 ## Revisão · 0
 
