@@ -7,3 +7,5 @@ order: 1
 ---
 
 # preciso encontrar porntos de melhoria
+
+estou encontrando e ja resolvendo em uma branch separada
