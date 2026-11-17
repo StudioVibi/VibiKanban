@@ -7,3 +7,5 @@ order: 2
 ---
 
 # Ongoing iteration: estabilizando a v1 do harness
+
+Pesquisa, interface, fluides do usuario
