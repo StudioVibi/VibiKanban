@@ -28,7 +28,7 @@ flowchart TD
 
 ## Revisão · 1
 
-- ✓ **VK-3** Gerar BOARD.md a cada mudança — @leo `bend`
+- **VK-3** Gerar BOARD.md a cada mudança — @leo `bend`
 
 ## Feito · 0
 
