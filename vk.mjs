@@ -13,6 +13,8 @@ const HELP = `vk: o board no terminal
   vk add "<título>" [--lane L] [--tag T] [--who W]
   vk move <ID> <coluna> [--before ID]
   vk edit <ID> [--title T] [--tag T] [--who W] [--lane L]
+  vk done <ID>                       marca como concluído (fica na coluna)
+  vk reopen <ID>                     desmarca
   vk rm <ID>
   vk md                              regenera BOARD.md sem commit
   vk check                           confere board.json e os cartões
@@ -67,6 +69,14 @@ try {
       const c = find(args[0]);
       const r = K.update(board, cards, c.id, { title: flags.title, tag: flags.tag, who: flags.who, lane: flags.lane });
       if (!r.changed.length) { console.log("nada mudou"); break; }
+      console.log(r.message.replace(/^board: /, ""));
+      done(save(root, state, { changed: [r.card], message: r.message, who: whoami(root), push: !!flags.push }));
+      break;
+    }
+    case "done": case "reopen": {
+      const c = find(args[0]);
+      const r = K.update(board, cards, c.id, { done: cmd === "done" });
+      if (!r.changed.length) { console.log(cmd === "done" ? `${c.id} já está concluído` : `${c.id} não está concluído`); break; }
       console.log(r.message.replace(/^board: /, ""));
       done(save(root, state, { changed: [r.card], message: r.message, who: whoami(root), push: !!flags.push }));
       break;
