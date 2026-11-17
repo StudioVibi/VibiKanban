@@ -1,0 +1,59 @@
+/* Só o layout das páginas do VibiKanban. Board, coluna e card vêm da Bend-UI (bend-ui/board.js). Só var(--…). */
+
+/* ---------- Layout do protótipo ---------- */
+.kb-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.kb-bar__spacer { flex: 1; }
+.kb-user { display: flex; align-items: center; gap: var(--space-2); }
+.kb-view { margin-top: var(--space-5); }
+.kb-note { margin: 0 0 var(--space-4); }
+.kb-repo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: var(--space-4); align-items: start; }
+[data-narrow] .kb-repo { grid-template-columns: minmax(0, 1fr); }
+.kb-md { margin-top: var(--space-4); }
+.kb-diagram { padding: var(--space-5); margin: var(--space-4) 0; border-radius: var(--radius-md); overflow: auto; }
+.kb-file[aria-current="true"] { color: var(--text); font-weight: var(--weight-semibold); }
+.kb-laws { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-6); }
+
+/* ---------- Debug: caixas de medida por cima da página ---------- */
+.kb-debug { position: fixed; inset: 0; pointer-events: none; z-index: var(--layer-fly); }
+.kb-debug > div { position: absolute; display: grid; place-items: center; overflow: visible; font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1; color: var(--text); }
+.dbg-box { outline: var(--border-width) dashed var(--border-strong); }
+.dbg-box.is-hot { outline: var(--border-width) solid var(--accent); }
+.dbg-pad { background: var(--success-soft); }
+.dbg-mar { background: var(--warning-soft); }
+.dbg-gap { background: var(--accent-soft); }
+.kb-debug > .is-off { background: var(--danger-soft); color: var(--danger-text); font-weight: var(--weight-semibold); }
+.dbg-inspect {
+  position: fixed;
+  right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  width: calc(var(--side-width) + var(--space-6));
+  max-width: calc(100vw - 2 * var(--space-4));
+  pointer-events: none;
+  z-index: var(--layer-fly);
+  box-shadow: var(--shadow-float);
+}
+.dbg-inspect .panel__body { display: grid; grid-template-columns: auto 1fr; gap: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--text-xs); }
+.dbg-inspect .panel__body > :nth-child(odd) { color: var(--text-detail); }
+.dbg-legend { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.kb-debug b { padding: 0 var(--space-hairline); background: var(--surface); border-radius: var(--radius-xs); font-weight: inherit; white-space: nowrap; }
+.dbg-off { color: var(--danger-text); font-weight: var(--weight-semibold); }
+
+/* ---------- Ficha "Medido na tela" (layout do protótipo) ---------- */
+.kb-sec { display: flex; flex-direction: column; gap: var(--space-4); }
+.kb-sec + .kb-sec { margin-top: var(--space-7); padding-top: var(--space-7); border-top: var(--border-width) solid var(--border); }
+.kb-sec > :is(h2, p) { margin: 0; }
+.kb-spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+[data-narrow] .kb-spec { grid-template-columns: minmax(0, 1fr); }
+.kb-stage { position: relative; padding: var(--space-6); border-radius: var(--radius-md); overflow: auto; }
+.kb-spec-board { width: max-content; padding: 0; }
+.kb-layer { position: absolute; inset: 0; pointer-events: none; }
+.kb-layer > div { position: absolute; display: grid; place-items: center; overflow: visible; font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1; color: var(--text); }
+.kb-layer b { padding: 0 var(--space-hairline); background: var(--surface); border-radius: var(--radius-xs); font-weight: inherit; white-space: nowrap; }
+.m-box { outline: var(--border-width) dashed var(--border-strong); }
+.m-pad { background: var(--success-soft); }
+.m-gap { background: var(--accent-soft); }
+.kb-layer > .is-off { background: var(--danger-soft); color: var(--danger-text); font-weight: var(--weight-semibold); }
+.kb-ficha { display: flex; flex-direction: column; min-width: 0; overflow-x: auto; }
+.kb-frow { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.7fr) minmax(0, 1.6fr) minmax(0, 2fr) auto; gap: var(--space-3); align-items: center; padding: var(--space-2) 0; border-bottom: var(--border-width) solid var(--border); font-size: var(--text-sm); }
+.kb-frow > * { min-width: 0; overflow-wrap: anywhere; }
+.kb-fhead { color: var(--text-detail); }

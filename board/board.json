@@ -1,0 +1,17 @@
+{
+  "name": "VibiKanban",
+  "prefix": "VK",
+  "lanes": [
+    { "id": "backlog", "name": "Backlog", "color": "" },
+    { "id": "doing", "name": "Fazendo", "color": "blue", "status": true },
+    { "id": "review", "name": "Revisão", "color": "yellow", "status": true },
+    { "id": "done", "name": "Feito", "color": "green" }
+  ],
+  "flow": [
+    ["backlog", "doing"],
+    ["doing", "review"],
+    ["review", "done"],
+    ["review", "doing", "ajustes"]
+  ],
+  "tags": { "ui": "accent", "bend": "success", "bug": "danger", "infra": "warning" }
+}

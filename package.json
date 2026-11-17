@@ -1,0 +1,7 @@
+{
+  "name": "vibikanban",
+  "private": true,
+  "type": "module",
+  "bin": { "vk": "./vk.mjs" },
+  "scripts": { "build": "./build.sh", "serve": "node vk.mjs serve" }
+}
