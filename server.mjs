@@ -11,7 +11,7 @@ export function serve(root, { port = 4173, push = false, dist }) {
   let user = null;
   const snapshot = () => {
     const { board, cards } = load(root);
-    return { board, cards, log: history(root, 10), user, repo: isRepo(root), files: { "BOARD.md": fs.existsSync(path.join(root, "BOARD.md")) ? fs.readFileSync(path.join(root, "BOARD.md"), "utf8") : "" } };
+    return { auth: "local", board, cards, log: history(root, 10), user, repo: isRepo(root), files: { "BOARD.md": fs.existsSync(path.join(root, "BOARD.md")) ? fs.readFileSync(path.join(root, "BOARD.md"), "utf8") : "" } };
   };
   const send = (res, code, body) => { res.writeHead(code, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }); res.end(JSON.stringify(body)); };
   const body = (req) => new Promise((ok, bad) => { let s = ""; req.on("data", (d) => (s += d)); req.on("end", () => { try { ok(s ? JSON.parse(s) : {}); } catch (e) { bad(e); } }); });

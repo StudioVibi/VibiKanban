@@ -13,17 +13,19 @@ const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // ---------- Estado ----------
-let BOARD = JSON.parse(SRC.repo.board), cards = SRC.repo.cards.map(K.parseCard), user = null, live = false;
+let BOARD = JSON.parse(SRC.repo.board), cards = SRC.repo.cards.map(K.parseCard), user = null, live = false, auth = null;
 const inLane = (id) => K.inLane(cards, id);
 const laneName = (id) => K.laneName(BOARD, id);
 
 async function api(path, input) {
   const r = await fetch(path, { method: input ? "POST" : "GET", headers: { "content-type": "application/json" }, body: input ? JSON.stringify(input) : undefined });
   const j = await r.json();
+  if (r.status === 401) user = null;   // a sessão caiu: volta pro botão de entrar
   if (!r.ok) throw new Error(j.error);
   return j;
 }
-function apply(snap) { BOARD = snap.board; cards = snap.cards; user = snap.user; live = true; }
+// auth: "github" no site (login de verdade, grava no GitHub); "local" com o vk serve no computador.
+function apply(snap) { if (snap.board) { BOARD = snap.board; cards = snap.cards; } user = snap.user; auth = snap.auth; live = true; }
 
 // Uma mudança: no app real o servidor grava o arquivo e faz o commit; sem servidor, fica só na página.
 // keep: a mudança já está na tela (concluir), então não redesenha; só se der erro.
@@ -61,6 +63,7 @@ function renderHead() {
 app.addEventListener("click", async (e) => {
   const login = e.target.closest("[data-login]"), logout = e.target.closest("[data-logout]");
   if (!login && !logout) return;
+  if (login && auth === "github") return void (location.href = "/api/auth/login");   // o GitHub pede o login e volta
   if (live) { try { apply(await api(login ? "/api/login" : "/api/logout", {})); } catch (err) { return announce(err.message); } }
   else user = login ? "isa" : null;
   announce(user ? `Conectado como @${user}` : "Desconectado");
