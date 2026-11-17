@@ -6,7 +6,7 @@
 flowchart TD
   backlog["Backlog · 0"] --> doing["Fazendo · 2"]
   doing --> review["Revisão · 0"]
-  review --> done["Feito · 1"]
+  review --> done["Feito · 0"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -26,6 +26,6 @@ _vazio_
 
 _vazio_
 
-## Feito · 1
+## Feito · 0
 
-- **HN-3** ssss — @isabellaherman
+_vazio_
