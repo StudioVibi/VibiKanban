@@ -1,7 +1,7 @@
 // VibiKanban: o app do time. Todo o visual é da Bend-UI; este arquivo não tem CSS.
 // Os dados são os quadros em boards/<quadro>/ no repositório. Com `vk serve`, cada mudança vira um commit (e um push, com --push).
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
-import { theme, initSegmented, announce, avatars } from "./bend-ui/ui.js";
+import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
 import { createDialog } from "./bend-ui/workspace.js";
 import { card as CARD, initBoard, cardCheck } from "./bend-ui/board.js";
 import SRC from "./sources.js";
@@ -58,7 +58,7 @@ const app = $("#app");
 app.innerHTML = `
 <div class="page-center" id="gate"><button class="btn btn--filled btn--neutral" data-login><svg class="icon"><use href="#i-user"/></svg>Entrar com GitHub</button></div>
 <div class="doc doc--full" id="main" hidden>
-  <div class="toolbar" id="bar"></div>
+  <div id="bar"></div>
   <div class="board" id="board"></div>
   <div class="toolbar toolbar--float toolbar--dock" role="toolbar" aria-label="Quadro" id="dock"></div>
 </div>
@@ -68,8 +68,12 @@ const board = $("#board");
 const dialog = createDialog($("#card-dialog"), { title: $("#card-dialog-title"), body: $("#card-dialog-body"), close: $("#card-dialog-close") });
 
 function renderHead() {
-  // A barra: quem está conectado, à direita.
-  $("#bar").innerHTML = `<div class="toolbar__spacer"></div><i class="dot dot--success"></i><span class="tag tag--mono">@${esc(user)}</span><button class="btn btn--plain btn--neutral btn--sm" data-logout>Sair</button>`;
+  // O cabeçalho do quadro (.board__head da lib): o nome do quadro à esquerda; à direita a foto do GitHub de quem
+  // está conectado, que abre o menu com o @ e Sair. A linha embaixo é o .separator.
+  $("#bar").innerHTML = `<div class="board__head"><h1 class="section-title">${esc(BOARD.name)}</h1><div class="toolbar__spacer"></div>
+    <div class="dropdown"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon btn--avatar" aria-haspopup="menu" aria-expanded="false" aria-label="@${esc(user)}">${avatar(photo(user))}</button>
+      <div class="menu menu--end" role="menu" hidden><div class="menu__head"><span class="detail">@${esc(user)}</span></div><hr class="separator"><button type="button" class="menu__item" role="menuitem" data-logout><span>Sair</span></button></div></div>
+  </div><hr class="separator">`;
 }
 app.addEventListener("click", async (e) => {
   const login = e.target.closest("[data-login]"), logout = e.target.closest("[data-logout]");
