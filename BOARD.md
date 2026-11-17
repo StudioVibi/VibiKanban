@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 3"] --> doing["Fazendo · 4"]
-  doing --> review["Revisão · 1"]
+  backlog["Backlog · 3"] --> doing["Fazendo · 5"]
+  doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
   doing:::blue
@@ -19,16 +19,17 @@ flowchart TD
 - **VK-5** Diagrama do fluxo em Mermaid — @isa `bend`
 - **VK-6** Cartão some ao soltar fora da coluna — @bia `bug`
 
-## Fazendo · 4
+## Fazendo · 5
 
 - **VK-7** Estrutura board/cards/*.md — @isa `ui`
 - **VK-2** Arrastar cartões entre colunas — @bia `ui`
+- **VK-3** Gerar BOARD.md a cada mudança — @leo `bend`
 - **VK-1** Componente .card na Bend-UI — @isa `ui`
 - **VK-8** Leis do board em BOARD_LAWS.bend — @leo `bend`
 
-## Revisão · 1
+## Revisão · 0
 
-- **VK-3** Gerar BOARD.md a cada mudança — @leo `bend`
+_vazio_
 
 ## Feito · 0
 

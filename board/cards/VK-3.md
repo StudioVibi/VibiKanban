@@ -1,9 +1,9 @@
 ---
 id: VK-3
-lane: review
+lane: doing
 who: leo
 tag: bend
-order: 1
+order: 1.5
 ---
 
 # Gerar BOARD.md a cada mudança
