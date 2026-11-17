@@ -1,6 +1,6 @@
-# Board · VibiKanban
+# Board · Dungeon Bend
 
-> Gerado pelo `vk` a cada mudança. Não edite à mão: cada cartão é um arquivo em `boards/vibikanban/cards/`.
+> Gerado pelo `vk` a cada mudança. Não edite à mão: cada cartão é um arquivo em `boards/dungeon-bend/cards/`.
 
 ```mermaid
 flowchart TD

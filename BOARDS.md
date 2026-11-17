@@ -4,4 +4,4 @@
 
 | Quadro | Prefixo | Abertos | Quem tem cartão |
 |---|---|---|---|
-| [VibiKanban](boards/vibikanban/BOARD.md) | VK | 0 | — |
+| [Dungeon Bend](boards/dungeon-bend/BOARD.md) | DB | 0 | — |
