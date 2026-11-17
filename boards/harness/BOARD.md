@@ -19,7 +19,7 @@ _vazio_
 
 ## Fazendo · 1
 
-- **HN-1** preciso encontrar porntos de melhoria — @Ostrowskii `ui`
+- **HN-1** preciso encontrar pontos de melhoria — @Ostrowskii `ui`
 
 ## Revisão · 0
 
