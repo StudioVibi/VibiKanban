@@ -1,4 +1,4 @@
-// As áreas do estúdio. Cada quadro diz quais usa e as skills dele (board.json: areas e skills).
+// As áreas do estúdio. A skill de um cartão é a tag dele; cada quadro diz de que áreas é cada tag (board.json: tag_areas).
 // color é o número da cor no WORKLOAD.bend (1 é o roxo da Criativa); icon é um ícone da Bend-UI; tool é a ferramenta da formiga.
 export default [
   { id: "criativa", name: "Criativa", color: 1, icon: "wand-sparkles", tool: "brush" },
