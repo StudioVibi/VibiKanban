@@ -1,9 +1,9 @@
 ---
 id: VK-8
-lane: done
+lane: review
 who: leo
 tag: bend
-order: 0
+order: 1
 ---
 
 # Leis do board em BOARD_LAWS.bend
