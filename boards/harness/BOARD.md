@@ -20,7 +20,7 @@ _vazio_
 ## Fazendo · 2
 
 - **HN-1** preciso encontrar pontos de melhoria — @Ostrowskii `ui`
-- **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `ui`
+- **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
 
 ## Revisão · 0
 
