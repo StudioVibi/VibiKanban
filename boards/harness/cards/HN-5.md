@@ -6,6 +6,7 @@ tags:
 order: 2
 ---
 
-# fazer um botão que ao clicar ja lida com toda parte de preparar o projeto para uma nova janela de navegador.
+# botão open project in a new tab
 
+fazer um botão que ao clicar ja lida com toda parte de preparar o projeto para uma nova janela de navegador.
 ja existe o artefato, falta só ser de verdade

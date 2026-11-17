@@ -16,7 +16,7 @@ flowchart TD
 ## Backlog · 2
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
-- **HN-5** fazer um botão que ao clicar ja lida com toda parte de preparar o projeto para uma nova janela de navegador. — @Ostrowskii
+- **HN-5** botão open project in a new tab — @Ostrowskii
 
 ## Fazendo · 3
 
