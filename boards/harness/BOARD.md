@@ -23,7 +23,7 @@ _vazio_
 
 ## Revisão · 1
 
-- **HN-1** cdscd — @isabellaherman `ui`
+- ✓ **HN-1** cdscd — @isabellaherman `ui`
 
 ## Feito · 0
 
