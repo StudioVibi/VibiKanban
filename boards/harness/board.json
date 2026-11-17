@@ -49,5 +49,42 @@
     "bend": "success",
     "bug": "danger",
     "infra": "warning"
+  },
+  "areas": [
+    "dev",
+    "gestao",
+    "comunidade",
+    "negocios"
+  ],
+  "skills": {
+    "Código": {
+      "dev": 1
+    },
+    "Infra": {
+      "dev": 0.75,
+      "gestao": 0.25
+    },
+    "Testes": {
+      "dev": 0.5,
+      "gestao": 0.5
+    },
+    "Produção": {
+      "gestao": 0.8,
+      "negocios": 0.2
+    },
+    "Open source": {
+      "comunidade": 0.7,
+      "dev": 0.3
+    },
+    "Discord": {
+      "comunidade": 0.75,
+      "negocios": 0.25
+    },
+    "Pitch": {
+      "negocios": 0.75
+    },
+    "Marketing": {
+      "negocios": 0.55
+    }
   }
 }

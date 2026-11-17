@@ -49,5 +49,55 @@
     "bend": "success",
     "bug": "danger",
     "infra": "warning"
+  },
+  "areas": [
+    "criativa",
+    "dev",
+    "gestao",
+    "comunidade",
+    "negocios"
+  ],
+  "skills": {
+    "Arte": {
+      "criativa": 1
+    },
+    "Narrativa": {
+      "criativa": 0.85,
+      "negocios": 0.15
+    },
+    "Áudio": {
+      "criativa": 0.7,
+      "dev": 0.3
+    },
+    "Game design": {
+      "criativa": 0.5,
+      "dev": 0.5
+    },
+    "Código": {
+      "dev": 1
+    },
+    "Testes": {
+      "dev": 0.5,
+      "gestao": 0.5
+    },
+    "Produção": {
+      "gestao": 0.8,
+      "negocios": 0.2
+    },
+    "Publisher": {
+      "negocios": 1
+    },
+    "Pitch": {
+      "negocios": 0.75,
+      "criativa": 0.25
+    },
+    "Marketing": {
+      "negocios": 0.55,
+      "criativa": 0.45
+    },
+    "Discord": {
+      "comunidade": 0.75,
+      "negocios": 0.25
+    }
   }
 }

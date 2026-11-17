@@ -6,6 +6,9 @@ import "./bend-ui/workspace.js";   // o .dialog da lib
 import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard, cardDialog } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
+import AREAS from "./workload/areas.js";
+import WL from "./workload/WORKLOAD.bend";
+import { mountWheel, loadBar, loadKey, areaColor, skillColor } from "./workload/workload.js";
 // A Allo mora aqui no repositório (fonts/allo, licença OFL): não depende de nenhum site de fontes.
 import allo from "./fonts/allo/AlloVariable.woff2";
 
@@ -71,6 +74,7 @@ app.innerHTML = `
 <div class="doc doc--full" id="main" hidden>
   <div id="bar"></div>
   <div class="board" id="board"></div>
+  <div class="workload" id="workload" hidden><div class="workload__side" id="wl-side"></div><div id="wl-wheel"></div></div>
   <div class="toolbar toolbar--float toolbar--dock" role="toolbar" aria-label="Quadro" id="dock"></div>
 </div>
 <dialog class="dialog" id="card-dialog"></dialog>`;
@@ -133,7 +137,7 @@ const photo = (login) => ({ name: login, src: `https://github.com/${encodeURICom
 function renderDock() {
   const items = K.byName(BOARDS).map((b) => `<button type="button" class="menu__item" role="menuitemradio" data-slug="${b.slug}" aria-checked="${b.slug === cur}"><span>${esc(b.board.name)}</span>${avatars(K.people(b.cards).map(([l]) => photo(l)), { max: HEADS_MAX })}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`).join("");
   $("#dock").innerHTML = `
-    <div class="segmented" data-manual role="group" aria-label="Visão"><button type="button" aria-pressed="true"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-columns-2"/></svg><span>${esc(BOARD.name)}</span></button></div>
+    <div class="segmented" data-manual role="group" aria-label="Visão"><button type="button" data-view="board" aria-pressed="${view === "board"}"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-columns-2"/></svg><span>${esc(BOARD.name)}</span></button><button type="button" data-view="workload" aria-pressed="${view === "workload"}"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-scale"/></svg><span>Workload</span></button></div>
     <div class="dropdown" data-open="hover" id="boards"><button type="button" class="btn btn--plain btn--neutral btn--sm" aria-haspopup="menu" aria-expanded="false"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-down"/></svg><span>Mudar de quadro</span></button>
       <div class="menu menu--up" data-motion="rise" role="menu" aria-label="Quadros" hidden>${items}</div></div>`;
 }
@@ -147,8 +151,119 @@ $("#dock").addEventListener("pick", (e) => {
 
 function render() {
   $("#gate").hidden = !!user; $("#main").hidden = !user;
-  if (user) { renderHead(); renderBoard(); renderDock(); }
+  if (!user) return;
+  renderHead();
+  board.hidden = view !== "board"; $("#workload").hidden = view !== "workload";
+  if (view === "board") renderBoard(); else renderWorkload();
+  renderDock();
 }
+
+// ---------- Visões: o quadro e o Workload (?visao=workload) ----------
+let view = new URLSearchParams(location.search).get("visao") === "workload" ? "workload" : "board";
+$("#dock").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-view]"); if (!b || b.dataset.view === view) return;
+  view = b.dataset.view;
+  const u = new URL(location.href); if (view === "workload") u.searchParams.set("visao", "workload"); else u.searchParams.delete("visao"); history.replaceState(null, "", u);
+  render();
+});
+
+// ---------- Workload ----------
+// A roda: as áreas do quadro em volta, as skills entre elas e uma formiga pra cada pessoa em cada skill em que ela tem cartão aberto.
+// Ao lado, a carga de cada um: uma barra por pessoa, uma cápsula por área, a cor é a skill e a textura é a coluna.
+// Agora: tudo que está aberto. Sprint: o aberto mais o que virou feito dentro da sprint (2 semanas, contadas desde SPRINT_FROM).
+const SPRINT_FROM = "2026-01-05";   // a segunda-feira em que a sprint 1 começou: não decidido
+const AREA = Object.fromEntries(AREAS.map((a) => [a.id, a]));
+const STATE_ORDER = ["doing", "review", "backlog", "done"];
+let wlPeriod = "now", wlOn = null, wheel = null;
+const wlAreas = () => (BOARD.areas || []).filter((id) => AREA[id]).map((id) => ({ ...AREA[id], color: areaColor(AREA[id].color) }));
+function wlSkills() {
+  const areas = wlAreas(), byId = Object.fromEntries(areas.map((a) => [a.id, a]));
+  return Object.entries(BOARD.skills || {}).map(([name, mix]) => {
+    const ws = Object.entries(mix).filter(([a, w]) => byId[a] && w > 0).sort((x, y) => y[1] - x[1]);
+    return { name, mix, main: ws[0]?.[0], color: skillColor(ws.map(([a, w]) => [byId[a].color, w])) };
+  }).filter((s) => s.main);
+}
+const stateOf = (c) => (K.isDone(c) ? "done" : ["doing", "review", "backlog"].includes(c.lane) ? c.lane : "backlog");
+const stateName = (st) => (st === "done" ? "Feito" : laneName(st));
+const iso = (d) => d.toISOString().slice(0, 10);
+function sprint() {
+  const day = 86400000, from = new Date(SPRINT_FROM + "T00:00:00Z"), now = new Date(iso(new Date()) + "T00:00:00Z");
+  const len = WL.sprint_days(), d = Math.floor((now - from) / day);
+  const start = new Date(+from + WL.sprint_start(d, len) * day), end = new Date(+start + (len - 1) * day);
+  const fmt = (x) => x.toLocaleDateString("pt-BR", { day: "numeric", month: "short", timeZone: "UTC" }).replace(".", "");
+  return { n: WL.sprint_index(d, len) + 1, start: iso(start), end: iso(end), label: `${fmt(start)} a ${fmt(end)}` };
+}
+function tasksOf(login) {
+  const mine = cards.filter((c) => c.who === login);
+  if (wlPeriod === "now") return mine.filter((c) => !K.isDone(c));
+  const sp = sprint();
+  return mine.filter((c) => !K.isDone(c) || (c.done_at && c.done_at >= sp.start && c.done_at <= sp.end));
+}
+// Cor de quem está sem skill: neutro de verdade (é o único caso em que o cinza aparece).
+const NONE = () => { const v = getComputedStyle(document.documentElement).getPropertyValue("--text-3").trim(); const m = v.match(/\d+/g); return m && !v.startsWith("#") ? "#" + m.slice(0, 3).map((x) => (+x).toString(16).padStart(2, "0")).join("") : v || "#9a9aa2"; };
+function groupsOf(tasks) {
+  const skills = wlSkills(), info = Object.fromEntries(skills.map((s) => [s.name, s]));
+  const pieces = (ts, color) => STATE_ORDER.map((st) => ({ n: ts.filter((c) => stateOf(c) === st).length, state: st, color })).filter((p) => p.n);
+  const groups = wlAreas().map((a) => skills.filter((s) => s.main === a.id).flatMap((s) => pieces(tasks.filter((c) => c.skill === s.name), s.color))).filter((g) => g.length);
+  const loose = tasks.filter((c) => !info[c.skill]);
+  if (loose.length) groups.push(pieces(loose, NONE()));
+  return groups;
+}
+function subOf(tasks) {
+  const states = wlPeriod === "now" ? ["doing", "review", "backlog"] : STATE_ORDER;
+  const info = Object.fromEntries(wlSkills().map((s) => [s.name, s]));
+  const areas = new Set(tasks.map((c) => info[c.skill]?.main).filter(Boolean)).size, loose = tasks.filter((c) => !info[c.skill]).length;
+  return [...states.map((st) => `${tasks.filter((c) => stateOf(c) === st).length} ${stateName(st)}`), `${areas} ${areas === 1 ? "área" : "áreas"}`, ...(loose ? [`${loose} sem skill`] : [])].join(" · ");
+}
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+function renderWorkload() {
+  const side = $("#wl-side"), sp = sprint();
+  const people = K.people(cards).map(([l]) => l);
+  if (wlOn && !people.includes(wlOn)) wlOn = null;
+  const bars = new Map(); let k = 0;
+  const bar = (groups, total) => { const id = `w${++k}`; bars.set(id, { groups, total }); return `<span class="load-bar" data-bar="${id}"></span>`; };
+  const key = (st, color) => { const id = `w${++k}`; bars.set(id, { key: st, color }); return `<span data-bar="${id}"></span>`; };
+  const states = wlPeriod === "now" ? ["doing", "review", "backlog"] : STATE_ORDER;
+  const head = `<div class="segmented" role="group" id="wl-period"><button type="button" data-v="now" aria-pressed="${wlPeriod === "now"}">Agora</button><button type="button" data-v="sprint" aria-pressed="${wlPeriod === "sprint"}">Sprint ${sp.n}</button></div>
+    <span class="detail">${wlPeriod === "now" ? "Tudo que está aberto agora." : `Sprint ${sp.n} (${sp.label}): o que está aberto e o que foi feito nessas 2 semanas.`}</span>
+    <div class="load-keys">${states.map((st) => `<span class="load-key">${key(st)}${esc(stateName(st))}</span>`).join("")}</div>`;
+  if (wlOn) {
+    const ts = tasksOf(wlOn).sort((a, b) => STATE_ORDER.indexOf(stateOf(a)) - STATE_ORDER.indexOf(stateOf(b)));
+    const info = Object.fromEntries(wlSkills().map((s) => [s.name, s]));
+    side.innerHTML = `${head}<div class="load-person">
+      <div class="load-person__head"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" data-wl-back aria-label="Voltar"><svg class="icon icon--sm"><use href="#i-arrow-left"/></svg></button>${avatar(photo(wlOn))}<span class="section-title">${esc(wlOn)}</span><span class="section-title load-person__count">${ts.length}</span></div>
+      ${bar(groupsOf(ts), ts.length)}<span class="detail">${subOf(ts)}</span>
+      <div class="load-tasks"><span class="group-title">${plural(ts.length, "tarefa", "tarefas")}</span>${ts.map((c) => `<button type="button" class="load-task" data-wl-card="${c.id}">${key(stateOf(c), info[c.skill]?.color ?? NONE())}<span>${esc(c.title)} <span class="detail">· ${esc(c.skill || "sem skill")} · ${esc(stateName(stateOf(c)))}</span></span><span class="tag tag--mono">${c.id}</span></button>`).join("")}</div></div>`;
+  } else {
+    const rows = people.map((l) => [l, tasksOf(l)]).sort((a, b) => b[1].length - a[1].length);
+    const max = Math.max(1, ...rows.map(([, ts]) => ts.length));
+    side.innerHTML = `${head}<div class="load-list">${rows.map(([l, ts]) => `<button type="button" class="load-row" data-wl-person="${esc(l)}">${avatar(photo(l))}<span class="load-row__main">
+      <span class="load-row__top"><span>${esc(l)}</span><span class="load-row__count">${plural(ts.length, "tarefa", "tarefas")}</span></span>${bar(groupsOf(ts), max)}<span class="detail">${subOf(ts)}</span></span></button>`).join("") || `<span class="detail">Ninguém tem cartão neste quadro ainda.</span>`}</div>`;
+  }
+  initSegmented($("#wl-period"));
+  for (const el of side.querySelectorAll("[data-bar]")) { const b = bars.get(el.dataset.bar); if (b.key) loadKey(el, b.key, b.color); else loadBar(el, b.groups, { total: b.total }); }
+  // A roda: só o aberto (onde cada um está agora).
+  const skills = wlSkills();
+  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who === l && c.skill === s.name && !K.isDone(c)).length])) })) };
+  if (!wheel) wheel = mountWheel($("#wl-wheel"), data, { tip: (p, s, n) => `${plural(n, "tarefa", "tarefas")} de ${s}`, onPick: (id) => { wlOn = id; renderWorkload(); } });
+  else wheel.update(data);
+  wheel.focus(wlOn);
+  fitWorkload();
+}
+// A vista cabe na tela: do cabeçalho até o menu flutuante.
+function fitWorkload() {
+  const el = $("#workload"); if (el.hidden) return;
+  el.style.height = document.documentElement.hasAttribute("data-narrow") ? "" : `${Math.max(320, innerHeight - el.getBoundingClientRect().top - 88)}px`;
+}
+addEventListener("resize", fitWorkload);
+$("#wl-side").addEventListener("click", (e) => {
+  const per = e.target.closest("#wl-period [data-v]"); if (per) { wlPeriod = per.dataset.v; return renderWorkload(); }
+  if (e.target.closest("[data-wl-back]")) { wlOn = null; return renderWorkload(); }
+  const p = e.target.closest("[data-wl-person]"); if (p) { wlOn = p.dataset.wlPerson; return renderWorkload(); }
+  const c = e.target.closest("[data-wl-card]"); if (c) openCard(c.dataset.wlCard);
+});
+$("#wl-side").addEventListener("pointerover", (e) => { const p = e.target.closest("[data-wl-person]"); if (p && wheel) wheel.focus(p.dataset.wlPerson, "hover"); });
+$("#wl-side").addEventListener("pointerleave", () => wheel?.focus(wlOn));
 
 function move(id, lane, before = null) {
   const c = cards.find((x) => x.id === id); if (!c || before === id) return render();
@@ -211,12 +326,14 @@ const SHOW = {
   lane: (v) => `${ICON("columns-2")}<span>${esc(laneName(v))}</span>`,
   tag: (v) => (v ? tagChip(v) : "<span>Sem tag</span>"),
   who: (v) => (v ? `${avatar(photo(v))}<span>@${esc(v)}</span>` : `${ICON("user")}<span>Ninguém</span>`),
+  skill: (v) => (v ? skillChip(v) : "<span>Sem skill</span>"),
 };
+const skillChip = (s) => `<span class="skill-chip" style="--skill:${wlSkills().find((x) => x.name === s)?.color ?? NONE()}">${esc(s)}</span>`;
 const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="menuitemradio" aria-checked="${editing.pick[kind] === v}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
 const choiceMenu = (kind, label, items) => `<div class="dropdown" data-kind="${kind}"><button type="button" class="btn btn--ghost btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="${label}" data-show>${SHOW[kind](editing.pick[kind])}</button><div class="menu" role="menu" hidden>${items}</div></div>`;
 function openCard(id) {
   const c = cards.find((x) => x.id === id); if (!c) return;
-  editing = { id, pick: { lane: c.lane, tag: c.tag || "", who: c.who || "" } };
+  editing = { id, pick: { lane: c.lane, tag: c.tag || "", who: c.who || "", skill: c.skill || "" } };
   const people = [...new Set([user, c.who, ...BOARDS.flatMap((b) => K.people(b.cards).map(([l]) => l))].filter(Boolean))];
   dialogEl.setAttribute("aria-label", `${c.id}: ${c.title}`);
   dialogEl.innerHTML = `
@@ -230,6 +347,7 @@ function openCard(id) {
         ${choiceMenu("lane", "Coluna", BOARD.lanes.map((l) => choiceItem("lane", l.id, `<span>${esc(l.name)}</span>`)).join(""))}
         ${choiceMenu("tag", "Tag", Object.keys(BOARD.tags).map((t) => choiceItem("tag", t, tagChip(t))).join(""))}
         ${choiceMenu("who", "Pessoa", choiceItem("who", "", "<span>Ninguém</span>") + people.map((p) => choiceItem("who", p, `${avatar(photo(p))}<span>@${esc(p)}</span>`)).join(""))}
+        ${BOARD.skills ? choiceMenu("skill", "Skill", choiceItem("skill", "", "<span>Sem skill</span>") + Object.keys(BOARD.skills).map((s) => choiceItem("skill", s, skillChip(s))).join("")) : ""}
       </div>
       <textarea class="card-dialog__field card-dialog__notes" rows="1" aria-label="Notas" placeholder="Adicionar notas…">${esc(c.notes || "")}</textarea>
     </div>
