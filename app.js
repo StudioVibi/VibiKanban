@@ -40,16 +40,22 @@ async function api(path, input) {
 // auth: "github" no site (login de verdade, grava no GitHub); "local" com o vk serve no computador.
 function apply(snap) { if (snap.boards) { BOARDS = snap.boards; select(want ?? cur); } user = snap.user; auth = snap.auth; live = true; }
 
-// Uma mudança: no app real o servidor grava o arquivo e faz o commit; sem servidor, fica só na página.
-// keep: a mudança já está na tela (concluir), então não redesenha; só se der erro.
-async function act(kind, input, said, keep = false) {
-  try {
-    if (live) apply(await api("/api/" + kind, input));
-    else K.apply(BOARDS, kind, input, user);
-    announce(said);
-    if (keep) return;
-  } catch (e) { announce(e.message); }
-  render();
+// Uma mudança: aparece na tela na hora; o servidor grava o arquivo e faz o commit por trás.
+// As mudanças vão pro servidor uma de cada vez, na ordem; a resposta só redesenha quando não tem outra na fila.
+// Se der erro, volta pro que o servidor tem. Sem servidor, fica só na página.
+// keep: a mudança já está na tela (concluir), então não redesenha.
+let queue = Promise.resolve(), waiting = 0;
+const typing = () => !!board.querySelector(".lane__add input");   // não apaga um cartão novo que está sendo escrito
+function act(kind, input, said, keep = false) {
+  const before = structuredClone(BOARDS);
+  try { K.apply(BOARDS, kind, input, user); select(cur); }
+  catch (e) { announce(e.message); return render(); }
+  if (!keep) render();
+  if (!live) return announce(said);
+  waiting++;
+  queue = queue.then(() => api("/api/" + kind, input))
+    .then((snap) => { if (--waiting === 0) { apply(snap); if (!keep && !typing()) render(); } announce(said); },
+      (e) => { waiting--; BOARDS = before; select(cur); announce(e.message); render(); api("/api/board").then((s) => { apply(s); render(); }).catch(() => {}); });
 }
 
 // ---------- Página ----------
