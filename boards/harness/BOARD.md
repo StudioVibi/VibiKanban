@@ -21,7 +21,7 @@ flowchart TD
 
 - **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
 - **HN-1** preciso encontrar pontos de melhoria — @Ostrowskii `ui`
-- **HN-3** Terminal: como implementar um terminal dentro do harness — @isabellaherman
+- **HN-3** Terminal: como implementar um terminal dentro do harness — @isabellaherman `infra`
 
 ## Revisão · 0
 
