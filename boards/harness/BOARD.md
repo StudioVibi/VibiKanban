@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 0"] --> doing["Fazendo · 1"]
-  doing --> review["Revisão · 0"]
+  backlog["Backlog · 0"] --> doing["Fazendo · 0"]
+  doing --> review["Revisão · 1"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
   doing:::blue
@@ -17,13 +17,13 @@ flowchart TD
 
 _vazio_
 
-## Fazendo · 1
-
-- **HN-1** cdscd — @isabellaherman `ui`
-
-## Revisão · 0
+## Fazendo · 0
 
 _vazio_
+
+## Revisão · 1
+
+- **HN-1** cdscd — @isabellaherman `ui`
 
 ## Feito · 0
 
