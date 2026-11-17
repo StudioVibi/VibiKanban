@@ -19,7 +19,7 @@ _vazio_
 
 ## Fazendo · 1
 
-- ✓ **HN-1** cdscd — @isabellaherman `ui`
+- **HN-1** cdscd — @isabellaherman `ui`
 
 ## Revisão · 0
 
