@@ -1,9 +1,9 @@
 ---
 id: VK-2
-lane: review
+lane: doing
 who: bia
 tag: ui
-order: 3
+order: 1
 ---
 
 # Arrastar cartões entre colunas
