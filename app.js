@@ -120,8 +120,8 @@ const tagHtml = (c) => (c.tags || []).map(tagPill).join("");
 function cardHtml(c) {
   const S = CARD.shows;
   const tagTop = S.tag && CARD.tagOnTop ? tagHtml(c) : "", tagFoot = S.tag && !CARD.tagOnTop ? tagHtml(c) : "";
-  // Uma pessoa: o @ dela, como sempre. Várias: as fotos do GitHub (os .avatars da lib), pra caber na linha.
-  const who = !S.who || !c.who.length ? "" : c.who.length === 1 ? `<span class="detail card__who">@${esc(c.who[0])}</span>` : avatars(c.who.map(photo));
+  // Quem está no cartão: as fotos do GitHub (os .avatars da lib). O @ de cada um aparece ao passar o mouse na foto.
+  const who = S.who && c.who.length ? avatars(c.who.map(photo)) : "";
   const foot = who || tagFoot ? `<div class="card__foot">${CARD.footOrder === "who_tag" ? who + tagFoot : tagFoot + who}</div>` : "";
   const moves = BOARD.lanes.filter((l) => l.id !== c.lane).map((l) => `<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${esc(l.name)}</span></button>`).join("");
   return `<article class="card${c.done ? " is-done" : ""}" data-id="${c.id}" tabindex="0" aria-label="${esc(c.id + ": " + c.title)}">

@@ -358,12 +358,14 @@ order: 2
 # Sistema de embaralhamento
 
 Protótipo e definições
+
+blab
 `,`---
 id: DB-3
-lane: backlog
+lane: doing
 who: isabellaherman
 tags: 
-order: 3
+order: 1
 ---
 
 # Sistema de composição de deck
@@ -379,12 +381,12 @@ order: 4
 `,`---
 id: DB-5
 lane: backlog
-who: isabellaherman
+who: Ostrowskii
 tags: 
 order: 5
 ---
 
-# Logue e ganhe
+# Implementar sistema de logue e ganhe
 `,`---
 id: DB-6
 lane: backlog
@@ -394,6 +396,15 @@ order: 6
 ---
 
 # Definir tasks pro time de arte
+`,`---
+id: DB-7
+lane: backlog
+who: Leon-nis
+tags: 
+order: 7
+---
+
+# 11 Arte dos items em composicao, cada item precisa de um asset especial. (Art)
 `]},{slug:"harness",board:`{
   "name": "Harness",
   "prefix": "HN",
@@ -751,12 +762,14 @@ order: 2
 # Sistema de embaralhamento
 
 Protótipo e definições
+
+blab
 `,`---
 id: DB-3
-lane: backlog
+lane: doing
 who: isabellaherman
 tags: 
-order: 3
+order: 1
 ---
 
 # Sistema de composição de deck
@@ -772,12 +785,12 @@ order: 4
 `,`---
 id: DB-5
 lane: backlog
-who: isabellaherman
+who: Ostrowskii
 tags: 
 order: 5
 ---
 
-# Logue e ganhe
+# Implementar sistema de logue e ganhe
 `,`---
 id: DB-6
 lane: backlog
@@ -787,6 +800,15 @@ order: 6
 ---
 
 # Definir tasks pro time de arte
+`,`---
+id: DB-7
+lane: backlog
+who: Leon-nis
+tags: 
+order: 7
+---
+
+# 11 Arte dos items em composicao, cada item precisa de um asset especial. (Art)
 `]}};function ci(e){let a=/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/.exec(e.replace(/\r\n/g,`
 `));if(!a)throw Error("cartão sem cabeçalho ---");let t={};for(let s of a[1].split(`
 `)){let g=s.indexOf(":");if(g>0)t[s.slice(0,g).trim()]=s.slice(g+1).trim()}t.order=Number(t.order??0),t.done=t.done==="true",t.tags=Ce(t.tags??t.tag),delete t.tag,t.who=Pa(t.who);let r=a[2].replace(/^\n+/,""),o=/^# (.*)\n?/.exec(r);return t.title=o?o[1].trim():t.id,t.notes=(o?r.slice(o[0].length):r).replace(/^\n+/,"").trimEnd(),t}var Ce=(e)=>(Array.isArray(e)?e:String(e??"").split(",")).map((a)=>String(a).trim()).filter(Boolean),Pa=(e)=>[...new Set(Ce(e).map((a)=>a.replace(/^@/,"")).filter(Boolean))],Qa=(e,a)=>Array.isArray(e.tags?.[a])?e.tags[a]:[];function vi(e){return["---",`id: ${e.id}`,`lane: ${e.lane}`,`who: ${Pa(e.who).join(", ")}`,`tags: ${(e.tags||[]).join(", ")}`,`order: ${e.order}`,...e.done?["done: true"]:[],...e.done_at?[`done_at: ${e.done_at}`]:[],"---","",`# ${e.title}`,"",e.notes||""].join(`
@@ -817,7 +839,7 @@ order: 6
     <button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" data-tags-open aria-label="Tags do quadro" title="Tags do quadro"><svg class="icon icon--sm"><use href="#i-settings"/></svg></button>
     <div class="dropdown"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon btn--round" aria-haspopup="menu" aria-expanded="false" aria-label="@${P(de)}">${ue(qe(de))}</button>
       <div class="menu menu--end" role="menu" hidden><div class="menu__head"><span class="detail">@${P(de)}</span></div><hr class="separator"><button type="button" class="menu__item" role="menuitem" data-logout><span>Sair</span></button></div></div>
-  </div><hr class="separator">`}Tt.addEventListener("click",async(e)=>{let a=e.target.closest("[data-login]"),t=e.target.closest("[data-logout]");if(!a&&!t)return;if(a&&dn==="github")return void(location.href="/api/auth/login");if($a)try{Ta(await Ea(a?"/api/login":"/api/logout",{}))}catch(r){return te(r.message)}else return te("Sem servidor não tem login: rode vk serve.");te(de?`Conectado como @${de}`:"Desconectado"),se()});var cn={mark:"Marcar como concluído",unmark:"Desmarcar"},vn=(e)=>{let a=Qa(ee,e).filter((t)=>Ye[t]);return a.length?Ca(a.map((t)=>[Te(Ye[t].color),1])):_a()},hn=(e)=>`<span class="tag-pill" style="--skill:${vn(e)}">${P(e)}</span>`,rn=(e)=>(e.tags||[]).map(hn).join("");function E4(e){let a=be.shows,t=a.tag&&be.tagOnTop?rn(e):"",r=a.tag&&!be.tagOnTop?rn(e):"",o=!a.who||!e.who.length?"":e.who.length===1?`<span class="detail card__who">@${P(e.who[0])}</span>`:aa(e.who.map(qe)),s=o||r?`<div class="card__foot">${be.footOrder==="who_tag"?o+r:r+o}</div>`:"",g=ee.lanes.filter((l)=>l.id!==e.lane).map((l)=>`<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${P(l.name)}</span></button>`).join("");return`<article class="card${e.done?" is-done":""}" data-id="${e.id}" tabindex="0" aria-label="${P(e.id+": "+e.title)}">
+  </div><hr class="separator">`}Tt.addEventListener("click",async(e)=>{let a=e.target.closest("[data-login]"),t=e.target.closest("[data-logout]");if(!a&&!t)return;if(a&&dn==="github")return void(location.href="/api/auth/login");if($a)try{Ta(await Ea(a?"/api/login":"/api/logout",{}))}catch(r){return te(r.message)}else return te("Sem servidor não tem login: rode vk serve.");te(de?`Conectado como @${de}`:"Desconectado"),se()});var cn={mark:"Marcar como concluído",unmark:"Desmarcar"},vn=(e)=>{let a=Qa(ee,e).filter((t)=>Ye[t]);return a.length?Ca(a.map((t)=>[Te(Ye[t].color),1])):_a()},hn=(e)=>`<span class="tag-pill" style="--skill:${vn(e)}">${P(e)}</span>`,rn=(e)=>(e.tags||[]).map(hn).join("");function E4(e){let a=be.shows,t=a.tag&&be.tagOnTop?rn(e):"",r=a.tag&&!be.tagOnTop?rn(e):"",o=a.who&&e.who.length?aa(e.who.map(qe)):"",s=o||r?`<div class="card__foot">${be.footOrder==="who_tag"?o+r:r+o}</div>`:"",g=ee.lanes.filter((l)=>l.id!==e.lane).map((l)=>`<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${P(l.name)}</span></button>`).join("");return`<article class="card${e.done?" is-done":""}" data-id="${e.id}" tabindex="0" aria-label="${P(e.id+": "+e.title)}">
     <div class="card__head">
       <span class="card__lead">${a.id?`<span class="tag tag--mono">${e.id}</span>`:""}${t}</span>
       ${a.menu?`<div class="dropdown">
