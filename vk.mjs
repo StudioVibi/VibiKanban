@@ -15,7 +15,8 @@ const HELP = `vk: os quadros no terminal
   vk who <login>                     tudo de uma pessoa, em todos os quadros
   vk show <ID>                       um cartão inteiro (o prefixo do ID diz o quadro)
   vk add "<título>" --board Q [--lane L] [--tags A,B] [--who W,X]
-  vk add "<título>" --parent ID      uma subtask do cartão ID (um cartão inteiro, que aparece dentro dele)
+  vk add "<título>" --parent ID [--lane L] [--tags A,B] [--who W,X]
+                                     uma subtask do cartão ID (um cartão inteiro: aparece na coluna dela e dentro dele)
   vk move <ID> <coluna> [--before ID]
   vk edit <ID> [--title T] [--tags A,B] [--who W,X] [--lane L] [--blocked-by A,B]
                                      --blocked-by: os cartões que este espera (vazio "" tira todos)
@@ -93,7 +94,8 @@ try {
     case "add": {
       if (flags.parent) {
         const { b, c } = find(flags.parent), me = whoami(root);
-        const r = K.addSubs(b.board, b.cards, c.id, [args.join(" ")], me);
+        const who = flags.who || me || die("não sei quem é você: use --who, VK_USER ou gh auth login");
+        const r = K.addSubs(b.board, b.cards, c.id, [args.join(" ")], me, { lane: flags.lane, who, tags: flags.tags ?? flags.tag });
         console.log(`${r.made[0].id} em ${c.id} · ${b.board.name}`);
         done(save(root, state, b.slug, { changed: r.changed, message: r.message, who: me, push: !!flags.push }));
         capWarn(b, me);

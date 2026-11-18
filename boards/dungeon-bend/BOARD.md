@@ -4,9 +4,9 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 19"] --> doing["Fazendo · 3"]
-  doing --> review["Revisão · 0"]
-  review --> done["Feito · 0"]
+  backlog["Backlog · 19"] --> doing["Fazendo · 4"]
+  doing --> review["Revisão · 1"]
+  review --> done["Feito · 1"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -35,7 +35,7 @@ flowchart TD
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
 
-## Fazendo · 3
+## Fazendo · 4
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
@@ -44,10 +44,10 @@ flowchart TD
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 4/5 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
 
-## Revisão · 0
+## Revisão · 1
 
-_vazio_
+_aninhadas no pai: **DB-32** (em DB-29)_
 
-## Feito · 0
+## Feito · 1
 
-_vazio_
+_aninhadas no pai: **DB-30** (em DB-29)_

@@ -131,11 +131,13 @@ function cardHtml(c) {
   // Card de IA (criado por um membro IA, campo by): o tom accent da lib no card e o ícone ao lado do número.
   // Card de gente em que a IA entrou continua de gente: só a foto dela é a de IA.
   const ai = K.aiCard(MEMBERS, c), aiTag = ai ? `<span class="tag tag--accent" title="Criado por ${esc(MEMBERS[c.by].name)} (IA)">${ICON("wand-sparkles")}</span>` : "";
+  // Uma subtask diz de que cartão ela é, ao lado do número dela (a tag neutra da lib, discreta).
+  const up = K.parentOf(cards, c.id), upTag = up ? `<span class="tag tag--mono" title="Subtask de ${up.id}">↳ ${up.id}</span>` : "";
   const foot = count || who || tagFoot ? `<div class="card__foot">${count}${CARD.footOrder === "who_tag" ? who + tagFoot : tagFoot + who}</div>` : "";
   const moves = BOARD.lanes.filter((l) => l.id !== c.lane).map((l) => `<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${esc(l.name)}</span></button>`).join("");
   return `<article class="card${c.done ? " is-done" : ""}"${ai ? ' data-tone="accent"' : ""} data-id="${c.id}" tabindex="0" aria-label="${esc(c.id + ": " + c.title)}">
     <div class="card__head">
-      <span class="card__lead">${S.id ? `<span class="tag tag--mono">${c.id}</span>` : ""}${aiTag}${lock}${tagTop}</span>
+      <span class="card__lead">${S.id ? `<span class="tag tag--mono">${c.id}</span>` : ""}${upTag}${aiTag}${lock}${tagTop}</span>
       ${S.menu ? `<div class="dropdown">
         <button class="btn btn--plain btn--neutral btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações de ${c.id}"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
         <div class="menu menu--end" role="menu" hidden><button class="menu__item" role="menuitem" data-open><svg class="icon icon--sm"><use href="#i-pencil"/></svg><span>Abrir</span></button>${moves}<hr class="separator"><button class="menu__item" role="menuitem" data-remove><svg class="icon icon--sm"><use href="#i-trash-2"/></svg><span>Remover</span></button></div>
