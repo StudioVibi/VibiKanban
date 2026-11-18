@@ -28,7 +28,7 @@ flowchart TD
 
 ## Fazendo · 2
 
-- **DB-3** Sistema de composição de deck — @isabellaherman
+- **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
 
 ## Revisão · 0
