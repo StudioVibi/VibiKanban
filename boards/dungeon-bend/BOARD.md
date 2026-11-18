@@ -18,7 +18,7 @@ flowchart TD
 - **DB-1** Feedback Leon — @isabellaherman
 - **DB-2** Sistema de embaralhamento — @isabellaherman
 - **DB-4** Modo de jogo: evento — @isabellaherman
-- **DB-5** Logue e ganhe — @isabellaherman @Ostrowskii
+- **DB-5** Logue e ganhe — @Ostrowskii
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. (Art) — @Leon-nis
 

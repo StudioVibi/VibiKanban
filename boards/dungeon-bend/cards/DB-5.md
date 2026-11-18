@@ -1,7 +1,7 @@
 ---
 id: DB-5
 lane: backlog
-who: isabellaherman, Ostrowskii
+who: Ostrowskii
 tags: 
 order: 5
 ---
