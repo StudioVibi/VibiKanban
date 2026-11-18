@@ -37,7 +37,8 @@ flowchart TD
 ## Fazendo · 2
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/4
+- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/5
+  - **DB-26** corrigir o "peel off" texto q aparece no booster ao tentar abrir ele · Backlog
 
 ## Revisão · 0
 
