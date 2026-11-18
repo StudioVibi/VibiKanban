@@ -36,7 +36,7 @@ flowchart TD
 - **DB-25** refinamento bend — @Ostrowskii
 - **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 1/13 · IA
   - ✓ **DB-30** Mapeamento do DungeonBend para port 1:1 — @mete-marcha `Production` · 3/3 · Feito · IA
-  - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 0/2 · Fazendo · IA
+  - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 0/3 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · Fazendo · IA
 
 ## Fazendo · 2
