@@ -23,7 +23,7 @@ flowchart TD
 
 ## Fazendo · 1
 
-- **DB-3** Sistema de composição de deck — @isabellaherman
+- ✓ **DB-3** Sistema de composição de deck — @isabellaherman
 
 ## Revisão · 0
 
