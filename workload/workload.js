@@ -153,15 +153,19 @@ export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick
     // O nome de uma área ocupa uma faixa: à direita da roda ele cresce pra esquerda do ponto, à esquerda cresce pra direita.
     const label = (a) => Math.min(0.2, (a.name.length * 9 + 40) / Math.max(box.width, 1));
     const poles = areas.map((a, i) => { const x = W.pole_x(i, n), w = label(a); return [x > 0.6 ? x - w / 2 : x < 0.4 ? x + w / 2 : x, W.pole_y(i, n), w]; });
+    // Uma pílula com gente tem as formigas penduradas: ela conta como o conjunto (pílula + formiga), que é mais alto,
+    // então nenhuma outra pílula para em cima da formiga dela.
+    const busy = new Set(skills.filter((s) => D.people.some((p) => (p.skills[s.name] || 0) > 0)).map((s) => s.name));
+    const hang = (s) => (busy.has(s.name) ? W.presence_dy(s.y) / 2 / Math.max(box.height, 1) : 0);
     for (let it = 0; it < 120; it++) {
       for (let i = 0; i < skills.length; i++) {
-        for (let j = i + 1; j < skills.length; j++) push(skills[i], skills[j], 0.15, true);
+        for (let j = i + 1; j < skills.length; j++) { const a = skills[i], b = skills[j], ha = hang(a), hb = hang(b); push(a, b, 0.15 + Math.max(Math.abs(ha), Math.abs(hb)) * 1.5, true, ha, hb); }
         for (const [px, py, w] of poles) push(skills[i], { x: px, y: py - 0.05 }, 0.1 + w / 2, false);   // conta a formiga embaixo da pílula
       }
     }
     // As formigas ficam penduradas embaixo da pílula: na vertical, cada uma precisa de mais espaço.
-    function push(a, b, min, both) {
-      const dx = (b.x - a.x) * ratio, dy = (b.y - a.y) * 1.5, d = Math.hypot(dx, dy);
+    function push(a, b, min, both, ha = 0, hb = 0) {
+      const dx = (b.x - a.x) * ratio, dy = (b.y + hb - a.y - ha) * 1.5, d = Math.hypot(dx, dy);
       if (d >= min) return;
       const ux = d ? dx / d : 1, uy = d ? dy / d : 0, k = both ? (min - d) / 2 : min - d;
       a.x -= (ux * k) / ratio; a.y -= (uy * k) / 1.5;

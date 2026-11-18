@@ -191,11 +191,10 @@ const AREA = Object.fromEntries(AREAS.map((a) => [a.id, a]));
 const STATE_ORDER = ["doing", "review", "backlog", "done"];
 let wlPeriod = "now", wlOn = null, wheel = null;
 // A skill de um cartão é a tag dele (um cartão pode ter várias). As áreas de cada tag vêm do quadro (board.json: tags).
-// A roda mostra só as tags que os cartões do quadro usam, e só as áreas dessas tags.
+// A roda é o mundo do quadro: todas as tags dele e as áreas delas, com ou sem cartão. As formigas aparecem onde tem cartão aberto.
 const firstTag = (c) => (c.tags || [])[0];
 function wlSkills() {
-  const used = [...new Set(cards.flatMap((c) => c.tags || []))];
-  return used.map((name) => { const as = K.tagAreas(BOARD, name).filter((a) => AREA[a]); return { name, mix: Object.fromEntries(as.map((a) => [a, 1])), main: as[0], color: tagColor(name) }; }).filter((s) => s.main);
+  return Object.keys(BOARD.tags || {}).map((name) => { const as = K.tagAreas(BOARD, name).filter((a) => AREA[a]); return { name, mix: Object.fromEntries(as.map((a) => [a, 1])), main: as[0], color: tagColor(name) }; }).filter((s) => s.main);
 }
 function wlAreas() {
   const used = new Set(wlSkills().flatMap((s) => Object.keys(s.mix)));
