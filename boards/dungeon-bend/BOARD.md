@@ -38,10 +38,11 @@ flowchart TD
 ## Fazendo · 2
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/7 · espera DB-28
+- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/8 · espera DB-28
   - **DB-26** corrigir o "peel off" texto q aparece no booster ao tentar abrir ele · Backlog
   - **DB-27** numero do gold e hp estão preto · Backlog
   - **DB-29** forfeit e outros botões devem estar disponiveis enquatno abrimos boosters · Backlog
+  - **DB-30** textos no open booster estão pretos. "WAIT FOR ISABELLA#9992 TO PICK A CARD" por exemplo · Backlog
 
 ## Revisão · 0
 
