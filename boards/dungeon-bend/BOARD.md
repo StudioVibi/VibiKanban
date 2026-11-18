@@ -35,7 +35,7 @@ flowchart TD
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
 - **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 0/11 · IA
-  - **DB-30** Mapeamento do DungeonBend para port 1:1 · 0/1 · Backlog · IA
+  - **DB-30** Mapeamento do DungeonBend para port 1:1 · 0/2 · Backlog · IA
 
 ## Fazendo · 2
 
