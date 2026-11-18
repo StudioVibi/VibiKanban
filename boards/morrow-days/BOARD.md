@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 0"] --> doing["Fazendo · 1"]
+  backlog["Backlog · 1"] --> doing["Fazendo · 0"]
   doing --> review["Revisão · 1"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,13 +13,13 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 0
-
-_vazio_
-
-## Fazendo · 1
+## Backlog · 1
 
 - **MD-2** Itens e móveis — @ilymeiib
+
+## Fazendo · 0
+
+_vazio_
 
 ## Revisão · 1
 
