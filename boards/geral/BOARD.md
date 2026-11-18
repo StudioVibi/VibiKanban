@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 0"] --> doing["Fazendo · 2"]
+  backlog["Backlog · 1"] --> doing["Fazendo · 1"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,13 +13,12 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 0
-
-_vazio_
-
-## Fazendo · 2
+## Backlog · 1
 
 - **GE-1** simulando art 3d com gaussian splats — @Ostrowskii
+
+## Fazendo · 1
+
 - **GE-2** Unblock Vibi Mercury account — @isabellaherman
 
 ## Revisão · 0
