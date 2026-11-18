@@ -17,7 +17,7 @@ flowchart TD
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
 - **HN-5** botão open project in a new tab — @Ostrowskii
-- **HN-6** aumentar contrasde de cor ou sensação de divisória da lib bend-ui — @Ostrowskii
+- **HN-6** aumentar contrasde de cor ou sensação de divisória da lib bend-ui — @isabellaherman
 
 ## Fazendo · 3
 
