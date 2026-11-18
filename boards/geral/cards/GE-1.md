@@ -1,9 +1,10 @@
 ---
 id: GE-1
-lane: doing
+lane: done
 who: Ostrowskii
 tags: 
 order: 1
+done_at: 2026-11-18
 ---
 
 # simulando art 3d com gaussian splats

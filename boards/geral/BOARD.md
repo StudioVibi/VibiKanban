@@ -4,9 +4,9 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 5"] --> doing["Fazendo · 1"]
+  backlog["Backlog · 5"] --> doing["Fazendo · 0"]
   doing --> review["Revisão · 0"]
-  review --> done["Feito · 0"]
+  review --> done["Feito · 1"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -21,14 +21,14 @@ flowchart TD
 - **GE-5** Filtro de Task — @isabellaherman
 - **GE-6** Criar Kanban e organizar estrutura — @isabellaherman
 
-## Fazendo · 1
+## Fazendo · 0
 
-- **GE-1** simulando art 3d com gaussian splats — @Ostrowskii
+_vazio_
 
 ## Revisão · 0
 
 _vazio_
 
-## Feito · 0
+## Feito · 1
 
-_vazio_
+- **GE-1** simulando art 3d com gaussian splats — @Ostrowskii
