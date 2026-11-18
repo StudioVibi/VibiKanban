@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 18"] --> doing["Fazendo · 2"]
+  backlog["Backlog · 17"] --> doing["Fazendo · 2"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,7 +13,7 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 18
+## Backlog · 17
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
@@ -24,7 +24,6 @@ flowchart TD
 - **DB-9** Publisher — @isabellaherman
 - **DB-10** Endless Balance, pra jogadores que gostam de jogar o late game (nivel 15+) — @Leon-nis `Game design`
 - **DB-11** Game Mode: Challenge. Modo de Jogo com Timer — @Leon-nis `Game design` `ui`
-- **DB-13** Barra de pesquisa personalizada no Kanban, pra evitar tasks duplicadas — @Leon-nis
 - **DB-14** Subtask: Formato de Link ou Lista — @Leon-nis
 - **DB-15** Filtro de Task — @Leon-nis
 - **DB-16** Padronizar o patch note público — @isabellaherman
