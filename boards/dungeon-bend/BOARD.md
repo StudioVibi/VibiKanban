@@ -24,10 +24,10 @@ flowchart TD
 - **DB-8** Quests — @Leon-nis `Game design` `ui`
 - **DB-9** Publisher — @isabellaherman
 - **DB-10** Endless Balance, pra jogadores que gostam de jogar o late game (nivel 15+) — @Leon-nis `Game design`
+- **DB-22** art do log e ganeh — @Ostrowskii
 - **DB-11** Game Mode: Challenge. Modo de Jogo com Timer — @Leon-nis `Game design` `ui`
 - **DB-16** Padronizar o patch note público — @isabellaherman
 - **DB-17** Icone para o novo sistema de composição — @isabellaherman
-- **DB-22** art do log e ganeh — @Ostrowskii
 - **DB-18** UX: Classes do sistema de combo — @isabellaherman `ui`
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
