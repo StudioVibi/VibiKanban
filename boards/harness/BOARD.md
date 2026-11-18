@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 2"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 3"] --> doing["Fazendo · 3"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,10 +13,11 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 2
+## Backlog · 3
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
 - **HN-5** botão open project in a new tab — @Ostrowskii
+- **HN-6** aumentar contrasde de cor ou sensação de divisória da lib bend-ui — @Ostrowskii
 
 ## Fazendo · 3
 
