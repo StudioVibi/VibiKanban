@@ -33,9 +33,18 @@ select(want);
 const inLane = (id) => K.inLane(cards, id);
 const laneName = (id) => K.laneName(BOARD, id);
 
-async function api(path, input) {
-  const r = await fetch(path, { method: input ? "POST" : "GET", headers: { "content-type": "application/json" }, body: input ? JSON.stringify(input) : undefined });
-  const j = await r.json();
+// again: quantas vezes tentar de novo se a rede cair ou o servidor falhar (só pro que pode repetir sem dano, como editar um cartão).
+const wait = (ms) => new Promise((ok) => setTimeout(ok, ms));
+async function api(path, input, again = 0) {
+  let r;
+  for (let i = 0; ; i++) {
+    try {
+      r = await fetch(path, { method: input ? "POST" : "GET", headers: { "content-type": "application/json" }, body: input ? JSON.stringify(input) : undefined });
+      if (r.status < 500 || i >= again) break;
+    } catch (e) { if (i >= again) throw new Error("Sem conexão: a mudança não foi salva."); }
+    await wait(800 * (i + 1));
+  }
+  const j = await r.json().catch(() => ({ error: `Erro ${r.status} no servidor.` }));
   if (r.status === 401) user = null;   // a sessão caiu: volta pro botão de entrar
   if (!r.ok) throw new Error(j.error);
   return j;
@@ -57,7 +66,7 @@ function act(kind, input, said, keep = false) {
   if (!keep) render();
   if (!live) return announce(said);
   waiting++;
-  queue = queue.then(() => api("/api/" + kind, input))
+  return queue = queue.then(() => api("/api/" + kind, input, kind === "update" ? 2 : 0))
     .then((snap) => {
       // Só redesenha se o servidor trouxe algo diferente do que já está na tela (não corta a animação do cartão novo).
       if (--waiting === 0) { const same = !!snap.boards && files(snap.boards) === files(BOARDS); apply(snap); if (!keep && !same && !typing()) render(); }
@@ -111,7 +120,8 @@ const tagHtml = (c) => (c.tags || []).map(tagPill).join("");
 function cardHtml(c) {
   const S = CARD.shows;
   const tagTop = S.tag && CARD.tagOnTop ? tagHtml(c) : "", tagFoot = S.tag && !CARD.tagOnTop ? tagHtml(c) : "";
-  const who = S.who ? `<span class="detail card__who">@${esc(c.who)}</span>` : "";
+  // Uma pessoa: o @ dela, como sempre. Várias: as fotos do GitHub (os .avatars da lib), pra caber na linha.
+  const who = !S.who || !c.who.length ? "" : c.who.length === 1 ? `<span class="detail card__who">@${esc(c.who[0])}</span>` : avatars(c.who.map(photo));
   const foot = who || tagFoot ? `<div class="card__foot">${CARD.footOrder === "who_tag" ? who + tagFoot : tagFoot + who}</div>` : "";
   const moves = BOARD.lanes.filter((l) => l.id !== c.lane).map((l) => `<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${esc(l.name)}</span></button>`).join("");
   return `<article class="card${c.done ? " is-done" : ""}" data-id="${c.id}" tabindex="0" aria-label="${esc(c.id + ": " + c.title)}">
@@ -202,7 +212,7 @@ function sprint() {
   return { n: WL.sprint_index(d, len) + 1, start: iso(start), end: iso(end), label: `${fmt(start)} a ${fmt(end)}` };
 }
 function tasksOf(login) {
-  const mine = cards.filter((c) => c.who === login);
+  const mine = cards.filter((c) => c.who.includes(login));
   if (wlPeriod === "now") return mine.filter((c) => !K.isDone(c));
   const sp = sprint();
   return mine.filter((c) => !K.isDone(c) || (c.done_at && c.done_at >= sp.start && c.done_at <= sp.end));
@@ -252,7 +262,7 @@ function renderWorkload() {
   for (const el of side.querySelectorAll("[data-bar]")) { const b = bars.get(el.dataset.bar); if (b.key) loadKey(el, b.key, b.color); else loadBar(el, b.groups, { total: b.total }); }
   // A roda: só o aberto (onde cada um está agora).
   const skills = wlSkills();
-  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who === l && (c.tags || []).includes(s.name) && !K.isDone(c)).length])) })) };
+  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who.includes(l) && (c.tags || []).includes(s.name) && !K.isDone(c)).length])) })) };
   if (!wheel) wheel = mountWheel($("#wl-wheel"), data, { tip: (p, s, n) => `${plural(n, "tarefa", "tarefas")} de ${s}`, onPick: (id) => { wlOn = id; renderWorkload(); } });
   else wheel.update(data);
   wheel.focus(wlOn);
@@ -325,22 +335,28 @@ function addCard(box) {
 }
 
 // ---------- Cartão aberto (a ficha da lib: cardDialog) ----------
-// Já abre grande; o título e as notas se editam ali mesmo e a caixa cresce com o texto. Coluna, tag e pessoa
-// são botões que abrem o .menu da lib. Salvar grava; Cancelar, Esc ou um clique fora fecham sem gravar.
-let editing = null;   // { id, pick: { lane, tag, who } }
+// Já abre grande; o título e as notas se editam ali mesmo e a caixa cresce com o texto. Coluna, tags e pessoas
+// são botões que abrem o .menu da lib; em tags e pessoas dá pra marcar várias, e o menu fica aberto enquanto se marca.
+// Nada depende do botão Salvar: o que muda é salvo sozinho um instante depois de parar de digitar ou de escolher,
+// ao sair do campo, ao fechar (X, Esc, clique fora, Salvar) e ao sair da página. Cada salvamento é um commit;
+// por isso a pausa, em vez de salvar a cada letra. Só os campos que mudaram vão pro servidor.
+const SAVE_PAUSE = 1500;   // ms parado antes de salvar sozinho: não decidido
+const MULTI = ["tags", "who"];
+let editing = null;   // { id, pick: { lane, tags, who }, timer }
 const ICON = (name) => `<svg class="icon icon--sm" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 const tagChip = tagPill;
 const SHOW = {
   lane: (v) => `${ICON("columns-2")}<span>${esc(laneName(v))}</span>`,
   tags: (v) => (v.length ? `<span class="tag-pills">${v.map(tagChip).join("")}</span>` : "<span>Sem tag</span>"),
-  who: (v) => (v ? `${avatar(photo(v))}<span>@${esc(v)}</span>` : `${ICON("user")}<span>Ninguém</span>`),
+  who: (v) => (v.length === 1 ? `${avatar(photo(v[0]))}<span>@${esc(v[0])}</span>` : v.length ? `${avatars(v.map(photo))}<span>${plural(v.length, "pessoa", "pessoas")}</span>` : `${ICON("user")}<span>Ninguém</span>`),
 };
-const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="${kind === "tags" ? "menuitemcheckbox" : "menuitemradio"}" aria-checked="${kind === "tags" ? editing.pick.tags.includes(v) : editing.pick[kind] === v}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
+const picked = (kind, v) => (MULTI.includes(kind) ? editing.pick[kind].includes(v) : editing.pick[kind] === v);
+const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="${MULTI.includes(kind) ? "menuitemcheckbox" : "menuitemradio"}" aria-checked="${picked(kind, v)}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
 const choiceMenu = (kind, label, items) => `<div class="dropdown" data-kind="${kind}"><button type="button" class="btn btn--ghost btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="${label}" data-show>${SHOW[kind](editing.pick[kind])}</button><div class="menu" role="menu" hidden>${items}</div></div>`;
 function openCard(id) {
   const c = cards.find((x) => x.id === id); if (!c) return;
-  editing = { id, pick: { lane: c.lane, tags: [...(c.tags || [])], who: c.who || "" } };
-  const people = [...new Set([user, c.who, ...BOARDS.flatMap((b) => K.people(b.cards).map(([l]) => l))].filter(Boolean))];
+  editing = { id, pick: { lane: c.lane, tags: [...(c.tags || [])], who: [...c.who] }, timer: 0 };
+  const people = [...new Set([user, ...c.who, ...BOARDS.flatMap((b) => K.people(b.cards).map(([l]) => l))].filter(Boolean))];
   dialogEl.setAttribute("aria-label", `${c.id}: ${c.title}`);
   dialogEl.innerHTML = `
     <header class="dialog__header"><span class="tag tag--mono">${c.id}</span><div class="toolbar__spacer"></div>
@@ -351,31 +367,68 @@ function openCard(id) {
       <textarea class="card-dialog__field card-dialog__title" rows="1" aria-label="Título">${esc(c.title)}</textarea>
       <div class="card-dialog__data">
         ${choiceMenu("lane", "Coluna", BOARD.lanes.map((l) => choiceItem("lane", l.id, `<span>${esc(l.name)}</span>`)).join(""))}
-        ${choiceMenu("tags", "Tags", Object.keys(BOARD.tags).map((t) => choiceItem("tags", t, tagChip(t))).join(""))}
-        ${choiceMenu("who", "Pessoa", choiceItem("who", "", "<span>Ninguém</span>") + people.map((p) => choiceItem("who", p, `${avatar(photo(p))}<span>@${esc(p)}</span>`)).join(""))}
+        ${choiceMenu("tags", "Tags", Object.keys(BOARD.tags).map((t) => choiceItem("tags", t, `<span class="tag-pills">${tagChip(t)}</span>`)).join(""))}
+        ${choiceMenu("who", "Pessoas", people.map((p) => choiceItem("who", p, `${avatars([photo(p)])}<span>@${esc(p)}</span>`)).join(""))}
       </div>
       <textarea class="card-dialog__field card-dialog__notes" rows="1" aria-label="Notas" placeholder="Adicionar notas…">${esc(c.notes || "")}</textarea>
     </div>
-    <div class="actions"><button type="button" class="btn btn--ghost" data-close>Cancelar</button><button type="button" class="btn btn--filled" data-save>Salvar</button></div>`;
+    <div class="actions"><button type="button" class="btn btn--filled" data-save>Salvar</button></div>`;
   dialog.open();
+}
+// O que está na ficha agora e o que disso é diferente do cartão. Título vazio não vale: fica o que estava.
+const sameField = (a, b) => (Array.isArray(a) ? a.join(",") === (b || []).join(",") : a === (b ?? ""));
+function unsaved() {
+  const c = editing && cards.find((x) => x.id === editing.id); if (!c) return null;
+  const now = { title: $(".card-dialog__title", dialogEl).value.trim(), notes: $(".card-dialog__notes", dialogEl).value.trimEnd(), lane: editing.pick.lane, tags: editing.pick.tags, who: editing.pick.who };
+  const d = Object.fromEntries(Object.entries(now).filter(([k, v]) => !sameField(v, c[k]) && !(k === "title" && !v)));
+  return Object.keys(d).length ? d : null;
+}
+// unsent: o que já saiu daqui e ainda não tem a resposta do servidor (id → campos). Serve pra sair da página sem perder.
+const unsent = new Map();
+function saveCard() {
+  if (!editing) return;
+  clearTimeout(editing.timer); editing.timer = 0;
+  const id = editing.id, d = unsaved(); if (!d) return;
+  const p = act("update", { id, ...structuredClone(d) }, `${id} salvo`);
+  if (!p) return;
+  const mine = { ...unsent.get(id), ...d }; unsent.set(id, mine);
+  p.then(() => { if (unsent.get(id) === mine) unsent.delete(id); });
+}
+const saveSoon = () => { clearTimeout(editing.timer); editing.timer = setTimeout(saveCard, SAVE_PAUSE); };
+dialogEl.addEventListener("input", (e) => { if (editing && e.target.matches?.(".card-dialog__field")) saveSoon(); });
+dialogEl.addEventListener("focusout", (e) => { if (editing && e.target.matches?.(".card-dialog__field")) saveCard(); });
+// Fechou, de qualquer jeito (X, Esc, clique fora, Salvar): salva o que faltava.
+dialogEl.addEventListener("close", () => { saveCard(); editing = null; });
+document.addEventListener("visibilitychange", () => { if (document.hidden) saveCard(); });
+// Saindo da página (fechar a aba, recarregar): o que ainda não chegou vai num pedido que o navegador termina sozinho.
+// Mandar de novo um campo que já foi salvo não muda nada no servidor.
+addEventListener("pagehide", () => {
+  if (!live) return;
+  const d = unsaved(); if (d) unsent.set(editing.id, { ...unsent.get(editing.id), ...d });
+  for (const [id, fields] of unsent) fetch("/api/update", { method: "POST", keepalive: true, headers: { "content-type": "application/json" }, body: JSON.stringify({ id, ...fields }) }).catch(() => {});
+});
+// Esc com um menu aberto fecha só o menu (a lib fecha); a ficha continua aberta.
+dialogEl.addEventListener("keydown", (e) => { if (e.key === "Escape" && dialogEl.querySelector(".dropdown > .menu:not([hidden])")) e.preventDefault(); });
+function pickChoice(dd, v) {
+  const k = dd.dataset.kind;
+  if (MULTI.includes(k)) { const xs = editing.pick[k]; editing.pick[k] = xs.includes(v) ? xs.filter((x) => x !== v) : [...xs, v]; for (const it of dd.querySelectorAll(".menu__item")) it.setAttribute("aria-checked", String(editing.pick[k].includes(it.dataset.v))); }
+  else editing.pick[k] = v;
+  $("[data-show]", dd).innerHTML = SHOW[k](editing.pick[k]);
+  dispatchEvent(new Event("resize"));   // o botão mudou de tamanho: a ficha e o menu aberto se ajeitam
+  saveSoon();
 }
 dialogEl.addEventListener("pick", (e) => {
   if (!editing) return;
-  if ("remove" in e.detail.dataset) { const id = editing.id; editing = null; dialog.close(); return act("remove", { id }, `${id} removido`); }
-  const dd = e.target.closest(".dropdown[data-kind]"); if (!dd) return;
-  const k = dd.dataset.kind, v = e.detail.dataset.v;
-  if (k === "tags") { const ts = editing.pick.tags; editing.pick.tags = ts.includes(v) ? ts.filter((x) => x !== v) : [...ts, v]; for (const it of dd.querySelectorAll(".menu__item")) it.setAttribute("aria-checked", String(editing.pick.tags.includes(it.dataset.v))); }
-  else editing.pick[k] = v;
-  $("[data-show]", dd).innerHTML = SHOW[k](editing.pick[k]);
+  if ("remove" in e.detail.dataset) { const id = editing.id; clearTimeout(editing.timer); editing = null; dialog.close(); return act("remove", { id }, `${id} removido`); }
+  const dd = e.target.closest(".dropdown[data-kind]"); if (dd) pickChoice(dd, e.detail.dataset.v);
 });
 dialogEl.addEventListener("click", (e) => {
   if (!editing) return;
-  if (e.target.closest("[data-close]")) return void dialog.close();
-  if (!e.target.closest("[data-save]")) return;
-  const c = cards.find((x) => x.id === editing.id), { id, pick } = editing;
-  const title = $(".card-dialog__title", dialogEl).value.trim() || c.title, notes = $(".card-dialog__notes", dialogEl).value;
-  editing = null; dialog.close();
-  act("update", { id, title, notes, ...pick }, `${id} salvo`);
+  // Tags e pessoas: marcar uma não fecha o menu (o clique não chega no fecha-menu da lib), então dá pra marcar várias de uma vez.
+  const multi = e.target.closest('.dropdown[data-kind] > .menu > .menu__item[role="menuitemcheckbox"]');
+  if (multi) { e.stopPropagation(); return pickChoice(multi.closest(".dropdown"), multi.dataset.v); }
+  if (e.target.closest("[data-save]")) { saveCard(); return void dialog.close(); }
+  if (e.target.closest("[data-close]")) dialog.close();
 });
 
 // ---------- Tags do quadro (a engrenagem no cabeçalho) ----------
