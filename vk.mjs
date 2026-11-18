@@ -15,8 +15,10 @@ const HELP = `vk: os quadros no terminal
   vk who <login>                     tudo de uma pessoa, em todos os quadros
   vk show <ID>                       um cartão inteiro (o prefixo do ID diz o quadro)
   vk add "<título>" --board Q [--lane L] [--tags A,B] [--who W,X]
+  vk add "<título>" --parent ID      uma subtask do cartão ID (um cartão inteiro, que aparece dentro dele)
   vk move <ID> <coluna> [--before ID]
-  vk edit <ID> [--title T] [--tags A,B] [--who W,X] [--lane L]
+  vk edit <ID> [--title T] [--tags A,B] [--who W,X] [--lane L] [--blocked-by A,B]
+                                     --blocked-by: os cartões que este espera (vazio "" tira todos)
   vk done <ID>                       marca como concluído e leva pro topo do Feito
   vk reopen <ID>                     desmarca e devolve pra coluna de onde saiu
   vk rm <ID>
@@ -34,7 +36,7 @@ const argv = process.argv.slice(2);
 const flags = {}, args = [];
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
-  if (a.startsWith("--")) { const k = a.slice(2); flags[k] = argv[i + 1] && !argv[i + 1].startsWith("--") && ["lane", "tag", "tags", "who", "before", "port", "title", "board", "prefix", "from"].includes(k) ? argv[++i] : true; }
+  if (a.startsWith("--")) { const k = a.slice(2); flags[k] = argv[i + 1] && !argv[i + 1].startsWith("--") && ["lane", "tag", "tags", "who", "before", "port", "title", "board", "prefix", "from", "parent", "blocked-by"].includes(k) ? argv[++i] : true; }
   else args.push(a);
 }
 const cmd = args.shift();
@@ -75,6 +77,13 @@ try {
     case "who": console.log(K.whoStatus(boards, args[0] ?? die("vk who <login>"))); break;
     case "show": { const { b, c } = find(args[0]); console.log(fs.readFileSync(path.join(root, cardPath(b.slug, c.id)), "utf8").trimEnd()); break; }
     case "add": {
+      if (flags.parent) {
+        const { b, c } = find(flags.parent);
+        const r = K.addSubs(b.board, b.cards, c.id, [args.join(" ")]);
+        console.log(`${r.made[0].id} em ${c.id} · ${b.board.name}`);
+        done(save(root, state, b.slug, { changed: r.changed, message: r.message, who: whoami(root), push: !!flags.push }));
+        break;
+      }
       const b = pickBoard(flags.board);
       const who = flags.who || whoami(root) || die("não sei quem é você: use --who, VK_USER ou gh auth login");
       const r = K.add(b.board, b.cards, { title: args.join(" "), lane: flags.lane, tags: flags.tags ?? flags.tag, who });
@@ -92,7 +101,7 @@ try {
     }
     case "edit": {
       const { b, c } = find(args[0]);
-      const r = K.update(b.board, b.cards, c.id, { title: flags.title, tags: flags.tags ?? flags.tag, who: flags.who, lane: flags.lane });
+      const r = K.update(b.board, b.cards, c.id, { title: flags.title, tags: flags.tags ?? flags.tag, who: flags.who, lane: flags.lane, blocked_by: flags["blocked-by"] === true ? "" : flags["blocked-by"] });
       if (!r.changed.length) { console.log("nada mudou"); break; }
       console.log(r.message.replace(/^board: /, ""));
       done(save(root, state, b.slug, { changed: [r.card], message: r.message, who: whoami(root), push: !!flags.push }));
@@ -110,7 +119,7 @@ try {
       const { b, c } = find(args[0]);
       const r = K.remove(b.board, b.cards, c.id);
       console.log(`${r.card.id} removido`);
-      done(save(root, state, b.slug, { removed: [r.card], message: r.message, who: whoami(root), push: !!flags.push }));
+      done(save(root, state, b.slug, { removed: [r.card], changed: r.changed, message: r.message, who: whoami(root), push: !!flags.push }));
       break;
     }
     case "board": {

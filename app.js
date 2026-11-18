@@ -3,7 +3,7 @@
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
 import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
 import { createDialog } from "./bend-ui/workspace.js";   // o .dialog da lib
-import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard, cardDialog, moveCard, checkTime } from "./bend-ui/board.js";
+import { card as CARD, initBoard, cardCheck, itemCheck, newCard, fitField, formCard, cardDialog, moveCard, checkTime } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
 import AREAS from "./workload/areas.js";
@@ -62,17 +62,17 @@ const typing = () => !!board.querySelector(".lane__add .card__field");   // não
 function act(kind, input, said, keep = false) {
   const before = structuredClone(BOARDS);
   try { K.apply(BOARDS, kind, input, user); select(cur); }
-  catch (e) { announce(e.message); return render(); }
+  catch (e) { BOARDS = before; select(cur); announce(e.message); return render(); }
   if (!keep) render();
   if (!live) return announce(said);
   waiting++;
   return queue = queue.then(() => api("/api/" + kind, input, kind === "update" ? 2 : 0))
     .then((snap) => {
       // Só redesenha se o servidor trouxe algo diferente do que já está na tela (não corta a animação do cartão novo).
-      if (--waiting === 0) { const same = !!snap.boards && files(snap.boards) === files(BOARDS); apply(snap); if (!keep && !same && !typing()) render(); }
+      if (--waiting === 0) { const same = !!snap.boards && files(snap.boards) === files(BOARDS); apply(snap); if (!keep && !same && !typing()) { render(); drawPieces(); } }
       announce(said);
     },
-      (e) => { waiting--; BOARDS = before; select(cur); announce(e.message); render(); api("/api/board").then((s) => { apply(s); render(); }).catch(() => {}); });
+      (e) => { waiting--; BOARDS = before; select(cur); announce(e.message); render(); drawPieces(); api("/api/board").then((s) => { apply(s); render(); drawPieces(); }).catch(() => {}); });
 }
 
 // ---------- Página ----------
@@ -122,11 +122,15 @@ function cardHtml(c) {
   const tagTop = S.tag && CARD.tagOnTop ? tagHtml(c) : "", tagFoot = S.tag && !CARD.tagOnTop ? tagHtml(c) : "";
   // Quem está no cartão: as fotos do GitHub (os .avatars da lib). O @ de cada um aparece ao passar o mouse na foto.
   const who = S.who && c.who.length ? avatars(c.who.map(photo)) : "";
-  const foot = who || tagFoot ? `<div class="card__foot">${CARD.footOrder === "who_tag" ? who + tagFoot : tagFoot + who}</div>` : "";
+  // O que foi posto no cartão aparece na frente dele: quanto das subtasks e checklists está feito (no começo do rodapé)
+  // e um cadeado ao lado do número enquanto ele espera um cartão que não terminou.
+  const p = K.progress(cards, c), count = p ? `<span class="tag card__count" title="Subtasks e itens feitos">${ICON("list")}${p[0]}/${p[1]}</span>` : "";
+  const waits = K.waitsFor(cards, c).filter((x) => !K.isDone(x)), lock = waits.length ? `<span class="tag tag--warning" title="Esperando por ${waits.map((x) => x.id).join(", ")}">${ICON("lock")}</span>` : "";
+  const foot = count || who || tagFoot ? `<div class="card__foot">${count}${CARD.footOrder === "who_tag" ? who + tagFoot : tagFoot + who}</div>` : "";
   const moves = BOARD.lanes.filter((l) => l.id !== c.lane).map((l) => `<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${esc(l.name)}</span></button>`).join("");
   return `<article class="card${c.done ? " is-done" : ""}" data-id="${c.id}" tabindex="0" aria-label="${esc(c.id + ": " + c.title)}">
     <div class="card__head">
-      <span class="card__lead">${S.id ? `<span class="tag tag--mono">${c.id}</span>` : ""}${tagTop}</span>
+      <span class="card__lead">${S.id ? `<span class="tag tag--mono">${c.id}</span>` : ""}${lock}${tagTop}</span>
       ${S.menu ? `<div class="dropdown">
         <button class="btn btn--plain btn--neutral btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações de ${c.id}"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
         <div class="menu menu--end" role="menu" hidden><button class="menu__item" role="menuitem" data-open><svg class="icon icon--sm"><use href="#i-pencil"/></svg><span>Abrir</span></button>${moves}<hr class="separator"><button class="menu__item" role="menuitem" data-remove><svg class="icon icon--sm"><use href="#i-trash-2"/></svg><span>Remover</span></button></div>
@@ -347,52 +351,138 @@ function addCard(box) {
 }
 
 // ---------- Cartão aberto (a ficha da lib: cardDialog) ----------
-// Já abre grande; o título e as notas se editam ali mesmo e a caixa cresce com o texto. Coluna, tags e pessoas
-// são botões que abrem o .menu da lib; em tags e pessoas dá pra marcar várias, e o menu fica aberto enquanto se marca.
-// Nada depende do botão Salvar: o que muda é salvo sozinho um instante depois de parar de digitar ou de escolher,
-// ao sair do campo, ao fechar (X, Esc, clique fora, Salvar) e ao sair da página. Cada salvamento é um commit;
-// por isso a pausa, em vez de salvar a cada letra. Só os campos que mudaram vão pro servidor.
+// Já abre grande; o título e as notas se editam ali mesmo e a caixa cresce com o texto. Ao lado do número fica a coluna;
+// embaixo do título, só as tags e as fotos de quem está no cartão, e um + no fim da linha. O + põe o resto no cartão
+// (os cartões que ele espera, os que esperam por ele, os ligados a ele, uma checklist), e cada coisa posta vira um
+// bloco embaixo das notas (as .card-piece da lib). As subtasks já têm o bloco delas, com uma linha pra escrever.
+// Nada depende do botão Salvar: título, notas, coluna, tags, pessoas e checklists são salvos sozinhos um instante depois
+// de parar de mexer, ao sair do campo, ao fechar (X, Esc, clique fora, Salvar) e ao sair da página; cada salvamento é
+// um commit, por isso a pausa. Subtasks e relações mexem em mais de um cartão: cada uma é salva na hora.
 const SAVE_PAUSE = 1500;   // ms parado antes de salvar sozinho: não decidido
+const SUB_LEVELS = 7;      // quantos níveis de subtask abrem dentro da ficha: não decidido. Depois do último, a subtask abre como cartão.
 const MULTI = ["tags", "who"];
-let editing = null;   // { id, pick: { lane, tags, who }, timer }
+const RELS = { blocked_by: ["Esperando por", "lock"], blocking: ["Bloqueando", "circle-alert"], related: ["Vinculado a", "link"] };
+// editing: o cartão aberto. pick: coluna, tags e pessoas escolhidas; lists: as checklists como estão na tela;
+// shown: relações que entraram pelo + e ainda não têm cartão; addAt: de qual cartão é a lista em que a linha de adicionar subtask está.
+let editing = null;
 const ICON = (name) => `<svg class="icon icon--sm" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 const tagChip = tagPill;
+// Em cima fica o mínimo: a coluna é só o nome, as tags são as pílulas e as pessoas são as fotos. Sem tag ou sem pessoa, só o ícone.
 const SHOW = {
-  lane: (v) => `${ICON("columns-2")}<span>${esc(laneName(v))}</span>`,
-  tags: (v) => (v.length ? `<span class="tag-pills">${v.map(tagChip).join("")}</span>` : "<span>Sem tag</span>"),
-  who: (v) => (v.length === 1 ? `${avatar(photo(v[0]))}<span>@${esc(v[0])}</span>` : v.length ? `${avatars(v.map(photo))}<span>${plural(v.length, "pessoa", "pessoas")}</span>` : `${ICON("user")}<span>Ninguém</span>`),
+  lane: (v) => `<span>${esc(laneName(v))}</span>`,
+  tags: (v) => (v.length ? `<span class="tag-pills">${v.map(tagChip).join("")}</span>` : ICON("tag")),
+  who: (v) => (v.length ? avatars(v.map(photo)) : ICON("user")),
 };
+const bare = (kind) => MULTI.includes(kind) && !editing.pick[kind].length;
 const picked = (kind, v) => (MULTI.includes(kind) ? editing.pick[kind].includes(v) : editing.pick[kind] === v);
-const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="${MULTI.includes(kind) ? "menuitemcheckbox" : "menuitemradio"}" aria-checked="${picked(kind, v)}" data-v="${esc(v)}">${label}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`;
-const choiceMenu = (kind, label, items) => `<div class="dropdown" data-kind="${kind}"><button type="button" class="btn btn--ghost btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="${label}" data-show>${SHOW[kind](editing.pick[kind])}</button><div class="menu" role="menu" hidden>${items}</div></div>`;
-function openCard(id) {
-  const c = cards.find((x) => x.id === id); if (!c) return;
-  editing = { id, pick: { lane: c.lane, tags: [...(c.tags || [])], who: [...c.who] }, timer: 0 };
+const CHECKED = `<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg>`;
+const choiceItem = (kind, v, label) => `<button type="button" class="menu__item" role="${MULTI.includes(kind) ? "menuitemcheckbox" : "menuitemradio"}" aria-checked="${picked(kind, v)}" data-v="${esc(v)}">${label}${CHECKED}</button>`;
+const choiceMenu = (kind, label, items) => `<div class="dropdown" data-kind="${kind}"><button type="button" class="btn btn--ghost btn--sm${bare(kind) ? " btn--icon" : ""}" aria-haspopup="menu" aria-expanded="false" aria-label="${label}" title="${label}" data-show>${SHOW[kind](editing.pick[kind])}</button><div class="menu" role="menu" hidden>${items}</div></div>`;
+const byId = (id) => cards.find((x) => x.id === id);
+const relCards = (c, k) => (k === "blocked_by" ? K.waitsFor(cards, c) : k === "blocking" ? K.blocking(cards, c) : K.relatedOf(cards, c));
+const relOn = (c, k) => !!editing.shown[k] || relCards(c, k).length > 0;
+
+// A linha de cima: tags, fotos e o +. O + lista só o que ainda não está no cartão.
+function dataHtml(c) {
   const people = [...new Set([user, ...c.who, ...BOARDS.flatMap((b) => K.people(b.cards).map(([l]) => l))].filter(Boolean))];
+  const more = Object.keys(RELS).filter((k) => !relOn(c, k)).map((k) => `<button type="button" class="menu__item" role="menuitem" data-add-rel="${k}">${ICON(RELS[k][1])}<span>${RELS[k][0]}</span></button>`).join("")
+    + `<button type="button" class="menu__item" role="menuitem" data-add-list>${ICON("list")}<span>Checklist</span></button>`;
+  return choiceMenu("tags", "Tags", Object.keys(BOARD.tags).map((t) => choiceItem("tags", t, `<span class="tag-pills">${tagChip(t)}</span>`)).join(""))
+    + choiceMenu("who", "Pessoas", people.map((p) => choiceItem("who", p, `${avatars([photo(p)])}<span>@${esc(p)}</span>`)).join(""))
+    + `<div class="dropdown card-dialog__add"><button type="button" class="btn btn--ghost btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Adicionar ao cartão" title="Adicionar ao cartão">${ICON("plus")}</button><div class="menu menu--end" role="menu" hidden>${more}</div></div>`;
+}
+const drawData = () => { const c = editing && byId(editing.id), box = $("[data-data]", dialogEl); if (c && box) box.innerHTML = dataHtml(c); };
+
+// Uma linha que é um cartão: o que vem antes (o círculo ou um ícone), o número e o título (abre o cartão), e o que vem depois.
+const cardRow = (x, lead, end) => `<div class="card-item__row">${lead}<button type="button" class="card-item__link" data-open-card="${x.id}"><span class="tag tag--mono">${x.id}</span><span class="card-item__title">${esc(x.title)}</span></button>${end}</div>`;
+const rowEnd = (x, n) => `${n ? `<span class="tag">${ICON("list")}${n[0]}/${n[1]}</span>` : ""}${x.who.length ? avatars(x.who.map(photo)) : ""}<span class="tag">${esc(laneName(x.lane))}</span>`;
+const rowMenu = (acts) => `<div class="dropdown card-item__more"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações da linha"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
+  <div class="menu menu--end" role="menu" hidden>${acts.map(([a, i, t]) => `<button type="button" class="menu__item" role="menuitem" data-act="${a}">${ICON(i)}<span>${t}</span></button>`).join("")}</div></div>`;
+const PIECE_MENU = `<div class="dropdown"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações da lista"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
+  <div class="menu menu--end" role="menu" hidden><button type="button" class="menu__item" role="menuitem" data-act="drop-piece">${ICON("trash-2")}<span>Remover a lista</span></button></div></div>`;
+const KEYS = `<span><span class="kbd">Enter</span> cria e segue</span><span><span class="kbd">Tab</span> pra dentro</span><span><span class="kbd">Shift</span> <span class="kbd">Tab</span> pra fora</span>`;
+// A linha de adicionar subtask: embaixo dela, as teclas que valem ali; quando uma tecla não pode fazer o que pediu, a razão aparece no lugar.
+const addRow = (owner) => `<div class="card-add" data-owner="${owner}"><div class="card-item__row"><span class="card-add__mark">${ICON("plus")}</span><input class="card-dialog__field card-add__field" data-sub-new placeholder="Adicionar subtask" aria-label="Adicionar subtask" autocomplete="off"></div><p class="detail card-add__keys">${editing.hint ? esc(editing.hint) : KEYS}</p></div>`;
+
+// Uma relação: o nome dela, os cartões em linhas e um + pra escolher outro. Em "Esperando por", o cadeado vira um check quando o cartão termina.
+function relBlock(c, k) {
+  const [name, ic] = RELS[k], xs = relCards(c, k), on = new Set(xs.map((x) => x.id));
+  const rows = xs.map((x) => {
+    const free = k === "blocked_by" && K.isDone(x), tone = k !== "blocked_by" ? "" : free ? " card-item__mark--success" : " card-item__mark--warning";
+    return `<li class="card-item${free ? " is-done" : ""}">${cardRow(x, `<span class="card-item__mark${tone}">${ICON(free ? "circle-check" : ic)}</span>`, `${rowEnd(x)}<button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon card-item__more" data-rel-off="${k}" data-id="${x.id}" aria-label="Tirar ${x.id}">${ICON("x")}</button>`)}</li>`;
+  }).join("");
+  const others = cards.filter((x) => x.id !== c.id).sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
+  const pick = `<div class="dropdown" data-rel="${k}"><button type="button" class="btn btn--plain btn--neutral btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="Escolher cartão">${ICON("plus")}Cartão</button><div class="menu" role="menu" hidden><div class="menu__list">${others.map((x) => `<button type="button" class="menu__item" role="menuitemcheckbox" aria-checked="${on.has(x.id)}" data-v="${x.id}"><span class="tag tag--mono">${x.id}</span><span>${esc(x.title)}</span>${CHECKED}</button>`).join("")}</div></div></div>`;
+  return `<section class="card-piece" data-piece="rel:${k}"><header class="card-piece__head"><h3 class="group-title">${name}</h3>${xs.length ? `<span class="tag">${xs.length}</span>` : ""}${PIECE_MENU}</header>${rows ? `<ul class="card-list">${rows}</ul>` : ""}${pick}</section>`;
+}
+// As subtasks: cada uma é um cartão (o círculo conclui ele, o título abre). Uma subtask pode ter as dela, até SUB_LEVELS níveis.
+function subRows(parent, depth) {
+  const inside = depth < SUB_LEVELS - 1;
+  return K.subsOf(cards, parent).map((x, i) => {
+    const done = K.isDone(x), adding = editing.addAt === x.id, kids = K.subsOf(cards, x);
+    const acts = [inside && ["sub-in", "plus", "Adicionar subtask dentro"], inside && i > 0 && ["sub-indent", "arrow-right", "Pra dentro"], depth > 0 && ["sub-outdent", "arrow-left", "Pra fora"], ["sub-remove", "trash-2", "Remover"]].filter(Boolean);
+    const below = inside && (kids.length || adding) ? `<ul class="card-list">${subRows(x, depth + 1)}${adding ? `<li>${addRow(x.id)}</li>` : ""}</ul>` : "";
+    return `<li class="card-item${done ? " is-done" : ""}" data-sub="${x.id}" data-parent="${parent.id}">${cardRow(x, itemCheck(done, { labels: CHECK, just: editing.just === x.id }), rowEnd(x, inside ? null : K.progress(cards, x)) + rowMenu(acts))}${below}</li>`;
+  }).join("");
+}
+function subsBlock(c) {
+  const xs = K.subsOf(cards, c);
+  const head = xs.length ? `<header class="card-piece__head"><h3 class="group-title">Subtasks</h3><span class="tag">${xs.filter(K.isDone).length}/${xs.length}</span></header><ul class="card-list">${subRows(c, 0)}</ul>` : "";
+  const tail = editing.addAt === c.id ? addRow(c.id) : `<button type="button" class="btn btn--plain btn--neutral btn--sm" data-add-top>${ICON("plus")}Adicionar subtask</button>`;
+  return `<section class="card-piece" data-piece="subs">${head}${tail}</section>`;
+}
+// Uma checklist: o nome (editável), quanto está feito, os itens (texto editável) e a linha de adicionar.
+function listBlock(l, i) {
+  const n = l.items.filter((it) => it.done).length;
+  const rows = l.items.map((it, j) => `<li class="card-item${it.done ? " is-done" : ""}" data-list="${i}" data-item="${j}"><div class="card-item__row">${itemCheck(it.done, { labels: CHECK, just: editing.just === `${i}:${j}` })}<input class="card-dialog__field card-item__text" value="${esc(it.text)}" data-item-text aria-label="Item"><button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon card-item__more" data-item-off aria-label="Remover item">${ICON("x")}</button></div></li>`).join("");
+  return `<section class="card-piece" data-piece="list:${i}"><header class="card-piece__head"><input class="card-dialog__field card-piece__name" value="${esc(l.name)}" data-list-name="${i}" aria-label="Nome da checklist"><span class="tag">${l.items.length ? Math.round((n / l.items.length) * 100) : 0}%</span>${PIECE_MENU}</header>${rows ? `<ul class="card-list">${rows}</ul>` : ""}
+    <div class="card-add"><div class="card-item__row"><span class="card-add__mark">${ICON("plus")}</span><input class="card-dialog__field card-add__field" data-list-new="${i}" placeholder="Adicionar item" aria-label="Adicionar item" autocomplete="off"></div></div></section>`;
+}
+// Desenha os blocos de novo. Quem estava escrevendo numa linha de adicionar continua nela, com o que já tinha escrito.
+function drawPieces(focus) {
+  const c = editing && byId(editing.id), box = $("[data-pieces]", dialogEl); if (!c || !box) return;
+  const a = document.activeElement;
+  const keep = !focus && box.contains(a) && a.matches("[data-sub-new], [data-list-new]") ? { sel: a.matches("[data-sub-new]") ? "[data-sub-new]" : `[data-list-new="${a.dataset.listNew}"]`, value: a.value } : null;
+  if (!byId(editing.addAt)) editing.addAt = editing.id;
+  box.innerHTML = Object.keys(RELS).filter((k) => relOn(c, k)).map((k) => relBlock(c, k)).join("") + subsBlock(c) + editing.lists.map(listBlock).join("");
+  editing.just = null; editing.hint = "";
+  const el = focus ? $(focus, box) : keep ? $(keep.sel, box) : null;
+  if (el) { el.focus(); if (keep) el.value = keep.value; if (el.matches("[data-list-name]")) el.select(); }
+  // A caixa acompanha o tamanho novo com o mesmo movimento de quando as notas crescem (a ficha da lib ouve o campo).
+  $(".card-dialog__notes", dialogEl)?.dispatchEvent(new Event("input", { bubbles: true }));
+}
+function openCard(id) {
+  const c = byId(id); if (!c) return;
+  editing = { id, pick: { lane: c.lane, tags: [...(c.tags || [])], who: [...c.who] }, timer: 0, lists: structuredClone(c.lists || []), shown: {}, addAt: id, hint: "", just: null };
+  const up = K.parentOf(cards, id);   // uma subtask mostra de que cartão ela é, e volta pra ele
   dialogEl.setAttribute("aria-label", `${c.id}: ${c.title}`);
   dialogEl.innerHTML = `
-    <header class="dialog__header"><span class="tag tag--mono">${c.id}</span><div class="toolbar__spacer"></div>
+    <header class="dialog__header"><span class="card-dialog__lead">${up ? `<button type="button" class="btn btn--ghost btn--sm mono" data-open-card="${up.id}" aria-label="Abrir ${up.id}: ${esc(up.title)}" title="${esc(up.title)}">${up.id}</button>${ICON("chevron-right")}` : ""}<span class="tag tag--mono">${c.id}</span>
+      ${choiceMenu("lane", "Coluna", BOARD.lanes.map((l) => choiceItem("lane", l.id, `<span>${esc(l.name)}</span>`)).join(""))}</span><div class="toolbar__spacer"></div>
       <div class="dropdown"><button type="button" class="btn btn--ghost btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações de ${c.id}"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
         <div class="menu menu--end" role="menu" hidden><button type="button" class="menu__item" role="menuitem" data-remove>${ICON("trash-2")}<span>Remover</span></button></div></div>
       <button type="button" class="btn btn--ghost btn--sm btn--icon" data-close aria-label="Fechar"><svg class="icon"><use href="#i-x"/></svg></button></header>
     <div class="card-dialog__body">
       <textarea class="card-dialog__field card-dialog__title" rows="1" aria-label="Título">${esc(c.title)}</textarea>
-      <div class="card-dialog__data">
-        ${choiceMenu("lane", "Coluna", BOARD.lanes.map((l) => choiceItem("lane", l.id, `<span>${esc(l.name)}</span>`)).join(""))}
-        ${choiceMenu("tags", "Tags", Object.keys(BOARD.tags).map((t) => choiceItem("tags", t, `<span class="tag-pills">${tagChip(t)}</span>`)).join(""))}
-        ${choiceMenu("who", "Pessoas", people.map((p) => choiceItem("who", p, `${avatars([photo(p)])}<span>@${esc(p)}</span>`)).join(""))}
-      </div>
+      <div class="card-dialog__data" data-data>${dataHtml(c)}</div>
       <textarea class="card-dialog__field card-dialog__notes" rows="1" aria-label="Notas" placeholder="Adicionar notas…">${esc(c.notes || "")}</textarea>
+      <div class="card-dialog__pieces" data-pieces></div>
     </div>
     <div class="actions"><button type="button" class="btn btn--filled" data-save>Salvar</button></div>`;
+  drawPieces();
   dialog.open();
+  // Ao abrir, o navegador põe o foco no primeiro botão (a coluna, no topo): tira, pra ficha não abrir com um botão marcado.
+  if (document.activeElement?.closest?.(".dialog__header")) document.activeElement.blur();
 }
 // O que está na ficha agora e o que disso é diferente do cartão. Título vazio não vale: fica o que estava.
 const sameField = (a, b) => (Array.isArray(a) ? a.join(",") === (b || []).join(",") : a === (b ?? ""));
 function unsaved() {
-  const c = editing && cards.find((x) => x.id === editing.id); if (!c) return null;
+  const c = editing && byId(editing.id); if (!c) return null;
   const now = { title: $(".card-dialog__title", dialogEl).value.trim(), notes: $(".card-dialog__notes", dialogEl).value.trimEnd(), lane: editing.pick.lane, tags: editing.pick.tags, who: editing.pick.who };
   const d = Object.fromEntries(Object.entries(now).filter(([k, v]) => !sameField(v, c[k]) && !(k === "title" && !v)));
+  // As checklists vão inteiras, e só as que têm item (uma recém-criada, ainda vazia, existe só na tela).
+  const lists = K.cleanLists(editing.lists);
+  if (JSON.stringify(lists) !== JSON.stringify(K.cleanLists(c.lists))) d.lists = lists;
   return Object.keys(d).length ? d : null;
 }
 // unsent: o que já saiu daqui e ainda não tem a resposta do servidor (id → campos). Serve pra sair da página sem perder.
@@ -407,8 +497,14 @@ function saveCard() {
   p.then(() => { if (unsent.get(id) === mine) unsent.delete(id); });
 }
 const saveSoon = () => { clearTimeout(editing.timer); editing.timer = setTimeout(saveCard, SAVE_PAUSE); };
-dialogEl.addEventListener("input", (e) => { if (editing && e.target.matches?.(".card-dialog__field")) saveSoon(); });
-dialogEl.addEventListener("focusout", (e) => { if (editing && e.target.matches?.(".card-dialog__field")) saveCard(); });
+dialogEl.addEventListener("input", (e) => {
+  const t = e.target; if (!editing || !t.matches?.(".card-dialog__field")) return;
+  if (t.matches("[data-sub-new], [data-list-new]")) return;   // ainda não é nada: vira subtask ou item no Enter
+  if (t.matches("[data-item-text]")) { const li = t.closest("[data-item]"); editing.lists[+li.dataset.list].items[+li.dataset.item].text = t.value; }
+  if (t.matches("[data-list-name]")) editing.lists[+t.dataset.listName].name = t.value;
+  saveSoon();
+});
+dialogEl.addEventListener("focusout", (e) => { if (editing && e.target.matches?.(".card-dialog__field") && !e.target.matches("[data-sub-new], [data-list-new]")) saveCard(); });
 // Fechou, de qualquer jeito (X, Esc, clique fora, Salvar): salva o que faltava.
 dialogEl.addEventListener("close", () => { saveCard(); editing = null; });
 document.addEventListener("visibilitychange", () => { if (document.hidden) saveCard(); });
@@ -425,22 +521,135 @@ function pickChoice(dd, v) {
   const k = dd.dataset.kind;
   if (MULTI.includes(k)) { const xs = editing.pick[k]; editing.pick[k] = xs.includes(v) ? xs.filter((x) => x !== v) : [...xs, v]; for (const it of dd.querySelectorAll(".menu__item")) it.setAttribute("aria-checked", String(editing.pick[k].includes(it.dataset.v))); }
   else editing.pick[k] = v;
-  $("[data-show]", dd).innerHTML = SHOW[k](editing.pick[k]);
+  const btn = $("[data-show]", dd);
+  btn.innerHTML = SHOW[k](editing.pick[k]); btn.classList.toggle("btn--icon", bare(k));
   dispatchEvent(new Event("resize"));   // o botão mudou de tamanho: a ficha e o menu aberto se ajeitam
   saveSoon();
 }
+
+// ---------- Subtasks: escrever uma embaixo da outra ----------
+// Enter cria a subtask e a linha continua ali pra próxima. Tab leva a linha pra dentro da última subtask da lista em que
+// ela está; Shift+Tab traz de volta um nível. Numa linha vazia de dentro, Enter ou apagar também sobem. Colar várias
+// linhas cria uma subtask pra cada.
+const listDepth = (owner) => { let d = 0, id = owner; while (id !== editing.id && d < 12) { const p = K.parentOf(cards, id); if (!p) break; id = p.id; d++; } return d; };
+function addSubs(owner, titles) {
+  act("sub", { id: owner, titles }, titles.length === 1 ? "Subtask criada" : `${titles.length} subtasks criadas`);
+  drawPieces("[data-sub-new]");
+}
+function moveAdd(dir, text) {
+  const owner = byId(editing.addAt), kids = owner ? K.subsOf(cards, owner) : [], last = kids[kids.length - 1];
+  if (dir > 0) {
+    if (!last) editing.hint = "Pra entrar um nível, crie antes a subtask que vai ficar em cima.";
+    else if (listDepth(owner.id) + 1 >= SUB_LEVELS) editing.hint = `Último nível (${SUB_LEVELS} de ${SUB_LEVELS}). Daqui pra dentro, só abrindo a subtask como cartão.`;
+    else editing.addAt = last.id;
+  } else if (editing.addAt !== editing.id) editing.addAt = K.parentOf(cards, editing.addAt)?.id ?? editing.id;
+  drawPieces("[data-sub-new]");
+  const el = $("[data-sub-new]", dialogEl); if (el && text) el.value = text;
+}
+// O menu de uma subtask: abrir a linha de adicionar dentro dela, levar ela um nível pra dentro (da de cima) ou pra fora, ou remover.
+function subAct(what, li) {
+  const id = li.dataset.sub, parent = byId(li.dataset.parent), list = parent.subs, i = list.indexOf(id);
+  if (what === "sub-in") { editing.addAt = id; return drawPieces("[data-sub-new]"); }
+  if (what === "sub-indent") { const into = byId(list[i - 1]); act("subs", { set: { [parent.id]: list.filter((z) => z !== id), [into.id]: [...(into.subs || []), id] } }, `${id} dentro de ${into.id}`); }
+  if (what === "sub-outdent") {
+    const up = K.parentOf(cards, parent.id); if (!up) return;
+    const at = up.subs.indexOf(parent.id);
+    act("subs", { set: { [parent.id]: list.filter((z) => z !== id), [up.id]: [...up.subs.slice(0, at + 1), id, ...up.subs.slice(at + 1)] } }, `${id} um nível pra fora`);
+  }
+  if (what === "sub-remove") { if (editing.addAt === id) editing.addAt = editing.id; act("remove", { id }, `${id} removido`); }
+  drawPieces();
+}
+// Liga ou desliga uma relação do cartão aberto com outro cartão.
+function setRel(k, other, on) {
+  act("rel", { id: editing.id, kind: k, other, on }, on ? "Relação salva" : "Relação removida");
+  editing.shown[k] = true;
+  drawData(); drawPieces();
+}
+// O menu de escolher cartão de uma relação continua aberto depois de marcar um, pra marcar vários.
+const reopen = (k) => setTimeout(() => $(`.dropdown[data-rel="${k}"] > button`, dialogEl)?.click(), 0);
+const pastedLines = (e) => (e.clipboardData?.getData("text") || "").split(/\r?\n/).map((l) => l.replace(/^\s*(?:[-*•]|\d+[.)])\s*(?:\[.?\]\s*)?/, "").trim()).filter(Boolean);
+dialogEl.addEventListener("paste", (e) => {
+  const t = e.target; if (!editing || !t.matches?.("[data-sub-new], [data-list-new]")) return;
+  const lines = pastedLines(e); if (lines.length < 2) return;
+  e.preventDefault();
+  if (t.matches("[data-sub-new]")) return addSubs(t.closest(".card-add").dataset.owner, lines);
+  const i = +t.dataset.listNew;
+  editing.lists[i].items.push(...lines.map((text) => ({ text, done: false })));
+  drawPieces(`[data-list-new="${i}"]`); saveSoon();
+});
+dialogEl.addEventListener("keydown", (e) => {
+  const t = e.target; if (!editing || !t.matches?.("input")) return;
+  if (t.matches("[data-sub-new]")) {
+    const owner = t.closest(".card-add").dataset.owner, inner = owner !== editing.id;
+    if (e.key === "Tab" && !e.shiftKey) { e.preventDefault(); return moveAdd(1, t.value); }
+    if (e.key === "Tab" && inner) { e.preventDefault(); return moveAdd(-1, t.value); }
+    if ((e.key === "Enter" || e.key === "Backspace") && !t.value && inner) { e.preventDefault(); return moveAdd(-1, ""); }
+    if (e.key === "Enter") { e.preventDefault(); const title = t.value.trim(); if (title) addSubs(owner, [title]); }
+    return;
+  }
+  if (t.matches("[data-list-new]") && e.key === "Enter") {
+    e.preventDefault();
+    const i = +t.dataset.listNew, text = t.value.trim(); if (!text) return;
+    editing.lists[i].items.push({ text, done: false });
+    drawPieces(`[data-list-new="${i}"]`); return saveSoon();
+  }
+  if (t.matches("[data-item-text]")) {
+    const li = t.closest("[data-item]"), i = +li.dataset.list;
+    if (e.key === "Enter") { e.preventDefault(); $(`[data-list-new="${i}"]`, dialogEl)?.focus(); }
+    if (e.key === "Backspace" && !t.value) { e.preventDefault(); editing.lists[i].items.splice(+li.dataset.item, 1); drawPieces(`[data-list-new="${i}"]`); saveSoon(); }
+    return;
+  }
+  if (t.matches("[data-list-name]") && e.key === "Enter") { e.preventDefault(); $(`[data-list-new="${t.dataset.listName}"]`, dialogEl)?.focus(); }
+});
 dialogEl.addEventListener("pick", (e) => {
   if (!editing) return;
-  if ("remove" in e.detail.dataset) { const id = editing.id; clearTimeout(editing.timer); editing = null; dialog.close(); return act("remove", { id }, `${id} removido`); }
-  const dd = e.target.closest(".dropdown[data-kind]"); if (dd) pickChoice(dd, e.detail.dataset.v);
+  const item = e.detail, c = byId(editing.id);
+  if ("remove" in item.dataset) { const id = editing.id; clearTimeout(editing.timer); editing = null; dialog.close(); return act("remove", { id }, `${id} removido`); }
+  // O +: uma relação entra como bloco e já abre o menu de escolher cartão; uma checklist entra com o nome pronto pra trocar.
+  if (item.dataset.addRel) { const k = item.dataset.addRel; editing.shown[k] = true; drawData(); drawPieces(); return reopen(k); }
+  if ("addList" in item.dataset) { editing.lists.push({ name: "Checklist", items: [] }); return drawPieces(`[data-list-name="${editing.lists.length - 1}"]`); }
+  const what = item.dataset.act;
+  if (what === "drop-piece") {
+    const piece = item.closest("[data-piece]").dataset.piece;
+    if (piece.startsWith("list:")) { editing.lists.splice(+piece.slice(5), 1); drawPieces(); return saveSoon(); }
+    const k = piece.slice(4);
+    for (const x of relCards(c, k)) act("rel", { id: c.id, kind: k, other: x.id, on: false }, "Relação removida");
+    editing.shown[k] = false;
+    drawData(); return drawPieces();
+  }
+  if (what?.startsWith("sub-")) return subAct(what, item.closest("[data-sub]"));
+  const dd = e.target.closest(".dropdown[data-kind]"); if (dd) pickChoice(dd, item.dataset.v);
 });
 dialogEl.addEventListener("click", (e) => {
   if (!editing) return;
+  const t = e.target;
   // Tags e pessoas: marcar uma não fecha o menu (o clique não chega no fecha-menu da lib), então dá pra marcar várias de uma vez.
-  const multi = e.target.closest('.dropdown[data-kind] > .menu > .menu__item[role="menuitemcheckbox"]');
+  const multi = t.closest('.dropdown[data-kind] > .menu > .menu__item[role="menuitemcheckbox"]');
   if (multi) { e.stopPropagation(); return pickChoice(multi.closest(".dropdown"), multi.dataset.v); }
-  if (e.target.closest("[data-save]")) { saveCard(); return void dialog.close(); }
-  if (e.target.closest("[data-close]")) dialog.close();
+  const rel = t.closest(".dropdown[data-rel] .menu__item");
+  if (rel) { e.stopPropagation(); const k = rel.closest(".dropdown").dataset.rel; setRel(k, rel.dataset.v, rel.getAttribute("aria-checked") !== "true"); return reopen(k); }
+  const off = t.closest("[data-rel-off]");
+  if (off) return setRel(off.dataset.relOff, off.dataset.id, false);
+  const open = t.closest("[data-open-card]");
+  if (open) { saveCard(); return openCard(open.dataset.openCard); }
+  const check = t.closest(".card-item .card__check");
+  if (check) {
+    const li = check.closest(".card-item");
+    if (li.dataset.sub) {
+      // Concluir uma subtask é concluir o cartão dela (vai pro Feito, como no quadro). Uma que está no Feito sem o círculo volta pra primeira coluna.
+      const x = byId(li.dataset.sub), done = !K.isDone(x);
+      editing.just = done ? x.id : null;
+      act("update", !done && !x.done ? { id: x.id, lane: BOARD.lanes[0].id } : { id: x.id, done }, done ? `${x.id} concluído` : `${x.id} reaberto`);
+      return drawPieces();
+    }
+    const it = editing.lists[+li.dataset.list].items[+li.dataset.item];
+    it.done = !it.done; editing.just = it.done ? `${li.dataset.list}:${li.dataset.item}` : null;
+    drawPieces(); return saveSoon();
+  }
+  if (t.closest("[data-item-off]")) { const li = t.closest("[data-item]"); editing.lists[+li.dataset.list].items.splice(+li.dataset.item, 1); drawPieces(); return saveSoon(); }
+  if (t.closest("[data-add-top]")) { editing.addAt = editing.id; return drawPieces("[data-sub-new]"); }
+  if (t.closest("[data-save]")) { saveCard(); return void dialog.close(); }
+  if (t.closest("[data-close]")) dialog.close();
 });
 
 // ---------- Tags do quadro (a engrenagem no cabeçalho) ----------
