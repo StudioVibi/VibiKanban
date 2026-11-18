@@ -9,7 +9,7 @@
 //
 // areas:  [{ id, name, color: "#hex", icon, tool }]   tool: "brush" | "wrench" | "clipboard" | "briefcase" | "megaphone"
 // skills: [{ name, mix: { areaId: weight, … } }]
-// people: [{ id, name, src, skills: { skillName: openTasks } }]
+// people: [{ id, name, src, ai?, skills: { skillName: openTasks } }]   ai: membro IA (foto no tom accent)
 import "../bend-ui/ui.js";
 import { avatar } from "../bend-ui/ui.js";
 import "./workload.css";
@@ -22,6 +22,8 @@ for (const [key, value] of Object.entries(W)) if (key.startsWith("workload_") &&
 const list = (xs) => xs.reduceRight((tail, head) => ({ $: "Con", head, tail }), { $: "Nil" });
 const yes = (b) => b === true || b?.$ === "True";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+// A foto de uma pessoa; um membro IA (ai: true) sai no tom accent da lib (.avatar--accent).
+const face = (p) => { const h = avatar({ name: p.name, src: p.src }); return p.ai ? h.replace('class="avatar"', 'class="avatar avatar--accent"') : h; };
 
 // ---------- Color ----------
 const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
@@ -213,7 +215,7 @@ export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick
       }
       node.style.cssText = `left:calc(${a.s.x * 100}% + ${a.dx}px);top:calc(${a.s.y * 100}% + ${a.dy}px);--size:${W.ant_size(a.n)}px;--delay:${-((a.dx + a.s.x * 997) % 2)}s`;
       node.setAttribute("aria-label", `${a.p.name} · ${tip(a.p, a.s.name, a.n)}`);
-      node.innerHTML = `${ant(a.s.color, area?.tool)}<span class="wheel__badge">${avatar({ name: a.p.name, src: a.p.src })}</span><span class="wheel__tip">${avatar({ name: a.p.name, src: a.p.src })}<span><b>${esc(a.p.name)}</b><span class="detail">${esc(tip(a.p, a.s.name, a.n))}</span></span></span><span class="wheel__name">${esc(a.p.name)}</span>`;
+      node.innerHTML = `${ant(a.s.color, area?.tool)}<span class="wheel__badge">${face(a.p)}</span><span class="wheel__tip">${face(a.p)}<span><b>${esc(a.p.name)}</b><span class="detail">${esc(tip(a.p, a.s.name, a.n))}</span></span></span><span class="wheel__name">${esc(a.p.name)}</span>`;
     }
     for (const x of el.querySelectorAll(".wheel__ant")) if (!keep.has(x.dataset.key)) x.remove();
     if (hover && !D.people.some((p) => p.id === hover)) hover = null;

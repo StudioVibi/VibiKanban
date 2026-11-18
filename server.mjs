@@ -9,6 +9,7 @@ const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; ch
 
 export function serve(root, { port = 4173, push = false, dist }) {
   let user = null;
+  // O snapshot leva os quadros e os membros IA (boards/members.json), como o site.
   const snapshot = () => ({ auth: "local", ...load(root), log: history(root, 10), user, repo: isRepo(root) });
   const send = (res, code, body) => { res.writeHead(code, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }); res.end(JSON.stringify(body)); };
   const body = (req) => new Promise((ok, bad) => { let s = ""; req.on("data", (d) => (s += d)); req.on("end", () => { try { ok(s ? JSON.parse(s) : {}); } catch (e) { bad(e); } }); });

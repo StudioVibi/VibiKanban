@@ -40,7 +40,7 @@ async function body(req) {
   return s ? JSON.parse(s) : {};
 }
 const origin = (req) => env("VK_ORIGIN") || `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
-const snapshot = ({ boards }, user) => ({ auth: "github", user, boards });
+const snapshot = ({ boards, members }, user) => ({ auth: "github", user, boards, members: members ?? {} });
 
 export default async function handler(req, res) {
   const url = new URL(req.url, "http://x");

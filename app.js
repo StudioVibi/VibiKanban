@@ -1,7 +1,7 @@
 // VibiKanban: o app do time. Todo o visual é da Bend-UI; este arquivo não tem CSS.
 // Os dados são os quadros em boards/<quadro>/ no repositório. Com `vk serve`, cada mudança vira um commit (e um push, com --push).
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
-import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
+import { theme, initSegmented, announce, avatar as libAvatar, avatars as libAvatars } from "./bend-ui/ui.js";
 import { createDialog } from "./bend-ui/workspace.js";   // o .dialog da lib
 import { card as CARD, initBoard, cardCheck, itemCheck, newCard, fitField, formCard, cardDialog, moveCard, checkTime } from "./bend-ui/board.js";
 import SRC from "./sources.js";
@@ -20,6 +20,8 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 
 // ---------- Estado ----------
 let BOARDS = SRC.repo.boards.map((b) => ({ slug: b.slug, board: JSON.parse(b.board), cards: b.cards.map(K.parseCard) }));
+// Os membros IA (boards/members.json): { login: { name, ai, github? } }. Gente não está aqui.
+let MEMBERS = SRC.repo.members ?? {};
 let user = null, live = false, auth = null;
 // O quadro aberto: o da URL (?quadro=), senão o primeiro por nome. BOARD e cards são os dele.
 // O da URL fica guardado até ele existir: o retrato do build pode não ter um quadro que o servidor tem.
@@ -50,7 +52,7 @@ async function api(path, input, again = 0) {
   return j;
 }
 // auth: "github" no site (login de verdade, grava no GitHub); "local" com o vk serve no computador.
-function apply(snap) { if (snap.boards) { BOARDS = snap.boards; select(want ?? cur); } user = snap.user; auth = snap.auth; live = true; }
+function apply(snap) { if (snap.boards) { BOARDS = snap.boards; select(want ?? cur); } if (snap.members) MEMBERS = snap.members; user = snap.user; auth = snap.auth; live = true; }
 
 // Uma mudança: aparece na tela na hora; o servidor grava o arquivo e faz o commit por trás.
 // As mudanças vão pro servidor uma de cada vez, na ordem; a resposta só redesenha quando não tem outra na fila.
@@ -126,11 +128,14 @@ function cardHtml(c) {
   // e um cadeado ao lado do número enquanto ele espera um cartão que não terminou.
   const p = K.progress(cards, c), count = p ? `<span class="tag card__count" title="Subtasks e itens feitos">${ICON("list")}${p[0]}/${p[1]}</span>` : "";
   const waits = K.waitsFor(cards, c).filter((x) => !K.isDone(x)), lock = waits.length ? `<span class="tag tag--warning" title="Esperando por ${waits.map((x) => x.id).join(", ")}">${ICON("lock")}</span>` : "";
+  // Card de IA (criado por um membro IA, campo by): o tom accent da lib no card e o ícone ao lado do número.
+  // Card de gente em que a IA entrou continua de gente: só a foto dela é a de IA.
+  const ai = K.aiCard(MEMBERS, c), aiTag = ai ? `<span class="tag tag--accent" title="Criado por ${esc(MEMBERS[c.by].name)} (IA)">${ICON("wand-sparkles")}</span>` : "";
   const foot = count || who || tagFoot ? `<div class="card__foot">${count}${CARD.footOrder === "who_tag" ? who + tagFoot : tagFoot + who}</div>` : "";
   const moves = BOARD.lanes.filter((l) => l.id !== c.lane).map((l) => `<button class="menu__item" role="menuitem" data-move="${l.id}"><svg class="icon icon--sm"><use href="#i-arrow-right"/></svg><span>Mover para ${esc(l.name)}</span></button>`).join("");
-  return `<article class="card${c.done ? " is-done" : ""}" data-id="${c.id}" tabindex="0" aria-label="${esc(c.id + ": " + c.title)}">
+  return `<article class="card${c.done ? " is-done" : ""}"${ai ? ' data-tone="accent"' : ""} data-id="${c.id}" tabindex="0" aria-label="${esc(c.id + ": " + c.title)}">
     <div class="card__head">
-      <span class="card__lead">${S.id ? `<span class="tag tag--mono">${c.id}</span>` : ""}${lock}${tagTop}</span>
+      <span class="card__lead">${S.id ? `<span class="tag tag--mono">${c.id}</span>` : ""}${aiTag}${lock}${tagTop}</span>
       ${S.menu ? `<div class="dropdown">
         <button class="btn btn--plain btn--neutral btn--sm btn--icon" aria-haspopup="menu" aria-expanded="false" aria-label="Ações de ${c.id}"><svg class="icon"><use href="#i-ellipsis"/></svg></button>
         <div class="menu menu--end" role="menu" hidden><button class="menu__item" role="menuitem" data-open><svg class="icon icon--sm"><use href="#i-pencil"/></svg><span>Abrir</span></button>${moves}<hr class="separator"><button class="menu__item" role="menuitem" data-remove><svg class="icon icon--sm"><use href="#i-trash-2"/></svg><span>Remover</span></button></div>
@@ -152,7 +157,18 @@ function renderBoard() {
 // A lista é o .menu da lib; data-open="hover" abre no hover e data-motion="rise" faz as linhas subirem
 // uma depois da outra. Cada quadro mostra as fotos do GitHub de quem tem cartão nele.
 const HEADS_MAX = 3;   // quantas fotos antes do +N: não decidido
-const photo = (login) => ({ name: login, src: `https://github.com/${encodeURIComponent(login)}.png?size=48` });
+// A foto de alguém: a do GitHub. Membro IA não busca foto do GitHub (o login dele pode ser de outra pessoa lá)
+// até ter o campo github no members.json; até lá é a inicial, no tom accent (.avatar--accent da lib).
+const ghPhoto = (login) => `https://github.com/${encodeURIComponent(login)}.png?size=48`;
+const photo = (login) => {
+  if (!K.isAI(MEMBERS, login)) return { name: login, src: ghPhoto(login) };
+  const m = MEMBERS[login];
+  return { name: login, src: m.github ? ghPhoto(m.github) : null, ai: true };
+};
+// O avatar/avatars da lib, com o tom de IA em quem é membro IA. Cada .avatar sai com title="login", que diz de quem é.
+const aiTone = (html, people) => people.filter((p) => p.ai).reduce((h, p) => h.replace(`<span class="avatar" title="${esc(p.name)}">`, `<span class="avatar avatar--accent" title="${esc(p.name)}">`), html);
+const avatar = (p) => aiTone(libAvatar(p), [p]);
+const avatars = (people, opts) => aiTone(libAvatars(people, opts), people);
 function renderDock() {
   const items = K.byName(BOARDS).map((b) => `<button type="button" class="menu__item" role="menuitemradio" data-slug="${b.slug}" aria-checked="${b.slug === cur}"><span>${esc(b.board.name)}</span>${avatars(K.people(b.cards).map(([l]) => photo(l)), { max: HEADS_MAX })}<svg class="icon icon--sm menu__check" aria-hidden="true"><use href="#i-check"/></svg></button>`).join("");
   $("#dock").innerHTML = `
@@ -265,7 +281,7 @@ function renderWorkload() {
   for (const el of side.querySelectorAll("[data-bar]")) { const b = bars.get(el.dataset.bar); if (b.key) loadKey(el, b.key, b.color); else loadBar(el, b.groups, { total: b.total }); }
   // A roda: só o aberto (onde cada um está agora).
   const skills = wlSkills();
-  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who.includes(l) && (c.tags || []).includes(s.name) && !K.isDone(c)).length])) })) };
+  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, ai: !!photo(l).ai, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who.includes(l) && (c.tags || []).includes(s.name) && !K.isDone(c)).length])) })) };
   if (!wheel) wheel = mountWheel($("#wl-wheel"), data, { tip: (p, s, n) => `${plural(n, "tarefa", "tarefas")} de ${s}`, onPick: (id) => { wlOn = id; renderWorkload(); } });
   else wheel.update(data);
   wheel.focus(wlOn);
