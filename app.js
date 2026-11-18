@@ -405,15 +405,17 @@ const KEYS = `<span><span class="kbd">Enter</span> cria e segue</span><span><spa
 const addRow = (owner) => `<div class="card-add" data-owner="${owner}"><div class="card-item__row"><span class="card-add__mark">${ICON("plus")}</span><input class="card-dialog__field card-add__field" data-sub-new placeholder="Adicionar subtask" aria-label="Adicionar subtask" autocomplete="off"></div><p class="detail card-add__keys">${editing.hint ? esc(editing.hint) : KEYS}</p></div>`;
 
 // Uma relação: o nome dela, os cartões em linhas e um + pra escolher outro. Em "Esperando por", o cadeado vira um check quando o cartão termina.
+// "Bloqueando" chama atenção em vermelho (o ícone de cada linha e a contagem) enquanto este cartão não termina: tem gente parada por causa dele.
 function relBlock(c, k) {
   const [name, ic] = RELS[k], xs = relCards(c, k), on = new Set(xs.map((x) => x.id));
+  const holds = k === "blocking" && !K.isDone(c);
   const rows = xs.map((x) => {
-    const free = k === "blocked_by" && K.isDone(x), tone = k !== "blocked_by" ? "" : free ? " card-item__mark--success" : " card-item__mark--warning";
+    const free = k === "blocked_by" && K.isDone(x), tone = holds ? " card-item__mark--danger" : k !== "blocked_by" ? "" : free ? " card-item__mark--success" : " card-item__mark--warning";
     return `<li class="card-item${free ? " is-done" : ""}">${cardRow(x, `<span class="card-item__mark${tone}">${ICON(free ? "circle-check" : ic)}</span>`, `${rowEnd(x)}<button type="button" class="btn btn--plain btn--neutral btn--sm btn--icon card-item__more" data-rel-off="${k}" data-id="${x.id}" aria-label="Tirar ${x.id}">${ICON("x")}</button>`)}</li>`;
   }).join("");
   const others = cards.filter((x) => x.id !== c.id).sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
   const pick = `<div class="dropdown" data-rel="${k}"><button type="button" class="btn btn--plain btn--neutral btn--sm" aria-haspopup="menu" aria-expanded="false" aria-label="Escolher cartão">${ICON("plus")}Cartão</button><div class="menu" role="menu" hidden><div class="menu__list">${others.map((x) => `<button type="button" class="menu__item" role="menuitemcheckbox" aria-checked="${on.has(x.id)}" data-v="${x.id}"><span class="tag tag--mono">${x.id}</span><span>${esc(x.title)}</span>${CHECKED}</button>`).join("")}</div></div></div>`;
-  return `<section class="card-piece" data-piece="rel:${k}"><header class="card-piece__head"><h3 class="group-title">${name}</h3>${xs.length ? `<span class="tag">${xs.length}</span>` : ""}${PIECE_MENU}</header>${rows ? `<ul class="card-list">${rows}</ul>` : ""}${pick}</section>`;
+  return `<section class="card-piece" data-piece="rel:${k}"><header class="card-piece__head"><h3 class="group-title">${name}</h3>${xs.length ? `<span class="tag${holds ? " tag--danger" : ""}">${xs.length}</span>` : ""}${PIECE_MENU}</header>${rows ? `<ul class="card-list">${rows}</ul>` : ""}${pick}</section>`;
 }
 // As subtasks: cada uma é um cartão (o círculo conclui ele, o título abre). Uma subtask pode ter as dela, até SUB_LEVELS níveis.
 function subRows(parent, depth) {
