@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 4"] --> doing["Fazendo · 1"]
-  doing --> review["Revisão · 2"]
+  backlog["Backlog · 4"] --> doing["Fazendo · 2"]
+  doing --> review["Revisão · 1"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
   doing:::blue
@@ -20,13 +20,13 @@ flowchart TD
 - **HN-6** aumentar contraste de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 - **HN-7** melhorar fluxo de visualizar e manejar laws — @Ostrowskii
 
-## Fazendo · 1
+## Fazendo · 2
 
 - **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
-
-## Revisão · 2
-
 - **HN-1** preciso encontrar pontos de melhoria — @Ostrowskii `ui`
+
+## Revisão · 1
+
 - **HN-3** Terminal: como implementar um terminal dentro do harness — @isabellaherman `infra`
 
 ## Feito · 0
