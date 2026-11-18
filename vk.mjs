@@ -14,11 +14,11 @@ const HELP = `vk: os quadros no terminal
                                      (sem quadro: o mesmo que vk boards)
   vk who <login>                     tudo de uma pessoa, em todos os quadros
   vk show <ID>                       um cartão inteiro (o prefixo do ID diz o quadro)
-  vk add "<título>" --board Q [--lane L] [--tags A,B] [--who W]
+  vk add "<título>" --board Q [--lane L] [--tags A,B] [--who W,X]
   vk move <ID> <coluna> [--before ID]
-  vk edit <ID> [--title T] [--tags A,B] [--who W] [--lane L]
-  vk done <ID>                       marca como concluído (fica na coluna)
-  vk reopen <ID>                     desmarca
+  vk edit <ID> [--title T] [--tags A,B] [--who W,X] [--lane L]
+  vk done <ID>                       marca como concluído e leva pro topo do Feito
+  vk reopen <ID>                     desmarca e devolve pra coluna de onde saiu
   vk rm <ID>
   vk board new "<nome>" --prefix P [--from Q]
                                      um quadro novo, com as colunas e tags de Q (ou do primeiro)
@@ -34,7 +34,7 @@ const argv = process.argv.slice(2);
 const flags = {}, args = [];
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
-  if (a.startsWith("--")) { const k = a.slice(2); flags[k] = argv[i + 1] && !argv[i + 1].startsWith("--") && ["lane", "tag", "who", "before", "port", "title", "board", "prefix", "from"].includes(k) ? argv[++i] : true; }
+  if (a.startsWith("--")) { const k = a.slice(2); flags[k] = argv[i + 1] && !argv[i + 1].startsWith("--") && ["lane", "tag", "tags", "who", "before", "port", "title", "board", "prefix", "from"].includes(k) ? argv[++i] : true; }
   else args.push(a);
 }
 const cmd = args.shift();
