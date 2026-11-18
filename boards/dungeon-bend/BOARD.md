@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 13"] --> doing["Fazendo · 2"]
+  backlog["Backlog · 12"] --> doing["Fazendo · 2"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,7 +13,7 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 13
+## Backlog · 12
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @Leon-nis `Art`
@@ -27,7 +27,6 @@ flowchart TD
 - **DB-13** Barra de pesquisa personalizada no Kanban, pra evitar tasks duplicadas — @Leon-nis
 - **DB-14** Subtask: Formato de Link ou Lista — @Leon-nis
 - **DB-15** Filtro de Task — @Leon-nis
-- **DB-16** Task de branch: — @isabellaherman
 
 ## Fazendo · 2
 
