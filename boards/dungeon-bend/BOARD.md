@@ -15,7 +15,7 @@ flowchart TD
 
 ## Backlog · 5
 
-- **DB-2** Sistema de embaralhamento — @isabellaherman
+- **DB-2** Sistema de embaralhamento — @isabellaherman `Game design`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. (Art) — @Leon-nis
 - **DB-4** Modo de jogo: evento — @isabellaherman
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii
