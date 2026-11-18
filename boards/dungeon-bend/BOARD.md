@@ -20,8 +20,8 @@ flowchart TD
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
-- **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-4** Modo de jogo: evento — @isabellaherman
+- **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-8** Quests — @Leon-nis `Game design` `ui`
 - **DB-9** Publisher — @isabellaherman
