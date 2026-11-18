@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 15"] --> doing["Fazendo · 1"]
-  doing --> review["Revisão · 1"]
+  backlog["Backlog · 15"] --> doing["Fazendo · 2"]
+  doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
   doing:::blue
@@ -31,13 +31,14 @@ flowchart TD
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-21** aprimorar o evento de fim de semana antes do fim de semana — @Ostrowskii
 
-## Fazendo · 1
+## Fazendo · 2
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-
-## Revisão · 1
-
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii
+
+## Revisão · 0
+
+_vazio_
 
 ## Feito · 0
 

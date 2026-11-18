@@ -1,9 +1,9 @@
 ---
 id: DB-5
-lane: review
+lane: doing
 who: Ostrowskii
 tags: 
-order: 1
+order: 3
 ---
 
 # Implementar sistema de logue e ganhe
