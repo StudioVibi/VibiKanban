@@ -16,7 +16,7 @@ flowchart TD
 ## Backlog · 3
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
-- **HN-5** botão open project in a new tab — @Ostrowskii
+- **HN-5** botão open project in a new tab — @isabellaherman `ui` `bend`
 - **HN-6** aumentar contrasde de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 
 ## Fazendo · 3

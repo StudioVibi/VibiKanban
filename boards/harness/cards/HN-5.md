@@ -1,8 +1,8 @@
 ---
 id: HN-5
 lane: backlog
-who: Ostrowskii
-tags: 
+who: isabellaherman
+tags: ui, bend
 order: 2
 ---
 
