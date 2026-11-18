@@ -212,9 +212,9 @@ export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick
     for (const x of el.querySelectorAll(".wheel__ant")) { x.classList.toggle("is-on", !!focused && x.dataset.id === focused); x.classList.toggle("is-off", !!focused && x.dataset.id !== focused); }
     for (const x of el.querySelectorAll(".wheel__skill")) x.classList.toggle("is-off", !!focused && !mine.has(x.dataset.skill));
   }
-  el.addEventListener("pointerover", (e) => { const a = e.target.closest(".wheel__ant"); if (a && a.dataset.id !== focused) api.focus(a.dataset.id, "hover"); });
-  el.addEventListener("pointerleave", () => { if (hoverOnly) api.focus(null); });
-  el.addEventListener("click", (e) => { const a = e.target.closest(".wheel__ant"); if (a) onPick(a.dataset.id); });
+  // Passar o mouse numa formiga só mostra a dica dela (workload.css). O foco é no clique: quem clica quer ver mais daquela pessoa.
+  // Um clique fora das formigas tira o foco.
+  el.addEventListener("click", (e) => { const a = e.target.closest(".wheel__ant"); if (a) onPick(a.dataset.id); else if (focused && !hoverOnly) onPick(null); });
   el.addEventListener("keydown", (e) => { const a = e.target.closest(".wheel__ant"); if (a && e.key === "Enter") onPick(a.dataset.id); });
   let hoverOnly = false;
   const api = {
