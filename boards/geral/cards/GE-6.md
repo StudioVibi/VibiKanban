@@ -6,4 +6,4 @@ tags:
 order: 6
 ---
 
-# Criar Kanban
+# Criar Kanban e organizar estrutura

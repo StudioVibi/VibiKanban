@@ -20,7 +20,7 @@ flowchart TD
 - **GE-3** Barra de pesquisa personalizada no Kanban, pra evitar tasks duplicadas — @isabellaherman
 - **GE-4** Subtask: Formato de Link ou Lista — @isabellaherman
 - **GE-5** Filtro de Task — @isabellaherman
-- **GE-6** Criar Kanban — @isabellaherman
+- **GE-6** Criar Kanban e organizar estrutura — @isabellaherman
 
 ## Fazendo · 0
 
