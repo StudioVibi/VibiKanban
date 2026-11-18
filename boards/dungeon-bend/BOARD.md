@@ -30,7 +30,7 @@ flowchart TD
 - **DB-16** Padronizar o patch note público — @isabellaherman
 - **DB-17** Icone para o novo sistema de composição — @isabellaherman
 - **DB-18** UX: Classes do sistema de combo — @isabellaherman
-- **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman
+- **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 
 ## Fazendo · 2
 
