@@ -4,7 +4,7 @@
 
 | Quadro | Prefixo | Abertos | Quem tem cartão |
 |---|---|---|---|
-| [Dungeon Bend](boards/dungeon-bend/BOARD.md) | DB | 23 | @isabellaherman @Leon-nis @Ostrowskii @mete-marcha @ilymeiib |
+| [Dungeon Bend](boards/dungeon-bend/BOARD.md) | DB | 24 | @isabellaherman @Leon-nis @Ostrowskii @mete-marcha @ilymeiib |
 | [Geral](boards/geral/BOARD.md) | GE | 6 | @isabellaherman @Ostrowskii |
 | [Harness](boards/harness/BOARD.md) | HN | 12 | @isabellaherman @Ostrowskii @ilymeiib |
 | [Morrow Days](boards/morrow-days/BOARD.md) | MD | 2 | @ilymeiib @isabellaherman |

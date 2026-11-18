@@ -34,9 +34,10 @@ flowchart TD
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
-- **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 1/12 · IA
+- **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 1/13 · IA
   - ✓ **DB-30** Mapeamento do DungeonBend para port 1:1 — @mete-marcha `Production` · 3/3 · Feito · IA
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) · Backlog · IA
+  - **DB-32** Harness de referência web (Playwright) para o 1:1 · Backlog · IA
 
 ## Fazendo · 2
 
