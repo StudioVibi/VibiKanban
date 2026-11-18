@@ -27,11 +27,11 @@ flowchart TD
 - **DB-11** Game Mode: Challenge. Modo de Jogo com Timer — @Leon-nis `Game design` `ui`
 - **DB-16** Padronizar o patch note público — @isabellaherman
 - **DB-17** Icone para o novo sistema de composição — @isabellaherman
+- **DB-22** art do log e ganeh — @Ostrowskii
 - **DB-18** UX: Classes do sistema de combo — @isabellaherman `ui`
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-21** aprimorar o evento de fim de semana antes do fim de semana — @Ostrowskii
-- **DB-22** art do log e ganeh — @Ostrowskii
 
 ## Fazendo · 1
 
