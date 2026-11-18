@@ -16,7 +16,7 @@ flowchart TD
 ## Backlog · 17
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7
-- **DB-22** art do log e ganhe
+- **DB-22** art do log e ganhe — @ilymeiib
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
