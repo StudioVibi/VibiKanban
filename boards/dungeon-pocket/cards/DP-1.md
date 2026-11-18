@@ -7,3 +7,17 @@ order: 1
 ---
 
 # Dungeon Pocket — objetivos macro do port
+
+Card macro do Dungeon Pocket: a versão mobile (Unity 6000.4.5f1, iOS/Android) do DungeonBend. Dono: Mete Marcha (só orquestra; a execução é do modelo de trabalho). Depois do port, a monetização também fica com o Mete Marcha.
+
+## Checklist
+
+- [ ] Entender o DungeonBend e mapear o que portar
+- [ ] Definir o que cortar/simplificar no mobile (controles touch, UI, performance, sessões curtas)
+- [ ] Criar o projeto Unity 6000.4.5f1 mobile (em ~/Documents/Vibi/DungeonPocket)
+- [ ] Port do core loop
+- [ ] Build de teste iOS/Android
+- [ ] Burocracia de lojas (contas Apple Developer/Google Play, nome, ícone, política de privacidade, classificação etária)
+- [ ] Beta com testadores
+- [ ] Lançamento
+- [ ] Depois: monetização (dono: Mete Marcha)
