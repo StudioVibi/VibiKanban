@@ -1,6 +1,6 @@
 ---
 id: GE-2
-lane: doing
+lane: backlog
 who: isabellaherman
 tags: 
 order: 2
