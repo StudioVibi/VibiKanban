@@ -22,7 +22,7 @@ flowchart TD
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-8** Quests — @Leon-nis
 - **DB-9** Publisher — @isabellaherman
-- **DB-10** Endless Balance, pra jogadores que gostam de jogar o late game (nivel 15+) — @Leon-nis
+- **DB-10** Endless Balance, pra jogadores que gostam de jogar o late game (nivel 15+) — @Leon-nis `Game design`
 - **DB-11** Game Mode: Challenge. Modo de Jogo — @Leon-nis
 
 ## Fazendo · 1
