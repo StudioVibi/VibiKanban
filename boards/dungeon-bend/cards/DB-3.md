@@ -1,9 +1,9 @@
 ---
 id: DB-3
-lane: backlog
+lane: doing
 who: isabellaherman
 tags: 
-order: 3
+order: 1
 ---
 
 # Sistema de composição de deck
