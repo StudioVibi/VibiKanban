@@ -20,7 +20,7 @@ flowchart TD
 - **HN-6** aumentar contraste de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 - **HN-7** melhorar fluxo de visualizar e manejar laws — @Ostrowskii
 - **HN-8** Finalizar* a v1 do harness e mandar pra nico — @isabellaherman
-- **HN-10** Showcase do harness — @isabellaherman
+- **HN-10** Showcase do harness — @Ostrowskii
 
 ## Fazendo · 4
 
