@@ -6,4 +6,4 @@ tags:
 order: 3
 ---
 
-# 11 Arte dos items em composicao, cada item precisa de um asset especial. (Art)
+# 11 Arte dos items em composicao, cada item precisa de um asset especial.
