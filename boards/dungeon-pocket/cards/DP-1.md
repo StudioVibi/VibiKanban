@@ -15,6 +15,7 @@ Card macro do Dungeon Pocket: a versão mobile (Unity 6000.4.5f1, iOS/Android) d
 - [ ] Entender o DungeonBend e mapear o que portar
 - [ ] Definir o que cortar/simplificar no mobile (controles touch, UI, performance, sessões curtas)
 - [ ] Criar o projeto Unity 6000.4.5f1 mobile (em ~/Documents/Vibi/DungeonPocket)
+- [ ] Reescrita em Unity (o DungeonBend é Bend2→JS, sem código reaproveitável): reaproveitar `data/*.json` e `assets/` do ~/Documents/HOC/DungeonBend — dono: Mete Marcha (orquestra)
 - [ ] Port do core loop
 - [ ] Build de teste iOS/Android
 - [ ] Burocracia de lojas (contas Apple Developer/Google Play, nome, ícone, política de privacidade, classificação etária)

@@ -15,7 +15,7 @@ flowchart TD
 
 ## Backlog · 1
 
-- **DP-1** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 0/9
+- **DP-1** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 0/10
 
 ## Fazendo · 0
 
