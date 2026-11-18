@@ -38,8 +38,7 @@ flowchart TD
 ## Fazendo · 2
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/8 · espera DB-28
-  - **DB-30** textos no open booster estão pretos. "WAIT FOR ISABELLA#9992 TO PICK A CARD" por exemplo · Backlog
+- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/7 · espera DB-28
 
 ## Revisão · 0
 
