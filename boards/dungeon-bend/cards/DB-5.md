@@ -10,4 +10,5 @@ order: 0
 
 rascunho da interface
 
+carregamento leve
 segurança de inventario jogador
