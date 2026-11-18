@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 14"] --> doing["Fazendo · 2"]
+  backlog["Backlog · 15"] --> doing["Fazendo · 2"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,7 +13,7 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 14
+## Backlog · 15
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @Leon-nis `Art`
@@ -29,6 +29,7 @@ flowchart TD
 - **DB-15** Filtro de Task — @Leon-nis
 - **DB-16** Padronizar o patch note público — @isabellaherman
 - **DB-17** Icone para o novo sistema de composição — @isabellaherman
+- **DB-18** UX: Classes do sistema de combo — @isabellaherman
 
 ## Fazendo · 2
 
