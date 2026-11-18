@@ -7,3 +7,5 @@ order: 2
 ---
 
 # Sistema de embaralhamento
+
+Protótipo e definições
