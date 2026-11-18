@@ -4,9 +4,9 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 18"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 18"] --> doing["Fazendo · 2"]
   doing --> review["Revisão · 0"]
-  review --> done["Feito · 0"]
+  review --> done["Feito · 1"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -34,16 +34,15 @@ flowchart TD
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-21** aprimorar o evento de fim de semana antes do fim de semana — @Ostrowskii
 
-## Fazendo · 3
+## Fazendo · 2
 
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-- **DB-22** teste — @isabellaherman
 
 ## Revisão · 0
 
 _vazio_
 
-## Feito · 0
+## Feito · 1
 
-_vazio_
+- ✓ **DB-22** teste — @isabellaherman
