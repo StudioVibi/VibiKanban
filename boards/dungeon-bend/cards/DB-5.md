@@ -15,3 +15,5 @@ order: 0
 - [ ] definir quantos dias é o ciclo de log ganhe mostrado na tela
 - [ ] definir o horario de inicio e fim global de um dia.
 - [ ] backend mvp
+- [ ] carregamento leve
+- [ ] segurança de inventario jogador
