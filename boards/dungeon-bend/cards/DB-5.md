@@ -9,6 +9,6 @@ order: 0
 # Implementar sistema de logue e ganhe
 
 rascunho da interface
-ba
+backend
 carregamento leve
 segurança de inventario jogador
