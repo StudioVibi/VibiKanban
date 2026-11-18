@@ -48,9 +48,6 @@
     "ui": [
       "creative"
     ],
-    "bend": [
-      "development"
-    ],
     "bug": [
       "development"
     ],
@@ -87,6 +84,9 @@
     ],
     "Discord": [
       "community"
+    ],
+    "development": [
+      "development"
     ]
   }
 }
