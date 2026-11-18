@@ -38,7 +38,7 @@ flowchart TD
 ## Fazendo · 2
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/6
+- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 0/6 · espera DB-28
   - **DB-26** corrigir o "peel off" texto q aparece no booster ao tentar abrir ele · Backlog
   - **DB-27** numero ddo gold e hp tão preto · Backlog
 
