@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 3"] --> doing["Fazendo · 0"]
+  backlog["Backlog · 4"] --> doing["Fazendo · 0"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,11 +13,12 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 3
+## Backlog · 4
 
 - **GE-1** simulando art 3d com gaussian splats — @Ostrowskii
 - **GE-2** Unblock Vibi Mercury account — @isabellaherman
 - **GE-3** Barra de pesquisa personalizada no Kanban, pra evitar tasks duplicadas — @isabellaherman
+- **GE-4** Subtask: Formato de Link ou Lista — @isabellaherman
 
 ## Fazendo · 0
 
