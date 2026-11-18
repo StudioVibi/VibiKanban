@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 3"] --> doing["Fazendo · 0"]
+  backlog["Backlog · 4"] --> doing["Fazendo · 0"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,11 +13,12 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 3
+## Backlog · 4
 
 - **DB-1** Feedback Leon — @isabellaherman
 - **DB-2** Sistema de embaralhamento — @isabellaherman
 - **DB-3** Sistema de composição de deck — @isabellaherman
+- **DB-4** Modo de jogo: evento — @isabellaherman
 
 ## Fazendo · 0
 
