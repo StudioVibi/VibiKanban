@@ -1,9 +1,9 @@
 ---
 id: GE-2
-lane: backlog
+lane: doing
 who: isabellaherman
 tags: 
-order: 2
+order: 1
 ---
 
 # Unblock Vibi Mercury account
