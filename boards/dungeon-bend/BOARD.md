@@ -16,6 +16,7 @@ flowchart TD
 ## Backlog · 18
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
+- **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-22** art do log e ganhe
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
@@ -31,7 +32,6 @@ flowchart TD
 - **DB-18** UX: Classes do sistema de combo — @isabellaherman `ui`
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
-- **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
 
 ## Fazendo · 3
