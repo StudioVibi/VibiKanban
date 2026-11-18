@@ -1,9 +1,9 @@
 ---
 id: HN-3
-lane: doing
+lane: review
 who: isabellaherman
 tags: infra
-order: 4
+order: 2
 ---
 
 # Terminal: como implementar um terminal dentro do harness
