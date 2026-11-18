@@ -2,7 +2,7 @@
 id: DB-8
 lane: backlog
 who: Leon-nis
-tags: Game design
+tags: Game design, ui
 order: 7
 ---
 
