@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 16"] --> doing["Fazendo · 1"]
-  doing --> review["Revisão · 0"]
+  backlog["Backlog · 15"] --> doing["Fazendo · 1"]
+  doing --> review["Revisão · 1"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
   doing:::blue
@@ -13,13 +13,12 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 16
+## Backlog · 15
 
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
 - **DB-4** Modo de jogo: evento — @isabellaherman
-- **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-8** Quests — @Leon-nis `Game design` `ui`
 - **DB-9** Publisher — @isabellaherman
@@ -36,9 +35,9 @@ flowchart TD
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
 
-## Revisão · 0
+## Revisão · 1
 
-_vazio_
+- **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii
 
 ## Feito · 0
 
