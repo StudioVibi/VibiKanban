@@ -7,3 +7,5 @@ order: 0
 ---
 
 # Implementar sistema de logue e ganhe
+
+rascunho da inte
