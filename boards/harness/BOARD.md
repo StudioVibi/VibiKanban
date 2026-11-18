@@ -28,7 +28,7 @@ flowchart TD
 - **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
 - **HN-3** Terminal: como implementar um terminal dentro do harness — @isabellaherman `infra`
 - **HN-9** Objetivo da semana — @isabellaherman
-- **HN-12** Concept para personagem HOC — @ilymeiib
+- **HN-12** Concept para personagem HOC — @ilymeiib `art`
 
 ## Revisão · 0
 
