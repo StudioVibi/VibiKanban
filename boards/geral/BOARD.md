@@ -19,7 +19,7 @@ _vazio_
 
 ## Fazendo · 1
 
-- **GE-1** simulando art 3d com — @Ostrowskii
+- **GE-1** simulando art 3d com gaussian splats — @Ostrowskii
 
 ## Revisão · 0
 

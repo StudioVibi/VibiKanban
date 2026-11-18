@@ -6,6 +6,6 @@ tags:
 order: 1
 ---
 
-# simulando art 3d com
+# simulando art 3d com gaussian splats
 
 Qual o prompt? Qual a engine? E se é em real-time
