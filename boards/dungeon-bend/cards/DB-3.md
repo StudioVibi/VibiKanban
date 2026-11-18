@@ -1,6 +1,6 @@
 ---
 id: DB-3
-lane: doing
+lane: backlog
 who: isabellaherman
 tags: Game design
 order: 1
