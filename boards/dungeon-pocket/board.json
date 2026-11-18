@@ -1,0 +1,92 @@
+{
+  "name": "Dungeon Pocket",
+  "prefix": "DP",
+  "lanes": [
+    {
+      "id": "backlog",
+      "name": "Backlog",
+      "color": ""
+    },
+    {
+      "id": "doing",
+      "name": "Fazendo",
+      "color": "blue",
+      "status": true
+    },
+    {
+      "id": "review",
+      "name": "Revisão",
+      "color": "yellow",
+      "status": true
+    },
+    {
+      "id": "done",
+      "name": "Feito",
+      "color": "green"
+    }
+  ],
+  "flow": [
+    [
+      "backlog",
+      "doing"
+    ],
+    [
+      "doing",
+      "review"
+    ],
+    [
+      "review",
+      "done"
+    ],
+    [
+      "review",
+      "doing",
+      "ajustes"
+    ]
+  ],
+  "tags": {
+    "ui": [
+      "creative"
+    ],
+    "bug": [
+      "development"
+    ],
+    "infra": [
+      "development"
+    ],
+    "Art": [
+      "creative"
+    ],
+    "Narrative": [
+      "creative"
+    ],
+    "Audio": [
+      "creative"
+    ],
+    "Game design": [
+      "creative",
+      "development"
+    ],
+    "Testing": [
+      "management"
+    ],
+    "Production": [
+      "management"
+    ],
+    "Publisher": [
+      "business"
+    ],
+    "Pitch": [
+      "business"
+    ],
+    "Marketing": [
+      "business"
+    ],
+    "Discord": [
+      "community"
+    ],
+    "development": [
+      "development"
+    ]
+  }
+}
