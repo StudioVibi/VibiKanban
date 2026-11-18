@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 17"] --> doing["Fazendo · 2"]
+  backlog["Backlog · 16"] --> doing["Fazendo · 2"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 0"]
   review -->|ajustes| doing
@@ -13,10 +13,9 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 17
+## Backlog · 16
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
-- **DB-21** aprimorar o evento de fim de semana antes do fim de semana — @Ostrowskii
 - **DB-22** art do log e ganhe
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
