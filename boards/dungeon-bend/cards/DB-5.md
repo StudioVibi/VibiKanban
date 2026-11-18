@@ -10,7 +10,8 @@ order: 0
 
 rascunho da interface
 definir oq vai ser oferecido no log e ganhe
-definir quantos dias 
+definir quantos dias é o ciclo de log ganhe mostrado na tela
+
 backend mvp
 carregamento leve
 segurança de inventario jogador
