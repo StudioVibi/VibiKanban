@@ -3,7 +3,7 @@
 // Aberto sem o servidor (num artefato, por exemplo), mostra o retrato do build e as mudanças ficam só na página.
 import { theme, initSegmented, announce, avatar, avatars } from "./bend-ui/ui.js";
 import { createDialog } from "./bend-ui/workspace.js";   // o .dialog da lib
-import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard, cardDialog } from "./bend-ui/board.js";
+import { card as CARD, initBoard, cardCheck, newCard, fitField, formCard, cardDialog, moveCard, checkTime } from "./bend-ui/board.js";
 import SRC from "./sources.js";
 import * as K from "./lib/board.mjs";
 import AREAS from "./workload/areas.js";
@@ -289,11 +289,23 @@ function move(id, lane, before = null) {
   act("move", { id, lane, before }, c.lane === lane ? `${id} reordenado` : `${id} movido para ${laneName(lane)}`);
 }
 // Arrastar: da Bend-UI. O cartão levanta, os outros abrem espaço e ele assenta com a mola do MOTION.bend.
-// Concluir: também da Bend-UI. O cartão fica onde está; o arquivo dele ganha done: true.
+// Concluir: também da Bend-UI. O círculo fica verde e o cartão vai pro topo do Feito sem atravessar o quadro: fecha no
+// próprio meio, o espaço dele fecha enquanto o do Feito abre, e ele abre lá (moveCard). Desmarcar devolve pro lugar
+// de onde saiu, do mesmo jeito. Pra onde ele vai quem decide é o modelo (lib/board.mjs: update).
+function complete(id, done) {
+  const el = board.querySelector(`.card[data-id="${id}"]`), was = cards.find((x) => x.id === id)?.lane;
+  act("update", { id, done }, done ? `${id} concluído` : `${id} reaberto`, true);
+  const c = cards.find((x) => x.id === id);
+  if (!el || !c || c.lane === was) return;   // ficou onde estava
+  const list = board.querySelector(`.lane[data-lane="${c.lane}"] .lane__cards`), xs = inLane(c.lane), next = xs[xs.indexOf(c) + 1];
+  const counts = () => { for (const l of board.querySelectorAll(".lane")) $(".lane__head .tag", l).textContent = inLane(l.dataset.lane).length; };
+  moveCard(el, list, { before: next ? list.querySelector(`.card[data-id="${next.id}"]`) : null, wait: done ? checkTime() : 0, onSwap: counts })
+    .then(() => { if (!typing()) render(); });   // o menu do cartão (Mover para…) depende da coluna em que ele está
+}
 initBoard(board, {
   onDrop: (id, lane, before) => move(id, lane, before),
   labels: CHECK,
-  onDone: (id, done) => act("update", { id, done }, done ? `${id} concluído` : `${id} reaberto`, true),
+  onDone: complete,
 });
 
 board.addEventListener("pick", (e) => {
