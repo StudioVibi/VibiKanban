@@ -1,6 +1,6 @@
 ---
 id: GE-1
-lane: backlog
+lane: doing
 who: Ostrowskii
 tags: 
 order: 1
