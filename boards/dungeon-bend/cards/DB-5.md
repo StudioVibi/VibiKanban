@@ -10,4 +10,3 @@ order: 0
 
 rascunho da interface
 segurança de inventario jogador
-garantir
