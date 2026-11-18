@@ -8,5 +8,4 @@ order: 3
 
 # aumentar contraste de cor ou sensação de divisória da lib bend-ui
 
-temos a teoria q a cor esteja com falta de contraste entre cinza e branco.
-e que em alguns momentos um cinza aprovado para texto com fundo branco se junta com um fundo cinza aprovado para usar com texto preto em um componente . e sem intenção de juntar esses dois, acabamos criando uma situação de pouca acessibilidade para o usuario.
+Temos a hipótese de que há falta de contraste entre os tons de cinza e branco. Em alguns momentos, um cinza aprovado para texto sobre fundo branco acaba sendo aplicado sobre um fundo cinza que foi aprovado apenas para uso com texto preto. Essa combinação não intencional dentro dos componentes prejudica a leitura e gera problemas de acessibilidade para o usuário
