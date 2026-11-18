@@ -6,4 +6,4 @@ tags:
 order: 5
 ---
 
-# Implementar sistema logue e ganhe
+# Implementar evento logue e ganhe
