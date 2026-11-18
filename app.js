@@ -159,11 +159,12 @@ function renderBoard() {
 const HEADS_MAX = 3;   // quantas fotos antes do +N: não decidido
 // A foto de alguém: a do GitHub. Membro IA não busca foto do GitHub (o login dele pode ser de outra pessoa lá)
 // até ter o campo github no members.json; até lá é a inicial, no tom accent (.avatar--accent da lib).
+// Um membro IA com avatar (arquivo em avatars/, copiado pro dist/ no build) usa essa foto; se ela falhar, a lib volta à inicial.
 const ghPhoto = (login) => `https://github.com/${encodeURIComponent(login)}.png?size=48`;
 const photo = (login) => {
   if (!K.isAI(MEMBERS, login)) return { name: login, src: ghPhoto(login) };
   const m = MEMBERS[login];
-  return { name: login, src: m.github ? ghPhoto(m.github) : null, ai: true };
+  return { name: login, src: m.avatar || (m.github ? ghPhoto(m.github) : null), ai: true };
 };
 // O avatar/avatars da lib, com o tom de IA em quem é membro IA. Cada .avatar sai com title="login", que diz de quem é.
 const aiTone = (html, people) => people.filter((p) => p.ai).reduce((h, p) => h.replace(`<span class="avatar" title="${esc(p.name)}">`, `<span class="avatar avatar--accent" title="${esc(p.name)}">`), html);

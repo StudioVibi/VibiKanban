@@ -14,5 +14,6 @@ page() {
     printf '<title>%s</title>\n<link rel="stylesheet" href="./%s">\n<script type="module" src="./%s"></script>\n<main class="page" id="app"></main>\n' "$3" "$(ls *.css)" "$(ls *.js)" > page.html )
 }
 page index.html dist "VibiKanban"
+cp -R avatars dist/   # as fotos dos membros IA (o campo avatar do boards/members.json)
 page prototype.html dist-prototype "VibiKanban · protótipo"
 echo "build: dist/ (app) e dist-prototype/ (protótipo)"
