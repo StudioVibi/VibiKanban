@@ -4,6 +4,7 @@ lane: backlog
 who: Ostrowskii, isabellaherman
 tags: ui
 order: 0
+blocked_by: DB-22
 ---
 
 # Implementar sistema de logue e ganhe
