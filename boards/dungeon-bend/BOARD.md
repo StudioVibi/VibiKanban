@@ -36,7 +36,7 @@ flowchart TD
 ## Fazendo · 2
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug`
-- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `ui`
+- **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii
 
 ## Revisão · 0
 
