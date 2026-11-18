@@ -10,7 +10,7 @@ order: 0
 
 rascunho da interface
 definir oq vai ser oferecido no log e ganhe
-definir quanto 
+definir quantos dias 
 backend mvp
 carregamento leve
 segurança de inventario jogador
