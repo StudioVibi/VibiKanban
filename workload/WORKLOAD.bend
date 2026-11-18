@@ -12,7 +12,6 @@ def workload_ant_size() -> U32: 42  # undecided
 def workload_badge_ring() -> U32: 2  # undecided
 def workload_bob() -> U32: 2  # undecided
 def workload_hop() -> U32: 6  # undecided
-def workload_pole_icon() -> U32: 26  # undecided
 def workload_key_width() -> U32: 22  # undecided
 
 # ---------- Area colors ----------
@@ -28,6 +27,11 @@ def near_hue() -> F32: 100.0  # undecided
 # A skill that also belongs to a far area keeps its main area's color, this much toward the ink below.
 def far_shade() -> F32: 0.22  # undecided
 def far_ink() -> String: "#1d1630"  # undecided
+
+# ---------- An area's name on the wheel ----------
+# The word takes its area's hue, as soft as it can be and still read: this contrast against the area's own ground
+# (WCAG AA for text). A color that reads better than that steps toward the ground; one that reads worse, toward the ink.
+def pole_contrast() -> F32: 4.5
 
 # ---------- The bar's textures (cartography: one stroke weight, opposite angles side by side) ----------
 def review_angle() -> F32: 45.0  # undecided
@@ -46,6 +50,14 @@ def lin(+c: F32) -> F32:
 
 def gam(+c: F32) -> F32:
   F32.clamp(Bool.pick(F32, F32.is_le(c, 0.0031308), (12.92 * c : F32), (1.055 * F32.pow(F32.max(c, 0.0), (1.0 / 2.4 : F32)) - 0.055 : F32)), 0.0, 1.0)
+
+# How bright a color is to the eye (WCAG relative luminance); r, g, b from 0 to 1.
+def luminance(+r: F32, +g: F32, +b: F32) -> F32:
+  (0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b) : F32)
+
+# The contrast between two luminances, the lighter over the darker (WCAG): 1 is none, 21 is black on white.
+def contrast(+a: F32, +b: F32) -> F32:
+  ((F32.max(a, b) + 0.05) / (F32.min(a, b) + 0.05) : F32)
 
 def cbrt(+x: F32) -> F32:
   Bool.pick(F32, F32.is_lt(x, 0.0), (0.0 - F32.pow((0.0 - x : F32), (1.0 / 3.0 : F32)) : F32), F32.pow(x, (1.0 / 3.0 : F32)))

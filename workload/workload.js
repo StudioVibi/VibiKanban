@@ -33,6 +33,16 @@ export function mix(parts) {
   return hex([0, 1, 2].map((i) => W.blend(list(labs.map((x) => x[i])), list(ws))));
 }
 export const tint = (h, k) => mix([[h, k], ["#ffffff", 1 - k]]);
+// An area's name on the wheel: the area's hue, as soft as it still reads on the area's ground (WORKLOAD.bend: pole_contrast).
+const inks = new Map();
+export function poleInk(color, ground) {
+  const key = color + ground; if (inks.has(key)) return inks.get(key);
+  const lum = (h) => W.luminance(...rgb(h)), reads = (h) => W.contrast(lum(h), lum(ground)) >= W.pole_contrast();
+  const fine = reads(color), to = fine ? ground : W.far_ink(), at = (k) => mix([[color, 1 - k], [to, k]]);
+  let lo = 0, hi = 1;   // how far toward `to`: the farthest that still reads, or the nearest that already does
+  for (let i = 0; i < 12; i++) { const k = (lo + hi) / 2; if (reads(at(k)) === fine) lo = k; else hi = k; }
+  const ink = at(fine ? lo : hi); inks.set(key, ink); return ink;
+}
 export const areaColor = (n) => W[`area_color_${n}`]?.() ?? W.area_color_1();
 const hueOf = (h) => { const [, a, b] = lab(h); return W.hue(a, b); };
 // A skill's color: its areas blend only when their hues are near; a far area only darkens the main one. Never a false grey.
@@ -131,7 +141,8 @@ export function loadKey(el, state, color) {
 // ---------- The wheel ----------
 export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick = () => {} } = {}) {
   el.classList.add("wheel");
-  let D = data, focused = null;
+  let D = data, pinned = null, hover = null;   // pinned: a click chose that person; hover: the pointer is on them, for as long as it is
+  const now = () => hover ?? pinned;
   const field = document.createElement("div"); field.className = "wheel__field"; el.append(field);
 
   function layout() {
@@ -151,7 +162,7 @@ export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick
     // Nenhuma pílula em cima de outra nem do nome de uma área: as que estão perto demais se afastam (as áreas não saem do lugar).
     const box = el.getBoundingClientRect(), ratio = box.height ? box.width / box.height : 1.6;
     // O nome de uma área ocupa uma faixa: à direita da roda ele cresce pra esquerda do ponto, à esquerda cresce pra direita.
-    const label = (a) => Math.min(0.2, (a.name.length * 9 + 40) / Math.max(box.width, 1));
+    const label = (a) => Math.min(0.2, (a.name.length * 9 + 40) / Math.max(box.width, 1));   // o nome e uma folga pra pílula que chega perto
     const poles = areas.map((a, i) => { const x = W.pole_x(i, n), w = label(a); return [x > 0.6 ? x - w / 2 : x < 0.4 ? x + w / 2 : x, W.pole_y(i, n), w]; });
     // Uma pílula com gente tem as formigas penduradas: ela conta como o conjunto (pílula + formiga), que é mais alto,
     // então nenhuma outra pílula para em cima da formiga dela.
@@ -183,11 +194,12 @@ export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick
   function draw() {
     const { areas, skills, ants, n } = layout();
     const step = 360 / Math.max(n, 1);
-    field.style.background = n ? `conic-gradient(from ${-step}deg at 50% 50%, ${areas.map((a, i) => `${tint(a.color, 0.13)} ${i * step}deg ${(i + 1) * step}deg`).join(",")})` : "";
+    const ground = (a) => tint(a.color, 0.13);
+    field.style.background = n ? `conic-gradient(from ${-step}deg at 50% 50%, ${areas.map((a, i) => `${ground(a)} ${i * step}deg ${(i + 1) * step}deg`).join(",")})` : "";
     for (const x of el.querySelectorAll(".wheel__pole, .wheel__skill")) x.remove();
     el.insertAdjacentHTML("beforeend", areas.map((a, i) => {
       const x = W.pole_x(i, n), y = W.pole_y(i, n), tx = x > 0.6 ? "-100%" : x < 0.4 ? "0%" : "-50%";
-      return `<span class="wheel__pole" style="--area:${a.color};left:${x * 100}%;top:${y * 100}%;transform:translate(${tx},-50%)"><span class="wheel__pole-icon"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-${a.icon}"/></svg></span>${esc(a.name)}</span>`;
+      return `<span class="wheel__pole" style="--ink:${poleInk(a.color, ground(a))};left:${x * 100}%;top:${y * 100}%;transform:translate(${tx},-50%)">${esc(a.name)}</span>`;
     }).join("") + skills.map((s) => `<span class="wheel__skill" data-skill="${esc(s.name)}" style="--skill:${s.color};left:${s.x * 100}%;top:${s.y * 100}%">${esc(s.name)}</span>`).join(""));
     // Ants: keep the ones already there so they glide to their new place.
     const keep = new Set();
@@ -204,23 +216,28 @@ export function mountWheel(el, data, { tip = (p, s, n) => `${n} · ${s}`, onPick
       node.innerHTML = `${ant(a.s.color, area?.tool)}<span class="wheel__badge">${avatar({ name: a.p.name, src: a.p.src })}</span><span class="wheel__tip">${avatar({ name: a.p.name, src: a.p.src })}<span><b>${esc(a.p.name)}</b><span class="detail">${esc(tip(a.p, a.s.name, a.n))}</span></span></span><span class="wheel__name">${esc(a.p.name)}</span>`;
     }
     for (const x of el.querySelectorAll(".wheel__ant")) if (!keep.has(x.dataset.key)) x.remove();
+    if (hover && !D.people.some((p) => p.id === hover)) hover = null;
     paintFocus();
   }
   // Focus: only that person and the skills they work in stay; everything else steps back.
   function paintFocus() {
+    const focused = now();
     const mine = new Set(focused ? Object.entries(D.people.find((p) => p.id === focused)?.skills ?? {}).filter(([, k]) => k > 0).map(([s]) => s) : []);
     for (const x of el.querySelectorAll(".wheel__ant")) { x.classList.toggle("is-on", !!focused && x.dataset.id === focused); x.classList.toggle("is-off", !!focused && x.dataset.id !== focused); }
     for (const x of el.querySelectorAll(".wheel__skill")) x.classList.toggle("is-off", !!focused && !mine.has(x.dataset.skill));
   }
-  // Passar o mouse numa formiga só mostra a dica dela (workload.css). O foco é no clique: quem clica quer ver mais daquela pessoa.
-  // Um clique fora das formigas tira o foco.
-  el.addEventListener("click", (e) => { const a = e.target.closest(".wheel__ant"); if (a) onPick(a.dataset.id); else if (focused && !hoverOnly) onPick(null); });
+  // O mouse em cima de uma formiga destaca só as dessa pessoa, enquanto ele está em cima; saiu, volta ao que era.
+  // O clique prende o destaque (quem clica quer ver mais daquela pessoa); um clique fora das formigas solta.
+  const point = (id) => { if (hover !== id) { hover = id; paintFocus(); } };
+  el.addEventListener("pointerover", (e) => point(e.target.closest(".wheel__ant")?.dataset.id ?? null));
+  el.addEventListener("pointerleave", () => point(null));
+  el.addEventListener("click", (e) => { const a = e.target.closest(".wheel__ant"); if (a) onPick(a.dataset.id); else if (pinned) onPick(null); });
   el.addEventListener("keydown", (e) => { const a = e.target.closest(".wheel__ant"); if (a && e.key === "Enter") onPick(a.dataset.id); });
-  let hoverOnly = false;
   const api = {
     update(next) { D = next; draw(); },
-    focus(id, how) { focused = id; hoverOnly = how === "hover" && !!id; paintFocus(); },
-    get focused() { return focused; },
+    // focus(id): prende o destaque nessa pessoa (null solta). focus(id, "hover"): só enquanto quem chamou disser (null tira).
+    focus(id, how) { if (how === "hover") hover = id; else pinned = id; paintFocus(); },
+    get focused() { return now(); },
   };
   draw();
   return api;

@@ -280,8 +280,8 @@ $("#wl-side").addEventListener("click", (e) => {
   const c = e.target.closest("[data-wl-card]"); if (c) openCard(c.dataset.wlCard);
 });
 // Na lista, o mouse em cima de uma pessoa mostra ela na roda só enquanto está em cima; saiu da linha, a roda volta.
-$("#wl-side").addEventListener("pointerover", (e) => { const p = e.target.closest("[data-wl-person]"); if (!wheel) return; if (p) wheel.focus(p.dataset.wlPerson, "hover"); else if (wheel.focused !== wlOn) wheel.focus(wlOn); });
-$("#wl-side").addEventListener("pointerleave", () => wheel?.focus(wlOn));
+$("#wl-side").addEventListener("pointerover", (e) => { const p = e.target.closest("[data-wl-person]"); if (!wheel) return; wheel.focus(p ? p.dataset.wlPerson : null, "hover"); });
+$("#wl-side").addEventListener("pointerleave", () => wheel?.focus(null, "hover"));
 
 function move(id, lane, before = null) {
   const c = cards.find((x) => x.id === id); if (!c || before === id) return render();

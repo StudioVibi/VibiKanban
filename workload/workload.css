@@ -48,10 +48,9 @@
 [data-narrow] .wheel { aspect-ratio: 1; height: auto; }
 .wheel__field { position: absolute; inset: 0; }
 .wheel__pole {
-  position: absolute; z-index: var(--layer-part); display: inline-flex; align-items: center; gap: var(--space-2);
-  white-space: nowrap; font-weight: var(--weight-medium); pointer-events: none;
+  position: absolute; z-index: var(--layer-part);
+  white-space: nowrap; font-weight: var(--weight-medium); color: var(--ink); pointer-events: none;
 }
-.wheel__pole-icon { width: var(--workload-pole-icon); height: var(--workload-pole-icon); border-radius: var(--radius-full); display: grid; place-items: center; background: var(--area); color: var(--surface); }
 .wheel__skill {
   position: absolute; z-index: var(--layer-part); transform: translate(-50%, -50%);
   padding: var(--space-hairline) var(--space-2); border-radius: var(--radius-full);
