@@ -23,7 +23,7 @@ flowchart TD
 - **DB-8** Quests — @Leon-nis
 - **DB-9** Publisher — @isabellaherman
 - **DB-10** Endless Balance, pra jogadores que gostam de jogar o late game (nivel 15+) — @Leon-nis `Game design`
-- **DB-11** Game Mode: Challenge. Modo de Jogo — @Leon-nis `Game design`
+- **DB-11** Game Mode: Challenge. Modo de Jogo com Timer — @Leon-nis `Game design`
 
 ## Fazendo · 1
 
