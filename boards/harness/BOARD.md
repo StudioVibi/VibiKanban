@@ -36,4 +36,4 @@ _vazio_
 ## Feito · 2
 
 - ✓ **HN-2** Ongoing iteration: estabilizando a v1 do harness — @isabellaherman `bend`
-- ✓ **HN-8** Finalizar* a v1 do harness e mandar pra nico — @isabellaherman `bend` `bug`
+- ✓ **HN-8** bugfix: a v1 do harness e mandar pra nico — @isabellaherman `bend` `bug`
