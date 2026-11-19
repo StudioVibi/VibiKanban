@@ -1,7 +1,7 @@
 ---
 id: GE-7
 lane: backlog
-who: Ostrowskii
+who: Ostrowskii, isabellaherman
 by: Ostrowskii
 tags: 
 order: 7
