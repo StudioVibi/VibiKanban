@@ -9,4 +9,4 @@ order: 8
 
 # kangan: bug de modal e de lista
 
-a lista não cria
+o checklist não cria se não pressionar enter no
