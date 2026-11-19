@@ -21,7 +21,7 @@ flowchart TD
 - **DB-22** art do log e ganhe
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
-- **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
+- **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art` · espera DB-34
 - **DB-4** Modo de jogo: evento — @isabellaherman
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-8** Quests — @Leon-nis `Game design` `ui`
