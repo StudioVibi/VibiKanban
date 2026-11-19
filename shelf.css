@@ -12,3 +12,16 @@
   padding: 0;
   justify-content: center;
 }
+
+/* ---------- Rolagem: o quadro tem a altura da tela (o app mede, fitBoard) ----------
+   A página não rola; o quadro rola pros lados (a barra fica no fim dele, acima do menu flutuante)
+   e cada coluna comprida rola por dentro, com o título fixo em cima e o "Adicionar cartão" fixo embaixo. */
+.doc:has(> .board[style*="height"]) { padding-bottom: 0; }
+.board[style*="height"] { grid-template-rows: minmax(0, 1fr); }
+.board[style*="height"] > .lane { max-height: 100%; min-height: 0; }
+.board[style*="height"] > .lane > :not(.lane__cards) { flex-shrink: 0; }   /* só os cartões encolhem; título e "Adicionar" ficam inteiros */
+.board[style*="height"] .lane__cards { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* Barras finas, na cor da borda da lib. */
+.board, .lane__cards { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+/* O aviso pra leitor de tela da lib (.sr-only, invisível) ficava 1px abaixo da tela e fazia a página rolar. Fixo, ele não conta. */
+body > .sr-only { position: fixed; }

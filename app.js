@@ -165,6 +165,38 @@ function renderBoard() {
   // A seta mora na primeira coluna da tela (fechado: o Backlog; aberto: o Brainstorm), desenhada na margem à esquerda dela:
   // não empurra nada e fica sempre no mesmo lugar, então abrir e fechar é clicar de novo sem mexer o mouse.
   board.innerHTML = [...(shelfOpen ? shelf : []), ...rest].map((l, i) => laneHtml(l, i ? "" : tab)).join("");
+  fitBoard();
+}
+// O quadro tem a altura da tela: do cabeçalho até logo acima do menu flutuante. A página não rola; cada coluna comprida
+// rola por dentro (shelf.css) e a barra de rolar pros lados fica embaixo do quadro, acima do menu.
+// Com as colunas guardadas abertas, as colunas estreitam até LANE_MIN pra caber tudo na tela; menos que isso, rola pros lados.
+const LANE_MIN = 240;   // px: a coluna mais estreita antes de rolar pros lados: não decidido
+function fitBoard() {
+  board.style.height = ""; board.style.removeProperty("--lane-width");
+  if (board.hidden || document.documentElement.hasAttribute("data-narrow")) return;
+  const dock = $("#dock").getBoundingClientRect(), gap = innerHeight - dock.bottom;   // a margem do menu até o fim da tela
+  board.style.height = `${Math.max(240, Math.floor(dock.top - gap - board.getBoundingClientRect().top))}px`;
+  if (!shelfOpen) return;
+  const cs = getComputedStyle(board), n = board.querySelectorAll(":scope > .lane").length;
+  const room = board.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), g = parseFloat(cs.columnGap) || 0;
+  const want = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--lane-width"));
+  const fit = Math.floor((room - g * (n - 1)) / n);
+  if (fit < want) board.style.setProperty("--lane-width", `${Math.max(LANE_MIN, fit)}px`);
+}
+addEventListener("resize", () => { if (view === "board") fitBoard(); });
+// Arrastando um cartão perto do alto ou do fim de uma coluna que rola, ela rola junto (a lib só rola pros lados).
+let laneRoll = 0, laneAt = null;
+board.addEventListener("pointermove", (e) => { laneAt = e; if (board.classList.contains("is-dragging") && !laneRoll) laneRoll = requestAnimationFrame(rollLane); });
+function rollLane() {
+  laneRoll = 0;
+  if (!board.classList.contains("is-dragging") || !laneAt) return;
+  const list = [...board.querySelectorAll(".lane__cards")].find((l) => { const r = l.getBoundingClientRect(); return laneAt.clientX >= r.left && laneAt.clientX <= r.right; });
+  if (!list) return;
+  const r = list.getBoundingClientRect(), edge = 56, max = 14;
+  const step = laneAt.clientY < r.top + edge ? -max * (1 - Math.max(0, laneAt.clientY - r.top) / edge) : laneAt.clientY > r.bottom - edge ? max * (1 - Math.max(0, r.bottom - laneAt.clientY) / edge) : 0;
+  if (Math.round(step) === 0) return;
+  const before = list.scrollTop; list.scrollTop += step;
+  if (list.scrollTop !== before) laneRoll = requestAnimationFrame(rollLane);
 }
 // ---------- Menu flutuante: o quadro aberto e "Mudar de quadro" ----------
 // A lista é o .menu da lib; data-open="hover" abre no hover e data-motion="rise" faz as linhas subirem
@@ -205,6 +237,7 @@ function render() {
   board.hidden = view !== "board"; $("#workload").hidden = view !== "workload";
   if (view === "board") renderBoard(); else renderWorkload();
   renderDock();
+  if (view === "board") fitBoard();   // o menu flutuante já está desenhado: a altura do quadro vai até ele
 }
 
 // ---------- Visões: o quadro e o Workload (?visao=workload) ----------
