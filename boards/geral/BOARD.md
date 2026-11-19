@@ -30,4 +30,4 @@ _vazio_
 
 ## Feito · 1
 
-- **GE-1** simulando art 3d com gaussian splats — @Ostrowskii
+- ✓ **GE-1** simulando art 3d com gaussian splats — @Ostrowskii

@@ -4,6 +4,7 @@ lane: done
 who: Ostrowskii
 tags: 
 order: 1
+done: true
 done_at: 2026-11-18
 ---
 
