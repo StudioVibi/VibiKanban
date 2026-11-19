@@ -19,7 +19,7 @@ flowchart TD
 - **GE-4** Subtask: Formato de Link ou Lista — @isabellaherman
 - **GE-5** Filtro de Task — @isabellaherman
 - **GE-6** Criar Kanban e organizar estrutura — @isabellaherman
-- **GE-7** kanban: criar mais um espaço para tarefas — @Ostrowskii @isabellaherman
+- **GE-7** kanban: criar mais um espaço para tarefas — @Ostrowskii @isabellaherman · 0/1
 
 ## Fazendo · 1
 
