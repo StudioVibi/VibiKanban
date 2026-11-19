@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 5"]
+  refinamentos --> backlog["Backlog · 4"]
   backlog --> doing["Fazendo · 1"]
   doing --> review["Revisão · 0"]
-  review --> done["Feito · 2"]
+  review --> done["Feito · 3"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -23,13 +23,12 @@ _vazio_
 
 _vazio_
 
-## Backlog · 5
+## Backlog · 4
 
 - **GE-3** Barra de pesquisa personalizada no Kanban, pra evitar tasks duplicadas — @isabellaherman
 - **GE-4** Subtask: Formato de Link ou Lista — @isabellaherman
 - **GE-5** Filtro de Task — @isabellaherman
 - **GE-6** Criar Kanban e organizar estrutura — @isabellaherman
-- **GE-7** kanban: criar mais um espaço para tarefas — @Ostrowskii @isabellaherman
 
 ## Fazendo · 1
 
@@ -39,7 +38,8 @@ _vazio_
 
 _vazio_
 
-## Feito · 2
+## Feito · 3
 
+- ✓ **GE-7** kanban: criar mais um espaço para tarefas — @Ostrowskii @isabellaherman
 - ✓ **GE-8** kangan: bug de modal e de lista — @Ostrowskii
 - ✓ **GE-1** simulando art 3d com gaussian splats — @Ostrowskii

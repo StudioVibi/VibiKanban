@@ -1,10 +1,14 @@
 ---
 id: GE-7
-lane: backlog
+lane: done
 who: Ostrowskii, isabellaherman
 by: Ostrowskii
 tags: 
-order: 7
+order: -1
+done: true
+done_at: 2026-11-19
+from: backlog
+from_order: 7
 ---
 
 # kanban: criar mais um espaço para tarefas
