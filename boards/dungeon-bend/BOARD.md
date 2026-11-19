@@ -48,7 +48,7 @@ _vazio_
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development`
-- **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis
+- **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 
 ## Fazendo · 4
 
