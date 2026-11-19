@@ -49,7 +49,7 @@ _vazio_
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development`
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
-- **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis
+- **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord`
 
 ## Fazendo · 4
 
