@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 22"]
+  refinamentos --> backlog["Backlog · 23"]
   backlog --> doing["Fazendo · 4"]
   doing --> review["Revisão · 3"]
   review --> done["Feito · 2"]
@@ -23,7 +23,7 @@ _vazio_
 
 _vazio_
 
-## Backlog · 22
+## Backlog · 23
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -47,6 +47,7 @@ _vazio_
 - **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design`
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
+- **DB-39** Campo implicito: Fame, para monstros — @Leon-nis
 
 ## Fazendo · 4
 
