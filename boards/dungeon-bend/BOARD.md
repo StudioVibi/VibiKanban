@@ -39,12 +39,12 @@ flowchart TD
 
 ## Fazendo · 4
 
+- **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
 - **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 2/13 · IA
   - ✓ **DB-30** Mapeamento do DungeonBend para port 1:1 — @mete-marcha `Production` · 3/3 · Feito · IA
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 4/5 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
-- **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 
 ## Revisão · 2
 
