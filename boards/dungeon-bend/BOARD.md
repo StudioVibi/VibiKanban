@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 22"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 21"] --> doing["Fazendo · 4"]
   doing --> review["Revisão · 2"]
   review --> done["Feito · 2"]
   review -->|ajustes| doing
@@ -13,14 +13,13 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 22
+## Backlog · 21
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-28** Arte para o evento de fim de semana
 - **DB-22** art do log e ganhe
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
-- **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art` · espera DB-34
 - **DB-4** Modo de jogo: evento — @isabellaherman
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
@@ -38,13 +37,14 @@ flowchart TD
 - **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design`
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 
-## Fazendo · 3
+## Fazendo · 4
 
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
 - **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 2/13 · IA
   - ✓ **DB-30** Mapeamento do DungeonBend para port 1:1 — @mete-marcha `Production` · 3/3 · Feito · IA
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 4/5 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
+- **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui`
 
 ## Revisão · 2
 

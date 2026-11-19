@@ -1,9 +1,9 @@
 ---
 id: DB-2
-lane: backlog
+lane: doing
 who: isabellaherman
 tags: Game design, ui
-order: 2
+order: 7
 ---
 
 # Dar continuidade no sistema de embaralhamento
