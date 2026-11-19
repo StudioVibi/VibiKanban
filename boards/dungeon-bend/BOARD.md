@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 20"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 21"] --> doing["Fazendo · 3"]
   doing --> review["Revisão · 2"]
   review --> done["Feito · 2"]
   review -->|ajustes| doing
@@ -13,7 +13,7 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 20
+## Backlog · 21
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -35,6 +35,7 @@ flowchart TD
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
 - **DB-34** Meeting de Briefing dos 11 items — @Leon-nis `Game design`
+- **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis
 
 ## Fazendo · 3
 
