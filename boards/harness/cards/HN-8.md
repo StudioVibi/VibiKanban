@@ -2,7 +2,7 @@
 id: HN-8
 lane: backlog
 who: isabellaherman
-tags: bend
+tags: bend, bug
 order: 5
 ---
 
