@@ -22,7 +22,7 @@ flowchart TD
 - **HN-10** vibiGames: Showcase do harness — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 - **HN-15** git: Local version history (VIP) — @Ostrowskii
-- **HN-16** Detalhes — @Ostrowskii · 0/2
+- **HN-16** bugs não urgentes — @Ostrowskii · 0/2
 
 ## Fazendo · 3
 
