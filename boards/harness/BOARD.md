@@ -31,7 +31,7 @@ _vazio_
 - **HN-7** laws: melhorar fluxo de visualizar e manejar — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 - **HN-15** git: Local version history (VIP) — @Ostrowskii
-- **HN-16** bugs não urgentes — @Ostrowskii · 0/2
+- **HN-16** bugs não urgentes — @Ostrowskii · 2/2
 
 ## Fazendo · 3
 
