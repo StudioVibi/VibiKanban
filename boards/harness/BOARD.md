@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 7"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 6"] --> doing["Fazendo · 3"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 3"]
   review -->|ajustes| doing
@@ -13,14 +13,13 @@ flowchart TD
   done:::green
 ```
 
-## Backlog · 7
+## Backlog · 6
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
 - **HN-5** botão open project in a new tab — @isabellaherman `ui` `bend`
 - **HN-6** aumentar contraste de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 - **HN-7** laws: melhorar fluxo de visualizar e manejar — @Ostrowskii
 - **HN-10** Showcase do harness — @Ostrowskii
-- **HN-11** we can use Steam visual pattern for our "vibigames" page — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 
 ## Fazendo · 3
