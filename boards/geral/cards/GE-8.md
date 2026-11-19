@@ -1,10 +1,14 @@
 ---
 id: GE-8
-lane: backlog
+lane: done
 who: Ostrowskii
 by: Ostrowskii
 tags: 
-order: 8
+order: 0
+done: true
+done_at: 2026-11-19
+from: backlog
+from_order: 8
 ---
 
 # kangan: bug de modal e de lista
