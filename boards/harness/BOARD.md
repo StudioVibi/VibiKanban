@@ -19,7 +19,7 @@ flowchart TD
 - **HN-5** botão open project in a new tab — @isabellaherman `ui` `bend`
 - **HN-6** aumentar contraste de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 - **HN-7** laws: melhorar fluxo de visualizar e manejar — @Ostrowskii
-- **HN-10** vibiShowcase do harness — @Ostrowskii
+- **HN-10** vibiGames: Showcase do harness — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 
 ## Fazendo · 3
