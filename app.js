@@ -11,6 +11,7 @@ import WL from "./workload/WORKLOAD.bend";
 import { mountWheel, loadBar, loadKey, areaColor, skillColor } from "./workload/workload.js";
 // A Allo mora aqui no repositório (fonts/allo, licença OFL): não depende de nenhum site de fontes.
 import allo from "./fonts/allo/AlloVariable.woff2";
+import "./shelf.css";   // a seta que mostra as colunas guardadas
 
 const ALLO = { family: "Allo", src: allo, weight: "100 900" };
 theme({ mode: "light", fontSans: ALLO, fontDisplay: ALLO });   // sempre claro, independente do computador
@@ -147,13 +148,23 @@ function cardHtml(c) {
     ${foot}
   </article>`;
 }
-function renderBoard() {
-  board.innerHTML = BOARD.lanes.map((l) => `
-    <section class="lane" data-lane="${l.id}" aria-label="${esc(l.name)}">
+const laneHtml = (l, tab = "") => `
+    <section class="lane" data-lane="${l.id}" aria-label="${esc(l.name)}">${tab}
       <header class="lane__head"><h2 class="group-title">${esc(l.name)}</h2><span class="tag">${inLane(l.id).length}</span></header>
       <div class="lane__cards">${inLane(l.id).map(cardHtml).join("")}</div>
       <div class="lane__add"><button class="btn btn--plain btn--neutral btn--sm" data-add><svg class="icon icon--sm"><use href="#i-plus"/></svg>Adicionar cartão</button></div>
-    </section>`).join("");
+    </section>`;
+// As colunas guardadas (Brainstorm, Refinamentos) ficam à esquerda do Backlog, escondidas; um botãozinho com uma seta, na margem esquerda do quadro, mostra e esconde.
+// A seta abre e fecha; aberto ou fechado fica lembrado neste navegador. Aberta, elas são colunas como as outras (arrastar, adicionar).
+const SHELF_KEY = "vk-shelf-open";
+let shelfOpen = (() => { try { return localStorage.getItem(SHELF_KEY) === "1"; } catch { return false; } })();
+function renderBoard() {
+  const shelf = BOARD.lanes.filter((l) => l.shelf), rest = BOARD.lanes.filter((l) => !l.shelf);
+  const what = shelf.map((l) => l.name).join(" e ");
+  const tab = shelf.length ? `<button type="button" class="btn btn--plain btn--neutral btn--sm shelf-tab" data-shelf aria-expanded="${shelfOpen}" aria-label="${shelfOpen ? "Esconder" : "Mostrar"} ${what}" title="${shelfOpen ? "Esconder" : "Mostrar"} ${what}">${ICON(shelfOpen ? "chevron-left" : "chevron-right")}</button>` : "";
+  // A seta mora na primeira coluna da tela (fechado: o Backlog; aberto: o Brainstorm), desenhada na margem à esquerda dela:
+  // não empurra nada e fica sempre no mesmo lugar, então abrir e fechar é clicar de novo sem mexer o mouse.
+  board.innerHTML = [...(shelfOpen ? shelf : []), ...rest].map((l, i) => laneHtml(l, i ? "" : tab)).join("");
 }
 // ---------- Menu flutuante: o quadro aberto e "Mudar de quadro" ----------
 // A lista é o .menu da lib; data-open="hover" abre no hover e data-motion="rise" faz as linhas subirem
@@ -234,7 +245,7 @@ function sprint() {
   return { n: WL.sprint_index(d, len) + 1, start: iso(start), end: iso(end), label: `${fmt(start)} a ${fmt(end)}` };
 }
 function tasksOf(login) {
-  const mine = cards.filter((c) => c.who.includes(login));
+  const mine = cards.filter((c) => c.who.includes(login) && !K.isShelf(BOARD, c.lane));   // guardado (Brainstorm, Refinamentos) não é carga
   if (wlPeriod === "now") return mine.filter((c) => !K.isDone(c));
   const sp = sprint();
   return mine.filter((c) => !K.isDone(c) || (c.done_at && c.done_at >= sp.start && c.done_at <= sp.end));
@@ -284,7 +295,7 @@ function renderWorkload() {
   for (const el of side.querySelectorAll("[data-bar]")) { const b = bars.get(el.dataset.bar); if (b.key) loadKey(el, b.key, b.color); else loadBar(el, b.groups, { total: b.total }); }
   // A roda: só o aberto (onde cada um está agora).
   const skills = wlSkills();
-  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, ai: !!photo(l).ai, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who.includes(l) && (c.tags || []).includes(s.name) && !K.isDone(c)).length])) })) };
+  const data = { areas: wlAreas(), skills, people: people.map((l) => ({ id: l, name: l, src: photo(l).src, ai: !!photo(l).ai, skills: Object.fromEntries(skills.map((s) => [s.name, cards.filter((c) => c.who.includes(l) && (c.tags || []).includes(s.name) && !K.isDone(c) && !K.isShelf(BOARD, c.lane)).length])) })) };
   if (!wheel) wheel = mountWheel($("#wl-wheel"), data, { tip: (p, s, n) => `${plural(n, "tarefa", "tarefas")} de ${s}`, onPick: (id) => { wlOn = id; renderWorkload(); } });
   else wheel.update(data);
   wheel.focus(wlOn);
@@ -339,6 +350,11 @@ board.addEventListener("pick", (e) => {
 });
 // Clicar no cartão (ou Enter nele) abre o cartão.
 board.addEventListener("click", (e) => {
+  if (e.target.closest("[data-shelf]")) {
+    shelfOpen = !shelfOpen;
+    try { localStorage.setItem(SHELF_KEY, shelfOpen ? "1" : "0"); } catch {}
+    renderBoard(); return $("[data-shelf]", board)?.focus();
+  }
   const add = e.target.closest("[data-add]");
   if (add) return addCard(add.parentElement);
   const c = e.target.closest(".card");
@@ -685,7 +701,7 @@ dialogEl.addEventListener("click", (e) => {
       // Concluir uma subtask é concluir o cartão dela (vai pro Feito, como no quadro). Uma que está no Feito sem o círculo volta pra primeira coluna.
       const x = byId(li.dataset.sub), done = !K.isDone(x);
       editing.just = done ? x.id : null;
-      act("update", !done && !x.done ? { id: x.id, lane: BOARD.lanes[0].id } : { id: x.id, done }, done ? `${x.id} concluído` : `${x.id} reaberto`);
+      act("update", !done && !x.done ? { id: x.id, lane: K.firstLane(BOARD) } : { id: x.id, done }, done ? `${x.id} concluído` : `${x.id} reaberto`);
       return drawPieces();
     }
     const it = editing.lists[+li.dataset.list].items[+li.dataset.item];

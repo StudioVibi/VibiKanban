@@ -1,0 +1,14 @@
+/* A seta que mostra e esconde as colunas guardadas (Brainstorm, Refinamentos). Só var(--…) da Bend-UI.
+   Ela fica dentro da primeira coluna da tela, mas desenhada fora dela, na margem à esquerda (o --board-padding-x da lib):
+   não ocupa coluna e não muda o lugar de nada. Estreita, da altura do título da coluna. */
+.lane:has(> .shelf-tab) { position: relative; }
+.shelf-tab {
+  position: absolute;
+  top: var(--lane-padding-top);
+  right: 100%;
+  margin-right: var(--space-1);
+  width: var(--space-4);
+  height: var(--card-row);
+  padding: 0;
+  justify-content: center;
+}

@@ -3,6 +3,18 @@
   "prefix": "HN",
   "lanes": [
     {
+      "id": "brainstorm",
+      "name": "Brainstorm",
+      "color": "",
+      "shelf": true
+    },
+    {
+      "id": "refinamentos",
+      "name": "Refinamentos",
+      "color": "",
+      "shelf": true
+    },
+    {
       "id": "backlog",
       "name": "Backlog",
       "color": ""
@@ -26,6 +38,14 @@
     }
   ],
   "flow": [
+    [
+      "brainstorm",
+      "refinamentos"
+    ],
+    [
+      "refinamentos",
+      "backlog"
+    ],
     [
       "backlog",
       "doing"
