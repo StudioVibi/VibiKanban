@@ -36,7 +36,7 @@ flowchart TD
 - **DB-25** refinamento bend — @Ostrowskii
 - **DB-34** Meeting de Briefing dos 11 items — @Leon-nis `Game design`
 - **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design`
-- **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis
+- **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 
 ## Fazendo · 3
 
