@@ -34,7 +34,7 @@ flowchart TD
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
-- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis
+- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis `Game design`
 
 ## Fazendo · 3
 
