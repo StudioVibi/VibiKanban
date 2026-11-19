@@ -20,7 +20,7 @@ flowchart TD
 - **HN-6** aumentar contraste de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 - **HN-7** laws: melhorar fluxo de visualizar e manejar — @Ostrowskii
 - **HN-10** vibiGames: Showcase do harness — @Ostrowskii
-- **HN-13** future: Idealizar game jam na plataforma Vibi Click — @isabellaherman
+- **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 
 ## Fazendo · 3
 
