@@ -526,13 +526,38 @@ dialogEl.addEventListener("input", (e) => {
   saveSoon();
 });
 dialogEl.addEventListener("focusout", (e) => { if (editing && e.target.matches?.(".card-dialog__field") && !e.target.matches("[data-sub-new], [data-list-new]")) saveCard(); });
+// Um item escrito na linha de adicionar e ainda sem Enter também conta: vira item antes de salvar.
+function takeNew() {
+  if (!editing) return false;
+  let took = false;
+  for (const el of dialogEl.querySelectorAll("[data-list-new]")) {
+    const text = el.value.trim(), l = editing.lists[+el.dataset.listNew];
+    if (text && l) { l.items.push({ text, done: false }); el.value = ""; took = true; }
+  }
+  return took;
+}
+// Saiu da linha de adicionar pra fora da área dos blocos: o que estava escrito vira item (dentro dos blocos fica na linha, pra não sumir o que foi clicado).
+dialogEl.addEventListener("focusout", (e) => {
+  if (!editing || !e.target.matches?.("[data-list-new]")) return;
+  if (e.relatedTarget && $("[data-pieces]", dialogEl)?.contains(e.relatedTarget)) return;
+  if (takeNew()) { drawPieces(); saveSoon(); }
+});
 // Fechou, de qualquer jeito (X, Esc, clique fora, Salvar): salva o que faltava.
-dialogEl.addEventListener("close", () => { saveCard(); editing = null; });
-document.addEventListener("visibilitychange", () => { if (document.hidden) saveCard(); });
+dialogEl.addEventListener("close", () => { takeNew(); saveCard(); editing = null; });
+document.addEventListener("visibilitychange", () => { if (document.hidden) { takeNew(); saveCard(); } });
+// Clique fora fecha a ficha (a lib), mas só se ele começou fora: arrastar de dentro pra fora (selecionando texto) não fecha.
+// O navegador entrega esse clique no próprio <dialog>; a captura no document vem antes da lib e o barra.
+let downInside = false;
+dialogEl.addEventListener("pointerdown", (e) => {
+  const r = dialogEl.getBoundingClientRect();
+  downInside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+});
+document.addEventListener("click", (e) => { if (e.target === dialogEl && downInside) e.stopImmediatePropagation(); downInside = false; }, true);
 // Saindo da página (fechar a aba, recarregar): o que ainda não chegou vai num pedido que o navegador termina sozinho.
 // Mandar de novo um campo que já foi salvo não muda nada no servidor.
 addEventListener("pagehide", () => {
   if (!live) return;
+  takeNew();
   const d = unsaved(); if (d) unsent.set(editing.id, { ...unsent.get(editing.id), ...d });
   for (const [id, fields] of unsent) fetch("/api/update", { method: "POST", keepalive: true, headers: { "content-type": "application/json" }, body: JSON.stringify({ id, ...fields }) }).catch(() => {});
 });
