@@ -47,7 +47,7 @@ _vazio_
 - **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design`
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
-- **DB-39** Campo implicito: Fame, para monstros — @Leon-nis
+- **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development`
 
 ## Fazendo · 4
 
