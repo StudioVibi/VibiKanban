@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  backlog["Backlog · 7"] --> doing["Fazendo · 3"]
+  backlog["Backlog · 7"] --> doing["Fazendo · 4"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 2"]
   review -->|ajustes| doing
@@ -23,11 +23,12 @@ flowchart TD
 - **HN-11** we can use Steam visual pattern for our "vibigames" page — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 
-## Fazendo · 3
+## Fazendo · 4
 
 - **HN-3** Terminal: como implementar um terminal dentro do harness — @isabellaherman `infra`
 - **HN-9** Objetivo da semana — @isabellaherman
 - **HN-12** Concept para personagem HOC — @ilymeiib `art`
+- **HN-14** Idealizar o sistema de artefato — @isabellaherman
 
 ## Revisão · 0
 
