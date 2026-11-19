@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-  brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 8"]
+  brainstorm["Brainstorm · 1"] --> refinamentos["Refinamentos · 0"]
+  refinamentos --> backlog["Backlog · 7"]
   backlog --> doing["Fazendo · 3"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 3"]
@@ -15,21 +15,20 @@ flowchart TD
   done:::green
 ```
 
-## Brainstorm · 0
+## Brainstorm · 1
 
-_vazio_
+- **HN-10** vibiGames: Showcase do harness — @Ostrowskii
 
 ## Refinamentos · 0
 
 _vazio_
 
-## Backlog · 8
+## Backlog · 7
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
 - **HN-5** botão open project in a new tab — @isabellaherman `ui` `bend`
 - **HN-6** aumentar contraste de cor ou sensação de divisória da lib bend-ui — @isabellaherman `ui`
 - **HN-7** laws: melhorar fluxo de visualizar e manejar — @Ostrowskii
-- **HN-10** vibiGames: Showcase do harness — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 - **HN-15** git: Local version history (VIP) — @Ostrowskii
 - **HN-16** bugs não urgentes — @Ostrowskii · 0/2
