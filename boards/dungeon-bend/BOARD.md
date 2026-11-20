@@ -48,7 +48,7 @@ _vazio_
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development` · 0/1
-  - **DB-45** Reuniao de apresentacao · Backlog
+  - **DB-45** Reuniao de apresentacao — @isabellaherman · Backlog
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord`
 - **DB-42** Revisar branchs do leon — @Leon-nis · 0/2
