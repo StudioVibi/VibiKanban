@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart TD
-  brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 1"]
+  brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
   refinamentos --> backlog["Backlog · 25"]
   backlog --> doing["Fazendo · 4"]
   doing --> review["Revisão · 4"]
@@ -19,9 +19,10 @@ flowchart TD
 
 _vazio_
 
-## Refinamentos · 1
+## Refinamentos · 2
 
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
+- **DB-47** qual booster estamos? — @Ostrowskii
 
 ## Backlog · 25
 
