@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 27"]
+  refinamentos --> backlog["Backlog · 26"]
   backlog --> doing["Fazendo · 4"]
   doing --> review["Revisão · 4"]
-  review --> done["Feito · 3"]
+  review --> done["Feito · 4"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -23,7 +23,7 @@ _vazio_
 
 _vazio_
 
-## Backlog · 27
+## Backlog · 26
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -49,9 +49,9 @@ _vazio_
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
-- **DB-42** Revisar branchs do leon — @Leon-nis · 0/2
+- **DB-42** Revisar branchs do leon — @Leon-nis · 1/2
   - **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 · Backlog
-  - **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Backlog
+  - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 
 ## Fazendo · 4
 
@@ -71,6 +71,6 @@ _vazio_
   - ✓ **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis `Game design` · Feito
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 3
+## Feito · 4
 
-_aninhadas no pai: **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
+_aninhadas no pai: **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
