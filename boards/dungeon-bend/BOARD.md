@@ -49,7 +49,7 @@ _vazio_
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
-- **DB-42** Revisar branchs do leon — @Leon-nis @isabellaherman · 2/2
+- **DB-42** Revisar branchs do leon — @Leon-nis @isabellaherman `Game design` · 2/2
   - ✓ **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 `Game design` · Feito
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 
