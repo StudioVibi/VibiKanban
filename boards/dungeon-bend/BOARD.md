@@ -52,7 +52,7 @@ _vazio_
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord`
 - **DB-42** Revisar branchs do leon — @Leon-nis · 0/2
   - **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 · Backlog
-  - **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman · Backlog
+  - **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Backlog
 
 ## Fazendo · 4
 
