@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 26"]
+  refinamentos --> backlog["Backlog · 27"]
   backlog --> doing["Fazendo · 4"]
   doing --> review["Revisão · 3"]
   review --> done["Feito · 2"]
@@ -23,7 +23,7 @@ _vazio_
 
 _vazio_
 
-## Backlog · 26
+## Backlog · 27
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -50,7 +50,8 @@ _vazio_
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development`
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord`
-- **DB-42** Revisar branchs do leon — @Leon-nis
+- **DB-42** Revisar branchs do leon — @Leon-nis · 0/1
+  - **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 · Backlog
 
 ## Fazendo · 4
 
