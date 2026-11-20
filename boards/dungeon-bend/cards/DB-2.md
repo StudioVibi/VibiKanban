@@ -13,4 +13,4 @@ https://claude.ai/artifact/QfxWwKpTtiDaa4BQ5SpsEo
 ## Checklist
 
 - [ ] Adicionar
-- [ ] Finalizar a UI do
+- [ ] Finalizar a UI do novo sistema de embaralhamento
