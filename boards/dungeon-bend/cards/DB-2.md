@@ -8,6 +8,8 @@ order: 2
 
 # Dar continuidade no sistema de embaralhamento
 
+https://claude.ai/artifact/QfxWwKpTtiDaa4BQ5SpsEo
+
 ## Checklist
 
 - [ ] Adicionar
