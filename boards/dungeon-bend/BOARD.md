@@ -69,7 +69,7 @@ _aninhadas no pai: **DB-45** (em DB-39)_
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug` · 1/1
   - ✓ **DB-33** PR feito · Feito
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development` · 0/1 · espera DB-45
-  - **DB-45** Reuniao de apresentacao — @isabellaherman · Backlog
+  - **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis · Backlog
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
 ## Feito · 2
