@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 28"]
+  refinamentos --> backlog["Backlog · 27"]
   backlog --> doing["Fazendo · 4"]
   doing --> review["Revisão · 4"]
-  review --> done["Feito · 2"]
+  review --> done["Feito · 3"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -23,7 +23,7 @@ _vazio_
 
 _vazio_
 
-## Backlog · 28
+## Backlog · 27
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -52,7 +52,6 @@ _vazio_
 - **DB-42** Revisar branchs do leon — @Leon-nis · 0/2
   - **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 · Backlog
   - **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Backlog
-_aninhadas no pai: **DB-45** (em DB-39)_
 
 ## Fazendo · 4
 
@@ -68,10 +67,10 @@ _aninhadas no pai: **DB-45** (em DB-39)_
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug` · 1/1
   - ✓ **DB-33** PR feito · Feito
-- **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development` · 0/1 · espera DB-45
-  - **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis `Game design` · Backlog
+- **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development` · 1/1
+  - ✓ **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis `Game design` · Feito
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 2
+## Feito · 3
 
-_aninhadas no pai: **DB-33** (em DB-12), **DB-30** (em DB-29)_
+_aninhadas no pai: **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
