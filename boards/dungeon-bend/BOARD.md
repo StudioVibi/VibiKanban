@@ -43,7 +43,7 @@ _vazio_
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
-- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis `Game design`
+- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
 - **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design`
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
