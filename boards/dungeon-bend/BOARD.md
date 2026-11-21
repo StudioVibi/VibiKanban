@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 26"]
+  refinamentos --> backlog["Backlog · 27"]
   backlog --> doing["Fazendo · 5"]
   doing --> review["Revisão · 4"]
   review --> done["Feito · 7"]
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 26
+## Backlog · 27
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -54,6 +54,7 @@ _vazio_
   - ✓ **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 `Game design` · Feito
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 - **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
+- **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis
 
 ## Fazendo · 5
 
