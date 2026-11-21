@@ -5,8 +5,8 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 26"]
-  backlog --> doing["Fazendo · 4"]
+  refinamentos --> backlog["Backlog · 25"]
+  backlog --> doing["Fazendo · 5"]
   doing --> review["Revisão · 4"]
   review --> done["Feito · 5"]
   review -->|ajustes| doing
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 26
+## Backlog · 25
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -53,9 +53,8 @@ _vazio_
 - **DB-42** Revisar branchs do leon — @isabellaherman `Game design` · 2/2
   - ✓ **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 `Game design` · Feito
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
-- **DB-48** Arte para os ícones de classes — @oootavio
 
-## Fazendo · 4
+## Fazendo · 5
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui` · 0/2
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
@@ -64,6 +63,7 @@ _vazio_
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 4/6 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
   - **DB-37** Criar projeto Unity 6000.4.5f1 mobile — @mete-marcha `development` · Revisão · IA
+- **DB-48** Arte para os ícones de classes — @oootavio
 
 ## Revisão · 4
 
