@@ -50,7 +50,7 @@ _vazio_
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui` · 1/1
   - ✓ **DB-54** Criar o criterio de fama `development` · 1/1 · Feito
-    - ✓ **DB-55** testar a branch de fame-ranking `Testing` · Feito
+    - ✓ **DB-55** testar a branch de fame-ranking — @Leon-nis `Testing` · Feito
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-42** Revisar branchs do leon — @isabellaherman `Game design` · 2/2
