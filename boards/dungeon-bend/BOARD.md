@@ -54,7 +54,7 @@ _vazio_
   - ✓ **DB-43** mobs-v2 https://discord.com/channels/1466162797380505703/1468268698463768762/1573198989065461851 `Game design` · Feito
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 - **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
-- **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis
+- **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis `bug`
 
 ## Fazendo · 5
 
