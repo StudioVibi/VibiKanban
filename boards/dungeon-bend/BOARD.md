@@ -75,5 +75,5 @@ _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
 ## Feito · 6
 
-- ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis
+- ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
 _aninhadas no pai: **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
