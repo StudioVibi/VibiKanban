@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 27"]
+  refinamentos --> backlog["Backlog · 26"]
   backlog --> doing["Fazendo · 5"]
   doing --> review["Revisão · 4"]
-  review --> done["Feito · 8"]
+  review --> done["Feito · 9"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 27
+## Backlog · 26
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -45,8 +45,8 @@ _vazio_
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
 - **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
-- **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design` · 0/1
-  - **DB-53** remover "bad luck" do loot drop · Backlog
+- **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design` · 1/1
+  - ✓ **DB-53** remover "bad luck" do loot drop · Feito
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui`
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
@@ -75,9 +75,9 @@ _vazio_
   - ✓ **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis `Game design` · Feito
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 8
+## Feito · 9
 
 - ✓ **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
 - ✓ **DB-51** Testing: Event mode na develop 2fafd909 (PR #127 + #128) — @Leon-nis @Ostrowskii `Testing`
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
-_aninhadas no pai: **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
+_aninhadas no pai: **DB-53** (em DB-35), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
