@@ -29,7 +29,7 @@ _vazio_
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-28** Arte para o evento de fim de semana
-- **DB-22** art do log e ganhe
+- **DB-22** art do log e ganhe `Art`
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art` · espera DB-34
 - **DB-4** Modo de jogo: evento — @isabellaherman @Leon-nis
