@@ -80,7 +80,7 @@ _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 ## Feito · 13
 
 - ✓ **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis `bug` `ui` · 1/1
-  - ✓ **DB-57** testing: intro-esc-deckbuilder · Feito
+  - ✓ **DB-57** testing: intro-esc-deckbuilder `Testing` · Feito
 - ✓ **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
 - ✓ **DB-51** Testing: Event mode na develop 2fafd909 (PR #127 + #128) — @Leon-nis @Ostrowskii `Testing`
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
