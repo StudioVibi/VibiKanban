@@ -6,5 +6,5 @@
 |---|---|---|---|
 | [Dungeon Bend](boards/dungeon-bend/BOARD.md) | DB | 39 | @Leon-nis @isabellaherman @Ostrowskii @mete-marcha @ilymeiib @oootavio |
 | [Geral](boards/geral/BOARD.md) | GE | 5 | @isabellaherman @Ostrowskii |
-| [Harness](boards/harness/BOARD.md) | HN | 11 | @isabellaherman @Ostrowskii @ilymeiib @Leon-nis |
+| [Harness](boards/harness/BOARD.md) | HN | 10 | @isabellaherman @Ostrowskii @ilymeiib @Leon-nis |
 | [Morrow Days](boards/morrow-days/BOARD.md) | MD | 2 | @ilymeiib @isabellaherman |
