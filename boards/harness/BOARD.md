@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 1"] --> refinamentos["Refinamentos · 0"]
-  refinamentos --> backlog["Backlog · 6"]
+  refinamentos --> backlog["Backlog · 7"]
   backlog --> doing["Fazendo · 3"]
   doing --> review["Revisão · 0"]
   review --> done["Feito · 4"]
@@ -23,7 +23,7 @@ flowchart TD
 
 _vazio_
 
-## Backlog · 6
+## Backlog · 7
 
 - **HN-4** Corrigir o problema de multiplos chats — @isabellaherman
 - **HN-5** botão open project in a new tab — @isabellaherman `ui` `bend`
@@ -31,6 +31,7 @@ _vazio_
 - **HN-7** laws: melhorar fluxo de visualizar e manejar — @Ostrowskii
 - **HN-13** Idealizar game jam na plataforma Vibi Click — @isabellaherman
 - **HN-15** git: Local version history (VIP) — @Ostrowskii
+- **HN-17** Primeiras impressoes, feedbacks e anotacoes — @Leon-nis
 
 ## Fazendo · 3
 
