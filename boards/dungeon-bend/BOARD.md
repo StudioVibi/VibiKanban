@@ -68,7 +68,7 @@ _vazio_
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 7/10 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
   - **DB-37** Criar projeto Unity 6000.4.5f1 mobile — @mete-marcha `development` · Revisão · IA
-  - **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 0/6 · Fazendo · IA
+  - **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 1/6 · Fazendo · IA
 - **DB-48** Arte para os ícones de classes — @oootavio `Art`
 
 ## Revisão · 4
