@@ -7,8 +7,8 @@ flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
   refinamentos --> backlog["Backlog · 28"]
   backlog --> doing["Fazendo · 5"]
-  doing --> review["Revisão · 5"]
-  review --> done["Feito · 13"]
+  doing --> review["Revisão · 4"]
+  review --> done["Feito · 14"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -64,28 +64,28 @@ _aninhadas no pai: **DB-60** (em DB-29)_
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui` · 0/2
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
-- **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 3/16 · IA
+- **DB-29** Dungeon Pocket — objetivos macro do port — @mete-marcha `Production` · 4/16 · IA
   - ✓ **DB-30** Mapeamento do DungeonBend para port 1:1 — @mete-marcha `Production` · 3/3 · Feito · IA
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 7/10 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
   - **DB-37** Criar projeto Unity 6000.4.5f1 mobile — @mete-marcha `development` · Revisão · IA
-  - **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 8/8 · Revisão · IA
+  - ✓ **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 8/8 · Feito · IA
   - **DB-60** Passos 5–11: motor C#, save, base visual e primeiras telas — @mete-marcha `development` · Backlog · IA
 - **DB-48** Arte para os ícones de classes — @oootavio `Art`
 
-## Revisão · 5
+## Revisão · 4
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug` · 1/1
   - ✓ **DB-33** PR feito · Feito
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development` · 1/1
   - ✓ **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis `Game design` · Feito
-_aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29), **DB-59** (em DB-29)_
+_aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 13
+## Feito · 14
 
 - ✓ **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis `bug` `ui` · 1/1
   - ✓ **DB-57** testing: intro-esc-deckbuilder — @Leon-nis `Testing` · Feito
 - ✓ **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
 - ✓ **DB-51** Testing: Event mode na develop 2fafd909 (PR #127 + #128) — @Leon-nis @Ostrowskii `Testing`
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
-_aninhadas no pai: **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-53** (em DB-35), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
+_aninhadas no pai: **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-53** (em DB-35), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
