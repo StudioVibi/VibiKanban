@@ -6,8 +6,8 @@
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
   refinamentos --> backlog["Backlog · 27"]
-  backlog --> doing["Fazendo · 6"]
-  doing --> review["Revisão · 4"]
+  backlog --> doing["Fazendo · 5"]
+  doing --> review["Revisão · 5"]
   review --> done["Feito · 13"]
   review -->|ajustes| doing
   doing:::blue
@@ -59,7 +59,7 @@ _vazio_
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 
-## Fazendo · 6
+## Fazendo · 5
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui` · 0/2
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
@@ -68,16 +68,16 @@ _vazio_
   - **DB-31** Decisões de base do port (viewports, referência, fontes, ouro, revisão) — @mete-marcha `Production` `Game design` · 7/10 · Fazendo · IA
   - **DB-32** Harness de referência web (Playwright) para o 1:1 — @mete-marcha `Testing` `development` · 4/5 · Revisão · IA
   - **DB-37** Criar projeto Unity 6000.4.5f1 mobile — @mete-marcha `development` · Revisão · IA
-  - **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 7/8 · Fazendo · IA
+  - **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 7/8 · Revisão · IA
 - **DB-48** Arte para os ícones de classes — @oootavio `Art`
 
-## Revisão · 4
+## Revisão · 5
 
 - **DB-12** Ajustes, Otimizacoes e Bugs — @Leon-nis `bug` · 1/1
   - ✓ **DB-33** PR feito · Feito
 - **DB-39** Campo implicito: Fame, para monstros — @Leon-nis `development` · 1/1
   - ✓ **DB-45** Reuniao de apresentacao — @isabellaherman @Leon-nis `Game design` · Feito
-_aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
+_aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29), **DB-59** (em DB-29)_
 
 ## Feito · 13
 
