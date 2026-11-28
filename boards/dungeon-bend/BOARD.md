@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 24"]
+  refinamentos --> backlog["Backlog · 25"]
   backlog --> doing["Fazendo · 7"]
   doing --> review["Revisão · 5"]
   review --> done["Feito · 18"]
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 24
+## Backlog · 25
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -50,8 +50,9 @@ _vazio_
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
-- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` · 0/1
+- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` · 0/2
   - **DB-63** Boosters limit content · Backlog
+  - **DB-64** Deckbox shop · Backlog
 
 ## Fazendo · 7
 
