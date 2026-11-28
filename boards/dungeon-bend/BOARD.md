@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 29"]
+  refinamentos --> backlog["Backlog · 28"]
   backlog --> doing["Fazendo · 8"]
   doing --> review["Revisão · 5"]
   review --> done["Feito · 23"]
@@ -24,14 +24,13 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 29
+## Backlog · 28
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-28** Arte para o evento de fim de semana
 - **DB-22** art do log e ganhe `Art`
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
-- **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
 - **DB-4** Modo de jogo: evento — @isabellaherman @Leon-nis
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-9** Publisher — @isabellaherman
