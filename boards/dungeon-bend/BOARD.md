@@ -52,7 +52,7 @@ _vazio_
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 - **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` · 2/2
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
-  - ✓ **DB-64** Deckbox shop · Feito
+  - ✓ **DB-64** Deckbox shop `ui` · Feito
 
 ## Fazendo · 7
 
