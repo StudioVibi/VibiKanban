@@ -70,7 +70,7 @@ _aninhadas no pai: **DB-67** (em DB-62)_
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
   - ✓ **DB-65** Deckbuilder gold exhibition — @Leon-nis `ui` · Feito
   - ✓ **DB-66** Deckbuilder gold and hp scales — @Leon-nis `development` · Feito
-  - **DB-67** Artifact: Patch notes · Backlog
+  - **DB-67** Artifact: Patch notes `Production` · Backlog
 
 ## Revisão · 5
 
