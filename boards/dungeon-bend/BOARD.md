@@ -53,7 +53,7 @@ _vazio_
   - **DB-78** Item Composition: Potions extra (5 assets) `Art` · Backlog
   - **DB-79** Item Composition: Giant Potions (2 assets) `Art` · Backlog
   - **DB-80** Item Composition: New Rules Assets (4 assets) `Art` · Backlog
-  - **DB-81** Monster Composition: Aura Beast · Backlog
+  - **DB-81** Monster Composition: Mutation Beast · Backlog
   - **DB-82** Monster Composition: Aura Plant · Backlog
   - **DB-83** Monster Composition: Aura Undead · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
