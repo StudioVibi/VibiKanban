@@ -1,9 +1,9 @@
 ---
 id: DB-8
-lane: backlog
+lane: doing
 who: Leon-nis
 tags: Game design, ui
-order: 7
+order: 9
 ---
 
 # Quests

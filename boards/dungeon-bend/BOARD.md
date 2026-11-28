@@ -5,8 +5,8 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 26"]
-  backlog --> doing["Fazendo · 6"]
+  refinamentos --> backlog["Backlog · 25"]
+  backlog --> doing["Fazendo · 7"]
   doing --> review["Revisão · 5"]
   review --> done["Feito · 15"]
   review -->|ajustes| doing
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 26
+## Backlog · 25
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -34,7 +34,6 @@ _vazio_
 - **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art` · espera DB-34
 - **DB-4** Modo de jogo: evento — @isabellaherman @Leon-nis
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
-- **DB-8** Quests — @Leon-nis `Game design` `ui`
 - **DB-9** Publisher — @isabellaherman
 - **DB-10** Endless Balance, pra jogadores que gostam de jogar o late game (nivel 15+) — @Leon-nis `Game design`
 - **DB-11** Game Mode: Challenge. Modo de Jogo com Timer — @Leon-nis `Game design` `ui`
@@ -56,7 +55,7 @@ _vazio_
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 
-## Fazendo · 6
+## Fazendo · 7
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui` · 0/2
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
@@ -68,6 +67,7 @@ _vazio_
   - ✓ **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 8/8 · Feito · IA
   - **DB-60** Passos 5–11: motor C#, save, base visual e primeiras telas — @mete-marcha `development` · 0/7 · Fazendo · IA
 - **DB-48** Arte para os ícones de classes — @oootavio `Art`
+- **DB-8** Quests — @Leon-nis `Game design` `ui`
 
 ## Revisão · 5
 
