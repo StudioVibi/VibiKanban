@@ -5,8 +5,8 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 29"]
-  backlog --> doing["Fazendo · 8"]
+  refinamentos --> backlog["Backlog · 28"]
+  backlog --> doing["Fazendo · 9"]
   doing --> review["Revisão · 5"]
   review --> done["Feito · 23"]
   review -->|ajustes| doing
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 29
+## Backlog · 28
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -50,10 +50,9 @@ _vazio_
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 - **DB-74** Art tasks/dez — @Leon-nis
-- **DB-75** GDD: Progressao & Balanceamento — @Leon-nis `Pitch` `Production`
 _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62), **DB-72** (em DB-8), **DB-73** (em DB-8)_
 
-## Fazendo · 8
+## Fazendo · 9
 
 - **DB-2** Dar continuidade no sistema de embaralhamento — @isabellaherman `Game design` `ui` · 0/2
 - **DB-23** Multiplayer mode: weekend duels — @isabellaherman @Ostrowskii `development` `ui` · 4/10 · espera DB-28
@@ -78,6 +77,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8
   - ✓ **DB-66** Deckbuilder gold and hp scales — @Leon-nis `development` · Feito
   - **DB-67** Artifact: Patch notes & PR #138 rework-gold — @Leon-nis `Production` · Backlog
   - **DB-71** Testing: rework-gold — @Leon-nis `Testing` · Backlog
+- **DB-75** GDD: Progressao & Balanceamento — @Leon-nis `Pitch` `Production`
 
 ## Revisão · 5
 
