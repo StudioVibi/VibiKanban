@@ -60,7 +60,7 @@ _vazio_
   - **DB-85** BlackCard deckbuilder att `Art` · Backlog
   - **DB-86** Fame icon `Art` · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
-- **DB-87** Socorro tasks, — @Leon-nis
+- **DB-87** 🚒 Socorro tasks — @Leon-nis
 _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62), **DB-72** (em DB-8), **DB-73** (em DB-8), **DB-76** (em DB-8)_
 
 ## Fazendo · 9
