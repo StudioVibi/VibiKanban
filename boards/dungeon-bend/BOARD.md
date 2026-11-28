@@ -69,7 +69,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8
   - **DB-69** UI placeholder Quests — @Leon-nis `Testing` · Backlog
   - **DB-70** Editor rewards: Quests — @Leon-nis `development` · Backlog
   - **DB-72** Artifact: feat/quests `Production` · Backlog
-  - **DB-73** Testing: feat/quests · Backlog
+  - **DB-73** Testing: feat/quests `Testing` · Backlog
 - **DB-62** fix/rework-gold — @Leon-nis · 4/6
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
