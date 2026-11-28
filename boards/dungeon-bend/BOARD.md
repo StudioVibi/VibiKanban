@@ -67,7 +67,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8
 - **DB-8** Quests — @Leon-nis · 1/5
   - ✓ **DB-68** New Quests(Starting, Unique, Daily) — @Leon-nis `Game design` · Feito
   - **DB-69** UI placeholder Quests — @Leon-nis `Testing` · Backlog
-  - **DB-70** Editor rewards: Quests · Backlog
+  - **DB-70** Editor rewards: Quests `development` · Backlog
   - **DB-72** Artifact: feat/quests · Backlog
   - **DB-73** Testing: feat/quests · Backlog
 - **DB-62** fix/rework-gold — @Leon-nis · 4/6
