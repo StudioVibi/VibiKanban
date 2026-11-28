@@ -65,7 +65,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8)_
   - **DB-60** Passos 5–11: motor C#, save, base visual e primeiras telas — @mete-marcha `development` · 0/7 · Fazendo · IA
 - **DB-48** Arte para os ícones de classes — @oootavio `Art`
 - **DB-8** Quests — @Leon-nis `Game design` `ui` · 0/1
-  - **DB-68** New Quests(Starting, Unique, Daily) `Game design` · Backlog
+  - **DB-68** New Quests(Starting, Unique, Daily) — @Leon-nis `Game design` · Backlog
 - **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` `development` · 4/5
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
