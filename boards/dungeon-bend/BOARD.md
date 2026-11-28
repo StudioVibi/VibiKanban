@@ -56,7 +56,7 @@ _vazio_
   - **DB-81** Monster Composition: Mutation Beast `Art` · Backlog
   - **DB-82** Monster Composition: Aura Plant `Art` · Backlog
   - **DB-83** Monster Composition: Aura Undead `Art` · Backlog
-  - **DB-84** Quest UI: (Font, Window, Bar, Icon) · Backlog
+  - **DB-84** Quest UI: (Font, Window, Bar, Icon) `Art` · Backlog
   - **DB-85** BlackCard deckbuilder att `Art` · Backlog
   - **DB-86** Fame icon `Art` · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
