@@ -74,7 +74,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8), **DB-69** (em DB-8
   - ✓ **DB-65** Deckbuilder gold exhibition — @Leon-nis `ui` · Feito
   - ✓ **DB-66** Deckbuilder gold and hp scales — @Leon-nis `development` · Feito
   - **DB-67** Artifact: Patch notes & PR #138 rework-gold — @Leon-nis `Production` · Backlog
-  - **DB-71** Testing: rework-gold `Testing` · Backlog
+  - **DB-71** Testing: rework-gold — @Leon-nis `Testing` · Backlog
 
 ## Revisão · 5
 
