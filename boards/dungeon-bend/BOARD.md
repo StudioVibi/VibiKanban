@@ -68,7 +68,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8), **DB-69** (em DB-8
   - **DB-68** New Quests(Starting, Unique, Daily) — @Leon-nis `Game design` · Backlog
   - **DB-69** UI placeholder Quests — @Leon-nis `Testing` · Backlog
   - **DB-70** Editor rewards: Quests · Backlog
-- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` `development` · 4/6
+- **DB-62** fix/rework-gold — @Leon-nis · 4/6
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
   - ✓ **DB-65** Deckbuilder gold exhibition — @Leon-nis `ui` · Feito
