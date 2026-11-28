@@ -64,7 +64,7 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8), **DB-69** (em DB-8
   - ✓ **DB-59** Passo 3/4: import settings, espelho de assets e importador de data — @mete-marcha `development` · 8/8 · Feito · IA
   - **DB-60** Passos 5–11: motor C#, save, base visual e primeiras telas — @mete-marcha `development` · 0/7 · Fazendo · IA
 - **DB-48** Arte para os ícones de classes — @oootavio `Art`
-- **DB-8** Quests — @Leon-nis `Game design` `ui` · 0/3
+- **DB-8** Quests — @Leon-nis `Game design` · 0/3
   - **DB-68** New Quests(Starting, Unique, Daily) — @Leon-nis `Game design` · Backlog
   - **DB-69** UI placeholder Quests — @Leon-nis `Testing` · Backlog
   - **DB-70** Editor rewards: Quests · Backlog
