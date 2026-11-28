@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 25"]
+  refinamentos --> backlog["Backlog · 24"]
   backlog --> doing["Fazendo · 7"]
   doing --> review["Revisão · 5"]
-  review --> done["Feito · 15"]
+  review --> done["Feito · 16"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -24,14 +24,14 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 25
+## Backlog · 24
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
 - **DB-28** Arte para o evento de fim de semana
 - **DB-22** art do log e ganhe `Art`
 - **DB-3** Sistema de composição de deck — @isabellaherman `Game design`
-- **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art` · espera DB-34
+- **DB-7** 11 Arte dos items em composicao, cada item precisa de um asset especial. — @ilymeiib `Art`
 - **DB-4** Modo de jogo: evento — @isabellaherman @Leon-nis
 - **DB-6** Definir tasks pro time de arte — @isabellaherman
 - **DB-9** Publisher — @isabellaherman
@@ -43,7 +43,6 @@ _vazio_
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
-- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
 - **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design` · 1/1
   - ✓ **DB-53** remover "bad luck" do loot drop · Feito
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
@@ -80,7 +79,7 @@ _vazio_
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 15
+## Feito · 16
 
 - ✓ **DB-61** Define dungeon bend scope — @isabellaherman
 - ✓ **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis `bug` `ui` · 1/1
@@ -88,4 +87,5 @@ _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 - ✓ **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
 - ✓ **DB-51** Testing: Event mode na develop 2fafd909 (PR #127 + #128) — @Leon-nis @Ostrowskii `Testing`
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
+- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
 _aninhadas no pai: **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-53** (em DB-35), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
