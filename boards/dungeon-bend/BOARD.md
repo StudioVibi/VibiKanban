@@ -51,7 +51,7 @@ _vazio_
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 - **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` · 2/2
-  - ✓ **DB-63** Boosters limit content · Feito
+  - ✓ **DB-63** Boosters limit content `development` · Feito
   - ✓ **DB-64** Deckbox shop · Feito
 
 ## Fazendo · 7
