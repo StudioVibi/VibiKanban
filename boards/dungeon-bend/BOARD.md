@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 26"]
+  refinamentos --> backlog["Backlog · 27"]
   backlog --> doing["Fazendo · 8"]
   doing --> review["Revisão · 5"]
   review --> done["Feito · 22"]
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 26
+## Backlog · 27
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -50,7 +50,7 @@ _vazio_
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
-_aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8), **DB-69** (em DB-8), **DB-70** (em DB-8)_
+_aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62)_
 
 ## Fazendo · 8
 
@@ -68,12 +68,13 @@ _aninhadas no pai: **DB-67** (em DB-62), **DB-68** (em DB-8), **DB-69** (em DB-8
   - **DB-68** New Quests(Starting, Unique, Daily) — @Leon-nis `Game design` · Backlog
   - **DB-69** UI placeholder Quests — @Leon-nis `Testing` · Backlog
   - **DB-70** Editor rewards: Quests · Backlog
-- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` `development` · 4/5
+- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` `development` · 4/6
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
   - ✓ **DB-65** Deckbuilder gold exhibition — @Leon-nis `ui` · Feito
   - ✓ **DB-66** Deckbuilder gold and hp scales — @Leon-nis `development` · Feito
   - **DB-67** Artifact: Patch notes & PR #138 rework-gold — @Leon-nis `Production` · Backlog
+  - **DB-71** Testing: rework-gold · Backlog
 
 ## Revisão · 5
 
