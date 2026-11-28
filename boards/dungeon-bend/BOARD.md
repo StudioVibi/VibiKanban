@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 24"]
+  refinamentos --> backlog["Backlog · 23"]
   backlog --> doing["Fazendo · 7"]
   doing --> review["Revisão · 5"]
-  review --> done["Feito · 21"]
+  review --> done["Feito · 22"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 24
+## Backlog · 23
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -50,11 +50,11 @@ _vazio_
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
-- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` · 3/4
+- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui` · 4/4
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
   - ✓ **DB-65** Deckbuilder gold exhibition · Feito
-  - **DB-66** Deckbuilder gold and hp scales · Backlog
+  - ✓ **DB-66** Deckbuilder gold and hp scales · Feito
 
 ## Fazendo · 7
 
@@ -81,7 +81,7 @@ _vazio_
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 21
+## Feito · 22
 
 - ✓ **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design` · 1/1
   - ✓ **DB-53** remover "bad luck" do loot drop · Feito
@@ -93,4 +93,4 @@ _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
 - ✓ **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
 - ✓ **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
-_aninhadas no pai: **DB-65** (em DB-62), **DB-64** (em DB-62), **DB-63** (em DB-62), **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
+_aninhadas no pai: **DB-66** (em DB-62), **DB-65** (em DB-62), **DB-64** (em DB-62), **DB-63** (em DB-62), **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
