@@ -50,7 +50,7 @@ _vazio_
 - **DB-40** Meeting, progressao interna da run. Experiencia, Combos e Acumulos — @Leon-nis `Game design`
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
-- **DB-62** fix/rework-gold — @Leon-nis
+- **DB-62** fix/rework-gold — @Leon-nis `Game design` `ui`
 
 ## Fazendo · 7
 
