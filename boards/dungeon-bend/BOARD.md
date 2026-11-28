@@ -50,7 +50,7 @@ _vazio_
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 - **DB-74** Art tasks/dez — @Leon-nis · 0/3 · espera DB-77
-  - **DB-78** Item Composition: Potions extra (5 assets) · Backlog
+  - **DB-78** Item Composition: Potions extra (5 assets) `Art` · Backlog
   - **DB-79** Item Composition: Giant Potions (2 assets) `Art` · Backlog
   - **DB-80** Item Composition: New Rules Assets (4 assets) `Art` · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
