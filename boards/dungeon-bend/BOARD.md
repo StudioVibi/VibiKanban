@@ -50,7 +50,7 @@ _vazio_
 - **DB-41** Construcao do Patch notes geral, pra comunidade — @Leon-nis `Discord` · espera DB-16
 - **DB-58** Interface descritiva da scene de stats/substats — @Leon-nis @isabellaherman `ui`
 - **DB-74** Art tasks/dez — @Leon-nis
-- **DB-75** GDD: Progressao & Balanceamento — @Leon-nis
+- **DB-75** GDD: Progressao & Balanceamento — @Leon-nis `Pitch`
 _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62), **DB-72** (em DB-8), **DB-73** (em DB-8)_
 
 ## Fazendo · 8
