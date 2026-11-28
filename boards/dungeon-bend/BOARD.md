@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 39"]
+  refinamentos --> backlog["Backlog · 40"]
   backlog --> doing["Fazendo · 9"]
   doing --> review["Revisão · 5"]
   review --> done["Feito · 23"]
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 39
+## Backlog · 40
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -60,6 +60,7 @@ _vazio_
   - **DB-85** BlackCard deckbuilder att `Art` · Backlog
   - **DB-86** Fame icon `Art` · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
+- **DB-87** Socorro tasks, — @Leon-nis
 _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62), **DB-72** (em DB-8), **DB-73** (em DB-8), **DB-76** (em DB-8)_
 
 ## Fazendo · 9
