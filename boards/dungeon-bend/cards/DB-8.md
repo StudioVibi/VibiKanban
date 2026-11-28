@@ -4,7 +4,7 @@ lane: doing
 who: Leon-nis
 tags: 
 order: 9
-subs: DB-68, DB-69, DB-70
+subs: DB-68, DB-69, DB-70, DB-72
 ---
 
 # Quests
