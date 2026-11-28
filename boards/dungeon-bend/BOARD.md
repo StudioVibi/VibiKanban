@@ -52,7 +52,7 @@ _vazio_
 - **DB-74** Art tasks/dez — @Leon-nis · 0/3 · espera DB-77
   - **DB-78** Item Composition: Potions extra (5 assets) · Backlog
   - **DB-79** Item Composition: Giant Potions (2 assets) · Backlog
-  - **DB-80** Item Composition: New Rules Assets (4 assets) · Backlog
+  - **DB-80** Item Composition: New Rules Assets (4 assets) `Art` · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
 _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62), **DB-72** (em DB-8), **DB-73** (em DB-8), **DB-76** (em DB-8)_
 
