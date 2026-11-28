@@ -86,6 +86,6 @@ _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 - ✓ **DB-50** Testing: feat/mimic-loot-skip — @Leon-nis `Testing` `bug`
 - ✓ **DB-51** Testing: Event mode na develop 2fafd909 (PR #127 + #128) — @Leon-nis @Ostrowskii `Testing`
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
-- **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
+- ✓ **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
 - **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
 _aninhadas no pai: **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-53** (em DB-35), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
