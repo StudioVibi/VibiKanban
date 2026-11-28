@@ -54,7 +54,7 @@ _vazio_
   - ✓ **DB-63** Boosters limit content — @Leon-nis `development` · Feito
   - ✓ **DB-64** Deckbox shop — @Leon-nis `ui` · Feito
   - ✓ **DB-65** Deckbuilder gold exhibition — @Leon-nis `ui` · Feito
-  - ✓ **DB-66** Deckbuilder gold and hp scales · Feito
+  - ✓ **DB-66** Deckbuilder gold and hp scales — @Leon-nis · Feito
 
 ## Fazendo · 7
 
