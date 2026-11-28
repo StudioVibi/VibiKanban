@@ -55,7 +55,7 @@ _vazio_
   - **DB-80** Item Composition: New Rules Assets (4 assets) `Art` · Backlog
   - **DB-81** Monster Composition: Mutation Beast `Art` · Backlog
   - **DB-82** Monster Composition: Aura Plant `Art` · Backlog
-  - **DB-83** Monster Composition: Aura Undead · Backlog
+  - **DB-83** Monster Composition: Aura Undead `Art` · Backlog
 - **DB-77** Meeting, Rewards Art feat/quests — @Leon-nis @isabellaherman `Game design`
 _aninhadas no pai: **DB-67** (em DB-62), **DB-69** (em DB-8), **DB-70** (em DB-8), **DB-71** (em DB-62), **DB-72** (em DB-8), **DB-73** (em DB-8), **DB-76** (em DB-8)_
 
