@@ -5,10 +5,10 @@
 ```mermaid
 flowchart TD
   brainstorm["Brainstorm · 0"] --> refinamentos["Refinamentos · 2"]
-  refinamentos --> backlog["Backlog · 23"]
+  refinamentos --> backlog["Backlog · 22"]
   backlog --> doing["Fazendo · 7"]
   doing --> review["Revisão · 5"]
-  review --> done["Feito · 17"]
+  review --> done["Feito · 18"]
   review -->|ajustes| doing
   doing:::blue
   review:::yellow
@@ -24,7 +24,7 @@ _vazio_
 - **DB-46** bug visual: aviso de att pisca — @Ostrowskii
 - **DB-47** qual booster estamos? — @Ostrowskii
 
-## Backlog · 23
+## Backlog · 22
 
 - **DB-5** Implementar sistema de logue e ganhe — @Ostrowskii @isabellaherman `ui` · 0/7 · espera DB-22
 - **DB-24** DB lista de amigos — @Ostrowskii @isabellaherman
@@ -43,8 +43,6 @@ _vazio_
 - **DB-19** Feedbacks: Sistema de combo e ativação do deck — @isabellaherman `ui`
 - **DB-20** WARD WEAVER — @isabellaherman
 - **DB-25** refinamento bend — @Ostrowskii
-- **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design` · 1/1
-  - ✓ **DB-53** remover "bad luck" do loot drop · Feito
 - **DB-38** Atualizacao do Ranking, 2 categorias com 3 topicos cada. Incluir arquivamento de ranking por temporada — @Leon-nis `Game design` `ui` · 1/2
   - ✓ **DB-54** Criar o criterio de fama — @Leon-nis `development` · 1/1 · Feito
     - ✓ **DB-55** testar a branch de fame-ranking — @Leon-nis `Testing` · Feito
@@ -78,8 +76,10 @@ _vazio_
   - ✓ **DB-44** graveyard-piles https://discord.com/channels/1466162797380505703/1468268698463768762/1573126130947592212 — @isabellaherman `Game design` · Feito
 _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 
-## Feito · 17
+## Feito · 18
 
+- ✓ **DB-35** Meeting sobre gold e gold drop e seus incentivos. — @Leon-nis `Game design` · 1/1
+  - ✓ **DB-53** remover "bad luck" do loot drop · Feito
 - ✓ **DB-61** Define dungeon bend scope — @isabellaherman
 - ✓ **DB-52** fix/intro-esc-deckbuilder-qol — @Leon-nis `bug` `ui` · 1/1
   - ✓ **DB-57** testing: intro-esc-deckbuilder — @Leon-nis `Testing` · Feito
@@ -88,4 +88,4 @@ _aninhadas no pai: **DB-32** (em DB-29), **DB-37** (em DB-29)_
 - ✓ **DB-49** Correcao da Scene do drop loot para ficar de acordo com o mimic eliminado — @Leon-nis `bug`
 - ✓ **DB-34** Meeting de Briefing dos 11 items — @Leon-nis @ilymeiib `Game design`
 - ✓ **DB-36** Meeting sobre ultimate e pontos por movimento. — @Leon-nis `Game design`
-_aninhadas no pai: **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-53** (em DB-35), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
+_aninhadas no pai: **DB-59** (em DB-29), **DB-55** (em DB-54), **DB-54** (em DB-38), **DB-43** (em DB-42), **DB-44** (em DB-42), **DB-45** (em DB-39), **DB-33** (em DB-12), **DB-30** (em DB-29)_
